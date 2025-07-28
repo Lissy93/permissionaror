@@ -1,0 +1,19 @@
+<Card title=($global.meta.subheadings.aboutChmod)>
+  <p class="my-4">${$global.meta.what.aboutChmod}</p>
+  <ul>
+    <for|_index, preset| in=$global.meta.what.commonPresets>
+      <li class="flex gap-2">
+        <code class="text-green-400">${preset.number}</code>
+        ${preset.description}
+      </li>
+    </for>
+  </ul>
+
+  <div class="flex flex-wrap gap-4 md:flex-nowrap mt-4">
+    <for|_index, card| in=$global.meta.what.cards>
+      <Card title=(card.heading) inner=(true) class="w-full md:flex-1">
+          ${card.description}
+      </Card>
+    </for>
+  </div>
+</Card>

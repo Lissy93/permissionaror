@@ -1,0 +1,27 @@
+<!--
+Card component, for displaying content in a styled box.
+
+Props:
+- title: The title of the card.
+- inner: If true, uses a smaller padding and a different background color.
+- class: Additional CSS classes to apply to the card.
+- slot / renderBody: The content to render inside the card.
+
+Licensed under MIT (C) Alicia Sykes 2025 <https://github.com/lissy93>
+-->
+
+<section
+  class=(`
+    rounded-xl border border-gray-700
+    ${input.inner ? 'bg-gray-900 p-3 ' : 'bg-gray-800 p-5 '}
+    ${input.class}
+  `)
+>
+  <if(input.inner)>
+    <h4 class="text-white-300 text-xl mb-2">${input.title}</h4>
+  </if>
+  <else>
+    <h3 class="text-green-300 text-2xl mb-3">${input.title}</h3>
+  </else>
+  <${input.renderBody}/>
+</section>
