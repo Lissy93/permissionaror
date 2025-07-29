@@ -1,16 +1,23 @@
+import { t, get } from "../i18n";
+
+class {
+    onCreate() {
+        this.state = {
+          permState: {
+            owner: { r: true, w: false, x: false },
+            group: { r: true, w: false, x: false },
+            public: { r: false, w: false, x: false }
+          }
+        };
+    }
+    increment() {
+        this.state.count++;
+    }
+}
+
+
 $ const roles = ["owner", "group", "public"];
 $ const permissions = ["r", "w", "x"];
-
-$ const permState = {
-  owner: { r: true, w: false, x: false },
-  group: { r: true, w: false, x: false },
-  public: { r: false, w: false, x: false }
-};
-
-// $ const togglePerm = (role, perm) => {
-//   console.log(`Toggling ${perm} for ${role}`);
-//   permState[role][perm] = !permState[role][perm];
-// };
 
 $ const permNames = {
   r: "read",
@@ -18,17 +25,18 @@ $ const permNames = {
   x: "execute"
 };
 
-
 static function handleToggle(event) {
   console.log('===> Success! <===');
   console.log(event);
-  // console.log(`Toggled ${perm} for ${role}:`, event.checked);
-  // permState[role][perm] = event.checked;
+  const { role, perm, checked } = event;
+  console.log(`Toggling ${role} permission for ${perm}: ${checked}`);
+  this.state.permState[role][perm] = checked;
+  console.log(this.state.permState)
 }
 
 <div class="w-full max-w-7xl mx-auto px-4">
   <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
-    <Card title=($global?.meta?.subheadings?.permissions)>
+    <Card title=(get("subheadings.permissions"))>
       <@cardControls>
         <div class="flex gap-2">
           <Button variant="neutral" text="Reset" />
@@ -53,8 +61,10 @@ static function handleToggle(event) {
                 <td>
                   <Toggle
                     label=(perm.toUpperCase())
-                    checked=(permState[role][perm])
-                    // on-toggle(handleToggle)
+                    checked=(state.permState[role][perm])
+                    on-toggle(handleToggle)
+                    role=(role)
+                    perm=(perm)
                   />
                 </td>
               </for>
@@ -74,10 +84,10 @@ static function handleToggle(event) {
 
     </Card>
     <div class="flex gap-4 flex-col">
-    <Card title=($global?.meta?.subheadings?.output)>
+    <Card title=(get("subheadings.output"))>
       <p>TODO</p>
     </Card>
-    <Card title=($global?.meta?.subheadings?.exampleCommands)>
+    <Card title=(get("subheadings.exampleCommands"))>
       <p>TODO</p>
     </Card>
     </div>

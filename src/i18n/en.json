@@ -1,0 +1,50 @@
+{
+  "title": "Permissionator",
+  "titleLong": "Permissionator | CHMOD Calculator",
+  "subtitle": "Linux chmod calculator for generating, converting and verifying file permissions",
+  "subheadings": {
+    "permissions": "Permissions",
+    "output": "Output",
+    "exampleCommands": "Example Commands",
+    "aboutChmod": "What is chmod?"
+  },
+  "what": {
+    "aboutChmod": "The chmod command changes file mode bits on Unix and Linux systems. File permissions control who can read, write, or execute a file. They are expressed in octal digits (like 755) or symbolic form (like u=rwx,g=rx,o=rx). The first digit in a four-digit mode denotes special bits: setuid (4), setgid (2), and sticky (1).",
+    "commonPresets": [
+      {
+        "number": "600",
+        "description": "Owner read/write; private files like SSH keys"
+      },
+      {
+        "number": "644",
+        "description": "Owner read/write; everyone else read; typical text files"
+      },
+      {
+        "number": "700",
+        "description": "Owner full control; private scripts or directories"
+      },
+      {
+        "number": "755",
+        "description": "Owner rwx, others rx; common for directories and executables"
+      },
+      {
+        "number": "775",
+        "description": "Group-collaboration directories"
+      }
+    ],
+    "cards": [
+      {
+        "heading": "Octal basics",
+        "description": "Each role gets a digit: read=4, write=2, execute=1. Sum to get the digit: e.g., rwx = 7, rw- = 6, r-x = 5, r-- = 4. Common modes: 644 for files, 755 for directories."
+      },
+      {
+        "heading": "Symbolic form",
+        "description": "Use letters for users (u), group (g), others (o) with +, -, or =. For example: chmod u=rw,g=r,o= file.txt sets read/write for owner, read for group, and no access for others."
+      },
+      {
+        "heading": "Special bits",
+        "description": "setuid runs executables with the owner's privileges; setgid runs with the group's privileges; sticky prevents users from deleting others' files in shared directories (e.g., /tmp)."
+      }
+    ]
+  }
+}
