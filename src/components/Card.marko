@@ -5,7 +5,8 @@ Props:
 - title: The title of the card.
 - inner: If true, uses a smaller padding and a different background color.
 - class: Additional CSS classes to apply to the card.
-- slot / renderBody: The content to render inside the card.
+- renderBody: The slot content to render inside the card body.
+- cardControls: Optional component to render controls in the card header.
 
 Licensed under MIT (C) Alicia Sykes 2025 <https://github.com/lissy93>
 -->
@@ -17,11 +18,20 @@ Licensed under MIT (C) Alicia Sykes 2025 <https://github.com/lissy93>
     ${input.class}
   `)
 >
-  <if(input.inner)>
-    <h4 class="text-white-300 text-xl mb-2">${input.title}</h4>
-  </if>
-  <else>
-    <h3 class="text-green-300 text-2xl mb-3">${input.title}</h3>
-  </else>
+  <!-- Card header (and optional right-aligned buttons/controls) -->
+  <div class="flex items-center justify-between">
+    <if(input.inner)>
+      <h4 class="text-white-300 text-xl mb-2">${input.title}</h4>
+    </if>
+    <else>
+      <h3 class="text-green-300 text-2xl mb-3">${input.title}</h3>
+    </else>
+    <if(input.cardControls)>
+      <div>
+        <${input.cardControls}/>
+      </div>
+    </if>
+  </div>
+  <!-- Card content -->
   <${input.renderBody}/>
 </section>

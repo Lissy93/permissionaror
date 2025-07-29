@@ -1,0 +1,18 @@
+$ const variant = input.variant || 'neutral';
+
+$ const variantClasses = {
+  neutral: 'border-gray-600 bg-gray-800 hover:bg-gray-700 focus:ring-green-500',
+  danger: 'border-red-700 bg-red-900/20 text-red-300 hover:bg-red-900/40 focus:ring-red-500',
+};
+
+<button
+  type="button"
+  class=('rounded-md border px-3 py-2 text-sm  focus:outline-none focus:ring-2 cursor-pointer ' + variantClasses[variant])
+>
+  <if(input.icon)>
+    <span class="inline-flex items-center">
+      <i class="icon-${input.icon}"></i>
+    </span>
+  </if>
+  <span>${input.text || 'Button'}</span>
+</button>

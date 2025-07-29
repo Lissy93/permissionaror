@@ -1,3 +1,10 @@
+export const input = {
+  meta: {
+    permissions: "Permissions",
+    output: "Output"
+  }
+};
+
 $ const roles = ["owner", "group", "public"];
 $ const permissions = ["r", "w", "x"];
 
@@ -19,16 +26,20 @@ $ const permNames = {
 };
 
 
+
+static function hey(event) {
+  // this.emit("email-change", { email: 'hii' });
+  console.log("IT WORKS!", event);
+}
+
 static function handleToggle(event) {
-  console.log('===> Success! <===');
-  console.log(event);
-  // console.log(`Toggled ${perm} for ${role}:`, event.checked);
-  // permState[role][perm] = event.checked;
+  // this.emit("email-change", { email: 'hii' });
+  console.log("IT WORKS!", event);
 }
 
 <div class="w-full max-w-7xl mx-auto px-4">
   <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
-    <Card title=($global?.meta?.subheadings?.permissions)>
+    <Card title=($global.meta.subheadings?.permissions)>
       <@cardControls>
         <div class="flex gap-2">
           <Button variant="neutral" text="Reset" />
@@ -54,7 +65,7 @@ static function handleToggle(event) {
                   <Toggle
                     label=(perm.toUpperCase())
                     checked=(permState[role][perm])
-                    // on-toggle(handleToggle)
+                    on-toggle(handleToggle)
                   />
                 </td>
               </for>
@@ -82,7 +93,24 @@ static function handleToggle(event) {
     </Card>
     </div>
     <div class="col-span-1 md:col-span-2">
-      <AboutChmod />
+      // <AboutChmod />
     </div>
   </div>
 </div>
+
+
+
+// //////////// WORKING CODE ////////////
+// static function hey(event) {
+//   // this.emit("email-change", { email: 'hii' });
+//   console.log("IT WORKS!", event);
+// }
+
+
+// <Card title=($global?.meta?.subheadings?.output)>
+//   <Toggle
+//     label="Label"
+//     checked=true
+//     on-toggle(hey)
+//   />
+// </Card>
