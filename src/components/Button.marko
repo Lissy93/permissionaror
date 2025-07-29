@@ -5,13 +5,21 @@ $ const variantClasses = {
   danger: 'border-red-700 bg-red-900/20 text-red-300 hover:bg-red-900/40 focus:ring-red-500',
 };
 
+class {
+  handleClick(event) {
+    this.emit("click", event);
+  }
+}
+
+
 <button
   type="button"
   class=('rounded-md border px-3 py-2 text-sm  focus:outline-none focus:ring-2 cursor-pointer ' + variantClasses[variant])
+  on-click("handleClick")
 >
   <if(input.icon)>
     <span class="inline-flex items-center">
-      <i class="icon-${input.icon}"></i>
+      <i class=("icon-" + input.icon)></i>
     </span>
   </if>
   <span>${input.text || 'Button'}</span>

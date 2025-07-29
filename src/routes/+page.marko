@@ -1,17 +1,29 @@
 import { t, get } from "../i18n";
+import {
+  defaultPermState,
+  toggle,
+  setColumn,
+  setRow,
+  denyAll,
+} from "../utils/permissions.ts";
+
 
 class {
     onCreate() {
         this.state = {
-          permState: {
-            owner: { r: true, w: false, x: false },
-            group: { r: true, w: false, x: false },
-            public: { r: false, w: false, x: false }
-          }
+          permState: defaultPermState,
         };
     }
     increment() {
         this.state.count++;
+    }
+    resetPermissions() {
+      console.log("Resetting permissions to default state");
+      this.state.permState = defaultPermState;
+    }
+    denyAllPermissions() {
+      console.log("Denying all permissions");
+      this.state.permState = denyAll();
     }
 }
 
@@ -26,12 +38,11 @@ $ const permNames = {
 };
 
 static function handleToggle(event) {
-  console.log('===> Success! <===');
-  console.log(event);
-  const { role, perm, checked } = event;
-  console.log(`Toggling ${role} permission for ${perm}: ${checked}`);
-  this.state.permState[role][perm] = checked;
-  console.log(this.state.permState)
+    const { role, perm, checked } = event;
+    this.state.permState = {
+      ...this.state.permState,
+      [role]: { ...this.state.permState[role], [perm]: checked }
+    };
 }
 
 <div class="w-full max-w-7xl mx-auto px-4">
@@ -39,8 +50,8 @@ static function handleToggle(event) {
     <Card title=(get("subheadings.permissions"))>
       <@cardControls>
         <div class="flex gap-2">
-          <Button variant="neutral" text="Reset" />
-          <Button variant="danger" text="Deny All" />
+          <Button variant="neutral" text="Reset" on-click('resetPermissions') />
+          <Button variant="danger" text="Deny All" on-click('denyAllPermissions') />
         </div>
       </@cardControls>
 
