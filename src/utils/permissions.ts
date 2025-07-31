@@ -3,12 +3,23 @@ export type Perm = "r" | "w" | "x";
 
 export type PermState = Record<Role, Record<Perm, boolean>>;
 
+export type SpecialBits = {
+  suid: boolean; // setuid
+  sgid: boolean; // setgid
+  sticky: boolean; // sticky bit
+};
+
 export const defaultPermState: PermState = {
   owner: { r: true, w: false, x: false },
   group: { r: true, w: false, x: false },
   public: { r: false, w: false, x: false },
 };
 
+export const defaultSpecialBits: SpecialBits = {
+  suid: false,
+  sgid: false,
+  sticky: false
+};
 
 export function isRowSelected(permState: PermState, role: Role, permissions: Perm[]): boolean {
   return permissions.every(perm => permState[role][perm]);
@@ -44,6 +55,33 @@ export function denyAll(): PermState {
     public: { r: false, w: false, x: false },
   };
 }
+
+export function toggleSpecialBit(bits: SpecialBits, key: keyof SpecialBits): SpecialBits {
+  return { ...bits, [key]: !bits[key] };
+}
+
+export function setSpecialBit(bits: SpecialBits, key: keyof SpecialBits, value: boolean): SpecialBits {
+  return { ...bits, [key]: value };
+}
+
+function specialBitsToOctal(bits: SpecialBits) {
+  let val = 0;
+  if (bits.suid) val += 4;
+  if (bits.sgid) val += 2;
+  if (bits.sticky) val += 1;
+  return val;
+}
+
+function specialBitsToSymbolic(bits: SpecialBits, symbolic: string) {
+  let chars = symbolic.split("");
+
+  if (bits.suid) chars[3] = chars[3] === "x" ? "s" : "S";
+  if (bits.sgid) chars[6] = chars[6] === "x" ? "s" : "S";
+  if (bits.sticky) chars[9] = chars[9] === "x" ? "t" : "T";
+
+  return chars.join("");
+}
+
 
 export function createPermissionStore(initial: PermState = defaultPermState) {
   let state: PermState = structuredClone(initial);

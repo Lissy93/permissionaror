@@ -3,6 +3,8 @@ import {
   createPermissionStore,
   isRowSelected,
   isColSelected,
+  defaultSpecialBits,
+  setSpecialBit,
 } from "../utils/permissions.ts";
 
 import { generateChmodOutputs } from "../utils/generateOutputs.ts";
@@ -16,20 +18,30 @@ class {
     this.state = {
       permState: this.store.get(),
       chmod: generateChmodOutputs(initialState),
+      specialBits: defaultSpecialBits,
     };
+
+    // Previous state, used to detect changes
     this._prevPermState = initialState;
+    this._prevSpecialBits = { ...defaultSpecialBits };
   }
 
   onUpdate() {
-    if (this._prevPermState !== this.state.permState) {
+    // Get current state and compare with previous state
+    const permChanged = JSON.stringify(this._prevPermState) !== JSON.stringify(this.state.permState);
+    const bitsChanged = JSON.stringify(this._prevSpecialBits) !== JSON.stringify(this.state.specialBits);
+    // If either permissions or special bits have changed, update outputs
+    if (permChanged || bitsChanged) {
+      // Trigger update of outputs
       this.updateOutputs();
-      this._prevPermState = this.state.permState;
+      // Then store previous state, so we can detect changes next time
+      this._prevPermState = structuredClone(this.state.permState);
+      this._prevSpecialBits = structuredClone(this.state.specialBits);
     }
   }
 
-
   updateOutputs() {
-    this.state.chmod = generateChmodOutputs(this.state.permState);
+    this.state.chmod = generateChmodOutputs(this.state.permState, this.state.specialBits);
   }
 
   resetPermissions() {
@@ -54,6 +66,10 @@ class {
     const { perm } = event;
     this.state.permState = this.store.toggleCol(perm, this.roles);
   }
+  handleSpecialBitToggle(event) {
+    const { bit, checked } = event;
+    this.state.specialBits = setSpecialBit(this.state.specialBits, bit, checked);
+  }
 }
 
 $ const permNames = {
@@ -76,6 +92,7 @@ $ const roles = ['owner', 'group', 'public'];
         </div>
       </@cardControls>
 
+      <!-- Main permissions selector table -->
       <table class="border-separate border-spacing-2">
         <thead>
           <tr>
@@ -88,6 +105,7 @@ $ const roles = ['owner', 'group', 'public'];
                   perm=(perm)
                   checked=(isColSelected(state.permState, perm, roles))
                   on-toggle('handleColToggle')
+                  class="capitalize"
                 />
               </th>
             </for>
@@ -103,6 +121,7 @@ $ const roles = ['owner', 'group', 'public'];
                   checked=(isRowSelected(state.permState, role, permissions))
                   on-toggle('handleRowToggle')
                   role=(role)
+                  class="capitalize"
                 />
               </td>
               <for|perm| of=permissions>
@@ -120,6 +139,43 @@ $ const roles = ['owner', 'group', 'public'];
           </for>
         </tbody>
       </table>
+
+      <div class="flex flex-col gap-4 mt-4">
+        <Card title=(get("subheadings.commonPresets")) inner=(true) key="" class="w-full md:flex-1">
+          TODO
+        </Card>
+      
+        <Card title=(get("subheadings.specialBits")) inner=(true) key="" class="w-full md:flex-1">
+           <div class="flex gap-2">
+            <Toggle
+              label="SetUID"
+              checked=(state.specialBits.suid)
+              on-toggle('handleSpecialBitToggle')
+              bit="suid"
+            />
+            <Toggle
+              label="SetGID"
+              checked=(state.specialBits.sgid)
+              on-toggle('handleSpecialBitToggle')
+              bit="sgid"
+            />
+            <Toggle
+              label="Sticky"
+              checked=(state.specialBits.sticky)
+              on-toggle('handleSpecialBitToggle')
+              bit="sticky"
+            />
+          </div>
+          <p class="mt-3 text-sm text-gray-400">
+            <code>setuid</code> and <code>setgid</code> replace the execute bit with s/S on owner/group;<br>
+            <code>sticky</code> replaces others' execute with t/T.
+          </p>
+        </Card>
+      
+        <Card title=(get("subheadings.outputFile")) inner=(true) key="" class="w-full md:flex-1">
+          TODO
+        </Card>
+      </div>
 
     </Card>
     <div class="flex gap-4 flex-col">

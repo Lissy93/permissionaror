@@ -1,38 +1,21 @@
+/* Import Tailwind classes */
 @import "tailwindcss";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* @import url('https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900&display=swap'); */
-
-:root {
-  --primary: #05df72;
-  --secondary: color-mix(in oklab, var(--primary) 30%, transparent);
-  --background: #101828;
-  --background-card: #1e2939;
-  --border-color: #364153;
-}
-
-/* base.css */
-:root {
-  --color-bg: #ffffff;
-  --color-text: #111111;
-  --primary: #05df72;  /* green-600 for light mode */
-  --secondary: color-mix(in oklab, var(--primary) 30%, transparent); /* green-700 */
-}
-
-[data-theme='dark'] {
-  --color-bg: #0f172a;     /* gray-900 */
-  --color-text: #f1f5f9;   /* gray-200 */
-  --color-accent: #86efac; /* green-300 for dark mode */
-  --color-accent-hover: #4ade80; /* green-400 */
-}
-
-
-h1, h2, h3, h4, h5, h6, .mono {
-  font-family: 'Chivo Mono', monospace;
-}
-
+/* Turn the app into light mode when theme is set to light */
 html[data-theme='light'] {
   filter: invert(1) hue-rotate(180deg) brightness(1.1) saturate(1.5);
+}
+
+/* Specify the text selection highlight colors */
+::selection {
+  background: var(--color-green-300, #7bf1a8);
+  color: var(--color-gray-900, #101828);
+}
+
+/* Use custom monospace font for headings and code */
+code, h1, h2, h3, h4, h5, h6, .mono {
+  font-family: 'Chivo Mono', monospace;
 }
