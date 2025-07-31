@@ -1,42 +1,48 @@
 import { t, get } from "../i18n";
 import {
   defaultPermState,
-  toggle,
   setColumn,
   setRow,
   denyAll,
-
   isRowSelected,
   isColSelected,
-  toggleRow,
-  toggleCol
 } from "../utils/permissions.ts";
 
 
 class {
-    onCreate() {
-        this.state = {
-          permState: defaultPermState,
-        };
-    }
-    increment() {
-        this.state.count++;
-    }
-    resetPermissions() {
-      this.state.permState = defaultPermState;
-    }
-    denyAllPermissions() {
-      this.state.permState = denyAll();
-    }
-    handleRowToggle(role) {
-      toggleRow(this.state.permState, role, permissions);
-    }
-    handleColToggle(event) {
-      const { perm, checked } = event;
-      this.state.permState = setColumn(this.state.permState, perm, checked, this.roles || []);
-      toggleCol(this.state.permState, perm, this.roles || []);
-    }
+  onCreate() {
+    this.roles = ["owner", "group", "public"];
+    this.permissions = ["r", "w", "x"];
+    this.state = {
+      permState: defaultPermState,
+    };
+  }
 
+  resetPermissions() {
+    this.state.permState = defaultPermState;
+  }
+
+  denyAllPermissions() {
+    this.state.permState = denyAll();
+  }
+
+  handleToggle(event) {
+    const { role, perm, checked } = event;
+    this.state.permState = {
+      ...this.state.permState,
+      [role]: { ...this.state.permState[role], [perm]: checked }
+    };
+  }
+
+  handleRowToggle(event) {
+    const { role } = event;
+    this.state.permState = setRow(this.state.permState, role, !isRowSelected(this.state.permState, role, this.permissions));
+  }
+
+  handleColToggle(event) {
+    const { perm } = event;
+    this.state.permState = setColumn(this.state.permState, perm, !isColSelected(this.state.permState, perm, this.roles));
+  }
 }
 
 
@@ -72,7 +78,7 @@ static function handleToggle(event) {
           <tr>
             <th class=""></th>
             <for|perm| of=permissions>
-              <th class="text-left capitalize w-24">
+              <th class="text-left font-semibold w-24">
                 <Toggle
                   label=(permNames[perm])
                   type="column"
@@ -87,7 +93,15 @@ static function handleToggle(event) {
         <tbody>
           <for|role| of=roles>
             <tr>
-              <td class="capitalize font-semibold">${role}</td>
+              <td class="font-semibold">
+                <Toggle
+                  label=(role)
+                  type="row"
+                  checked=(isRowSelected(state.permState, role, permissions))
+                  on-toggle('handleRowToggle')
+                  role=(role)
+                />
+              </td>
               <for|perm| of=permissions>
                 <td>
                   <Toggle

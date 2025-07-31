@@ -9,16 +9,6 @@ export const defaultPermState: PermState = {
   public: { r: false, w: false, x: false },
 };
 
-export function toggle(state: PermState, role: Role, perm: Perm): PermState {
-  return {
-    ...state,
-    [role]: {
-      ...state[role],
-      [perm]: !state[role][perm],
-    },
-  };
-}
-
 export function setColumn(state: PermState, perm: Perm, value: boolean): PermState {
   const result = { ...state };
   for (const role of Object.keys(state) as Role[]) {
@@ -63,17 +53,5 @@ export function isColSelected(permState, perm, roles) {
   return roles.every(role => permState[role][perm]);
 }
 
-export function toggleRow(permState, role, permissions) {
-  const shouldSelect = !isRowSelected(permState, role, permissions);
-  for (const perm of permissions) {
-    permState[role][perm] = shouldSelect;
-  }
-}
 
-export function toggleCol(permState, perm, roles) {
-  const shouldSelect = !isColSelected(permState, perm, roles);
-  for (const role of roles) {
-    permState[role][perm] = shouldSelect;
-  }
-}
 

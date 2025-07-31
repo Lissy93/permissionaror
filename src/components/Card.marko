@@ -14,12 +14,12 @@ Licensed under MIT (C) Alicia Sykes 2025 <https://github.com/lissy93>
 <section
   class=(`
     rounded-xl border border-gray-700
-    ${input.inner ? 'bg-gray-900 p-3 ' : 'bg-gray-800 p-5 '}
+    ${input.inner ? 'bg-gray-900 p-2 sm:p-3 ' : 'bg-gray-800 p-3 sm:p-5 '}
     ${input.class}
   `)
 >
   <!-- Card header (and optional right-aligned buttons/controls) -->
-  <div class="flex items-center justify-between">
+  <div class="flex items-center justify-between flex-wrap">
     <if(input.inner)>
       <h4 class="text-white-300 text-xl mb-2">${input.title}</h4>
     </if>
