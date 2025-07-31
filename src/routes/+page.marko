@@ -5,6 +5,11 @@ import {
   setColumn,
   setRow,
   denyAll,
+
+  isRowSelected,
+  isColSelected,
+  toggleRow,
+  toggleCol
 } from "../utils/permissions.ts";
 
 
@@ -18,13 +23,20 @@ class {
         this.state.count++;
     }
     resetPermissions() {
-      console.log("Resetting permissions to default state");
       this.state.permState = defaultPermState;
     }
     denyAllPermissions() {
-      console.log("Denying all permissions");
       this.state.permState = denyAll();
     }
+    handleRowToggle(role) {
+      toggleRow(this.state.permState, role, permissions);
+    }
+    handleColToggle(event) {
+      const { perm, checked } = event;
+      this.state.permState = setColumn(this.state.permState, perm, checked, this.roles || []);
+      toggleCol(this.state.permState, perm, this.roles || []);
+    }
+
 }
 
 
@@ -60,7 +72,15 @@ static function handleToggle(event) {
           <tr>
             <th class=""></th>
             <for|perm| of=permissions>
-              <th class="text-left capitalize w-24">${permNames[perm]}</th>
+              <th class="text-left capitalize w-24">
+                <Toggle
+                  label=(permNames[perm])
+                  type="column"
+                  perm=(perm)
+                  checked=(isColSelected(state.permState, perm, roles))
+                  on-toggle('handleColToggle')
+                />
+              </th>
             </for>
           </tr>
         </thead>

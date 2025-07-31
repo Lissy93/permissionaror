@@ -53,3 +53,27 @@ export function denyAll(): PermState {
     public: { r: false, w: false, x: false },
   };
 }
+
+// utils/permissions.js
+export function isRowSelected(permState, role, permissions) {
+  return permissions.every(perm => permState[role][perm]);
+}
+
+export function isColSelected(permState, perm, roles) {
+  return roles.every(role => permState[role][perm]);
+}
+
+export function toggleRow(permState, role, permissions) {
+  const shouldSelect = !isRowSelected(permState, role, permissions);
+  for (const perm of permissions) {
+    permState[role][perm] = shouldSelect;
+  }
+}
+
+export function toggleCol(permState, perm, roles) {
+  const shouldSelect = !isColSelected(permState, perm, roles);
+  for (const role of roles) {
+    permState[role][perm] = shouldSelect;
+  }
+}
+
