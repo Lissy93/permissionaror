@@ -9,8 +9,17 @@ export const defaultPermState: PermState = {
   public: { r: false, w: false, x: false },
 };
 
+
+export function isRowSelected(permState: PermState, role: Role, permissions: Perm[]): boolean {
+  return permissions.every(perm => permState[role][perm]);
+}
+
+export function isColSelected(permState: PermState, perm: Perm, roles: Role[]): boolean {
+  return roles.every(role => permState[role][perm]);
+}
+
 export function setColumn(state: PermState, perm: Perm, value: boolean): PermState {
-  const result = { ...state };
+  const result: PermState = { ...state };
   for (const role of Object.keys(state) as Role[]) {
     result[role] = { ...state[role], [perm]: value };
   }
@@ -28,14 +37,6 @@ export function setRow(state: PermState, role: Role, value: boolean): PermState 
   };
 }
 
-export function allRowSelected(state: PermState, role: Role): boolean {
-  return Object.values(state[role]).every(Boolean);
-}
-
-export function allColSelected(state: PermState, perm: Perm): boolean {
-  return Object.values(state).every(role => role[perm]);
-}
-
 export function denyAll(): PermState {
   return {
     owner: { r: false, w: false, x: false },
@@ -44,14 +45,53 @@ export function denyAll(): PermState {
   };
 }
 
-// utils/permissions.js
-export function isRowSelected(permState, role, permissions) {
-  return permissions.every(perm => permState[role][perm]);
+export function createPermissionStore(initial: PermState = defaultPermState) {
+  let state: PermState = structuredClone(initial);
+
+  function get() {
+    return structuredClone(state);
+  }
+
+  function reset() {
+    state = structuredClone(defaultPermState);
+    return get();
+  }
+
+  function denyAll() {
+    state = {
+      owner: { r: false, w: false, x: false },
+      group: { r: false, w: false, x: false },
+      public: { r: false, w: false, x: false },
+    };
+    return get();
+  }
+
+  function toggle(role: Role, perm: Perm, value: boolean) {
+    state = {
+      ...state,
+      [role]: { ...state[role], [perm]: value }
+    };
+    return get();
+  }
+
+  function toggleRow(role: Role, permissions: Perm[]) {
+    const shouldSelect = !isRowSelected(state, role, permissions);
+    state = setRow(state, role, shouldSelect);
+    return get();
+  }
+
+  function toggleCol(perm: Perm, roles: Role[]) {
+    const shouldSelect = !isColSelected(state, perm, roles);
+    state = setColumn(state, perm, shouldSelect);
+    return get();
+  }
+
+  return {
+    get,
+    reset,
+    denyAll,
+    toggle,
+    toggleRow,
+    toggleCol,
+  };
 }
-
-export function isColSelected(permState, perm, roles) {
-  return roles.every(role => permState[role][perm]);
-}
-
-
-

@@ -1,53 +1,43 @@
-import { t, get } from "../i18n";
+import { get } from "../i18n";
 import {
-  defaultPermState,
-  setColumn,
-  setRow,
-  denyAll,
+  createPermissionStore,
   isRowSelected,
   isColSelected,
 } from "../utils/permissions.ts";
-
 
 class {
   onCreate() {
     this.roles = ["owner", "group", "public"];
     this.permissions = ["r", "w", "x"];
+    this.store = createPermissionStore();
     this.state = {
-      permState: defaultPermState,
+      permState: this.store.get()
     };
   }
 
   resetPermissions() {
-    this.state.permState = defaultPermState;
+    this.state.permState = this.store.reset();
   }
 
   denyAllPermissions() {
-    this.state.permState = denyAll();
+    this.state.permState = this.store.denyAll();
   }
 
   handleToggle(event) {
     const { role, perm, checked } = event;
-    this.state.permState = {
-      ...this.state.permState,
-      [role]: { ...this.state.permState[role], [perm]: checked }
-    };
+    this.state.permState = this.store.toggle(role, perm, checked);
   }
 
   handleRowToggle(event) {
     const { role } = event;
-    this.state.permState = setRow(this.state.permState, role, !isRowSelected(this.state.permState, role, this.permissions));
+    this.state.permState = this.store.toggleRow(role, this.permissions);
   }
 
   handleColToggle(event) {
     const { perm } = event;
-    this.state.permState = setColumn(this.state.permState, perm, !isColSelected(this.state.permState, perm, this.roles));
+    this.state.permState = this.store.toggleCol(perm, this.roles);
   }
 }
-
-
-$ const roles = ["owner", "group", "public"];
-$ const permissions = ["r", "w", "x"];
 
 $ const permNames = {
   r: "read",
@@ -55,13 +45,9 @@ $ const permNames = {
   x: "execute"
 };
 
-static function handleToggle(event) {
-    const { role, perm, checked } = event;
-    this.state.permState = {
-      ...this.state.permState,
-      [role]: { ...this.state.permState[role], [perm]: checked }
-    };
-}
+$ const permissions = ['r', 'w', 'x'];
+$ const roles = ['owner', 'group', 'public'];
+
 
 <div class="w-full max-w-7xl mx-auto px-4">
   <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -103,11 +89,11 @@ static function handleToggle(event) {
                 />
               </td>
               <for|perm| of=permissions>
-                <td>
+                <td class="mono">
                   <Toggle
                     label=(perm.toUpperCase())
                     checked=(state.permState[role][perm])
-                    on-toggle(handleToggle)
+                    on-toggle('handleToggle')
                     role=(role)
                     perm=(perm)
                   />
@@ -117,15 +103,6 @@ static function handleToggle(event) {
           </for>
         </tbody>
       </table>
-
-
-      <div>
-        <!-- TODO:
-          - Add a grid of toggles, for Owner/Group/Public (y-axis) and Read/Write/Execute (x-axis)
-          - Store state of each toggle in a reactive variable
-          - Clicking any of the rows or columns should toggle the state of the corresponding permissions
-        -->
-      </div>
 
     </Card>
     <div class="flex gap-4 flex-col">
