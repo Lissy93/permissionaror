@@ -13,8 +13,10 @@ class {
   onCreate() {
     this.roles = ["owner", "group", "public"];
     this.permissions = ["r", "w", "x"];
+    // Create the permission store instance
     this.store = createPermissionStore();
     const initialState = this.store.get();
+    // Initialize the store with defaults (permissions, output and special bits)
     this.state = {
       permState: this.store.get(),
       chmod: generateChmodOutputs(initialState),
@@ -40,32 +42,61 @@ class {
     }
   }
 
+  /**
+   * Generates command and chmod options based on the user's current selections
+   * This is called whenever something changes
+   * */
   updateOutputs() {
     this.state.chmod = generateChmodOutputs(this.state.permState, this.state.specialBits);
   }
 
+  /**
+   * Resets the permissions to the default state. Called on "Reset" button click
+   */
   resetPermissions() {
     this.state.permState = this.store.reset();
   }
 
+  /**
+   * Sets all permissions to deny / zero. Called on "Deny All" button click
+   */
   denyAllPermissions() {
+    this.state.specialBits = { ...defaultSpecialBits };
     this.state.permState = this.store.denyAll();
   }
 
-  handleToggle(event) {
+  /**
+   * Handles toggling a single cell in the permissions table
+   * Called whenever a checkbox withing the permissions matrix is toggled
+   * @param {Object} event - The event containing role, perm and checked state
+   */
+  handleCellToggle(event) {
     const { role, perm, checked } = event;
     this.state.permState = this.store.toggle(role, perm, checked);
   }
 
+  /**
+   * Handles toggling a whole row (aka owner/group/public) in the matrix
+   * @param {Object} event - The event containing the role being toggled
+   */
   handleRowToggle(event) {
     const { role } = event;
     this.state.permState = this.store.toggleRow(role, this.permissions);
   }
 
+  /**
+   * Handles toggling a whole column (aka read/write/execute) in the matrix
+   * @param {Object} event - The event containing the permission being toggled
+   */
   handleColToggle(event) {
     const { perm } = event;
     this.state.permState = this.store.toggleCol(perm, this.roles);
   }
+
+  /**
+   * Handles toggling a special bit (setuid, setgid, sticky)
+   * @param {Object} event - The event containing the bit being toggled
+   */
   handleSpecialBitToggle(event) {
     const { bit, checked } = event;
     this.state.specialBits = setSpecialBit(this.state.specialBits, bit, checked);
@@ -129,7 +160,7 @@ $ const roles = ['owner', 'group', 'public'];
                   <Toggle
                     label=(perm.toUpperCase())
                     checked=(state.permState[role][perm])
-                    on-toggle('handleToggle')
+                    on-toggle('handleCellToggle')
                     role=(role)
                     perm=(perm)
                   />
