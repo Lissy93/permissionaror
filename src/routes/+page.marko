@@ -5,14 +5,31 @@ import {
   isColSelected,
 } from "../utils/permissions.ts";
 
+import { generateChmodOutputs } from "../utils/generateOutputs.ts";
+
 class {
   onCreate() {
     this.roles = ["owner", "group", "public"];
     this.permissions = ["r", "w", "x"];
     this.store = createPermissionStore();
+    const initialState = this.store.get();
     this.state = {
-      permState: this.store.get()
+      permState: this.store.get(),
+      chmod: generateChmodOutputs(initialState),
     };
+    this._prevPermState = initialState;
+  }
+
+  onUpdate() {
+    if (this._prevPermState !== this.state.permState) {
+      this.updateOutputs();
+      this._prevPermState = this.state.permState;
+    }
+  }
+
+
+  updateOutputs() {
+    this.state.chmod = generateChmodOutputs(this.state.permState);
   }
 
   resetPermissions() {
@@ -107,10 +124,18 @@ $ const roles = ['owner', 'group', 'public'];
     </Card>
     <div class="flex gap-4 flex-col">
     <Card title=(get("subheadings.output"))>
-      <p>TODO</p>
+      <div class="flex flex-col gap-2">
+        <OutputCell label="Octal (3-digit)" value=(state.chmod.octal3) />
+        <OutputCell label="Octal (4-digit)" value=(state.chmod.octal4) />
+        <OutputCell label="Symbolic (rwx)" value=(state.chmod.symbolic) />
+        <OutputCell label="Symbolic (equals)" value=(state.chmod.symbolicEquals) />
+      </div>
     </Card>
     <Card title=(get("subheadings.exampleCommands"))>
-      <p>TODO</p>
+      <div class="flex flex-col gap-2">
+        <OutputCell label="chmod (octal)" value=(`chmod ${state.chmod.octal4} file.txt`) />
+        <OutputCell label="chmod (equals)" value=(`chmod ${state.chmod.symbolicEquals} file.txt`) />
+      </div>
     </Card>
     </div>
     <div class="col-span-1 md:col-span-2">

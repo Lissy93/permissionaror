@@ -1,0 +1,19 @@
+class {
+  copyToClipboard() {
+    navigator.clipboard.writeText(this.input.value);
+  }
+}
+
+
+<div class="bg-slate-900 rounded-md px-4 py-2 flex justify-between items-center border-1 border-gray-700/80">
+  <div>
+    <div class="text-sm text-gray-400">${input.label}</div>
+    <code class="font-mono text-lg text-white">${input.value}</code>
+  </div>
+  <button
+    class="ml-4 text-sm border border-gray-700 px-2 py-1 rounded hover:bg-slate-800"
+    on-click("copyToClipboard")
+  >
+    Copy
+  </button>
+</div>

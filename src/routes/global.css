@@ -3,6 +3,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* @import url('https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900&display=swap'); */
+
 :root {
   --primary: #05df72;
   --secondary: color-mix(in oklab, var(--primary) 30%, transparent);
@@ -24,4 +26,13 @@
   --color-text: #f1f5f9;   /* gray-200 */
   --color-accent: #86efac; /* green-300 for dark mode */
   --color-accent-hover: #4ade80; /* green-400 */
+}
+
+
+h1, h2, h3, h4, h5, h6, .mono {
+  font-family: 'Chivo Mono', monospace;
+}
+
+html[data-theme='light'] {
+  filter: invert(1) hue-rotate(180deg) brightness(1.1) saturate(1.5);
 }
