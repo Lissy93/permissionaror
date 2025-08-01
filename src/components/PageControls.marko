@@ -1,0 +1,68 @@
+class {
+  onCreate() {
+    this.state = {
+      language: "en",
+      theme: "dark",
+      languages: [
+        { code: "en", label: "English" },
+        { code: "es", label: "Español" },
+        { code: "fr", label: "Français" },
+        { code: "de", label: "Deutsch" }
+      ]
+    };
+  }
+
+  handleLanguageChange(event) {
+    this.state.language = event.target.value;
+    // TODO: Hook into i18n translation logic
+  }
+
+  toggleTheme() {
+    this.state.theme = this.state.theme === "dark" ? "light" : "dark";
+    // TODO: Hook into theme switching logic
+  }
+}
+
+<div id="page-controls" class="absolute right-3 w-fit flex flex-col items-center p-2 top-16 bg-gray-800 border-gray-700 border-1 pt-1 rounded-lg justify-around gap-3 shadow-lg transition-all duration-300 ease-in-out">
+  <!-- Language Dropdown -->
+  <div class="flex flex-col gap-2">
+    <label for="language" class="text-sm text-gray-400">Change Language</label>
+    <select
+      id="language"
+      value=state.language
+      on-change("handleLanguageChange")
+      class="bg-gray-800 border border-gray-600 text-white text-sm rounded-md px-3 py-2 focus:ring-2 focus:ring-green-500"
+    >
+      <for|lang| of=state.languages>
+        <option value=lang.code>${lang.label}</option>
+      </for>
+    </select>
+  </div>
+
+  <!-- Theme Switch -->
+  <div class="flex flex-col gap-2">
+    <label for="theme-toggle" class="text-sm text-gray-400">Switch Theme</label>
+    <div class="flex items-center gap-2">
+      <span class="text-sm text-gray-400">🌙</span>
+      <button
+        role="switch"
+        aria-checked=(state.theme === "light")
+        on-click("toggleTheme")
+        class={
+          "relative inline-flex h-6 w-11 items-center rounded-full transition-colors": true,
+          "bg-green-500": state.theme === "light",
+          "bg-gray-600": state.theme === "dark"
+        }
+      >
+        <span
+          class={
+            "inline-block h-4 w-4 transform rounded-full bg-white transition-transform": true,
+            "translate-x-6": state.theme === "light",
+            "translate-x-1": state.theme === "dark"
+          }
+        ></span>
+      </button>
+      <span class="text-sm text-gray-400">☀️</span>
+    </div>
+  </div>
+</div>
