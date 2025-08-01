@@ -11,6 +11,14 @@ import "./global.css";
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+  <script>
+  // Set the initial theme based on user's saved preferences
+  if (localStorage && document) {
+    const theme = localStorage.getItem("theme") || "dark";
+    document.documentElement.setAttribute("data-theme", theme);
+  }
+  </script>
 </head>
 <body class="min-h-screen bg-gray-900 text-gray-100">
   <Header />
@@ -21,19 +29,3 @@ import "./global.css";
 </body>
 </html>
 
-style {
-  /* html, body {
-    font-family: system-ui;
-    padding: 0;
-    margin: 0;
-    height: 100%;
-    color: #fff;
-    background: #15151e;
-  }
-  code {
-    color: #fc0;
-  }
-  a {
-    color: #09c;
-  } */
-}

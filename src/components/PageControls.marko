@@ -1,8 +1,10 @@
 class {
   onCreate() {
+    // Load theme from localStorage or default to dark
+    const savedTheme = localStorage.getItem("theme") || "dark";
     this.state = {
-      language: "en",
-      theme: "dark",
+      language: localStorage.getItem("lang") || "en",
+      theme: savedTheme,
       languages: [
         { code: "en", label: "English" },
         { code: "es", label: "Español" },
@@ -10,20 +12,43 @@ class {
         { code: "de", label: "Deutsch" }
       ]
     };
+    this.applyTheme(savedTheme);
   }
 
-  handleLanguageChange(event) {
-    this.state.language = event.target.value;
-    // TODO: Hook into i18n translation logic
+  onMount() {
+    this.applyTheme(this.state.theme);
+  }
+
+  applyTheme(theme) {
+    if (!document || !localStorage) return;
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
   }
 
   toggleTheme() {
-    this.state.theme = this.state.theme === "dark" ? "light" : "dark";
-    // TODO: Hook into theme switching logic
+    const newTheme = this.state.theme === "dark" ? "light" : "dark";
+    this.state.theme = newTheme;
+    this.applyTheme(newTheme);
   }
+
+  handleLanguageChange(event) {
+    const lang = event.target.value;
+    this.state.language = lang;
+    localStorage.setItem("lang", lang);
+    // TODO: Hook into i18n translation logic
+  }
+
 }
 
-<div id="page-controls" class="absolute right-3 w-fit flex flex-col items-center p-2 top-16 bg-gray-800 border-gray-700 border-1 pt-1 rounded-lg justify-around gap-3 shadow-lg transition-all duration-300 ease-in-out">
+<div
+  id="page-controls"
+  class=[
+    "absolute right-3 top-16 p-2 pt-1 w-fit",
+    "flex flex-col items-center justify-around gap-3",
+    "bg-gray-800 border-gray-700 border rounded-lg shadow-lg",
+    "transition-all duration-300 ease-in-out"
+  ]
+>
   <!-- Language Dropdown -->
   <div class="flex flex-col gap-2">
     <label for="language" class="text-sm text-gray-400">Change Language</label>
@@ -43,26 +68,24 @@ class {
   <div class="flex flex-col gap-2">
     <label for="theme-toggle" class="text-sm text-gray-400">Switch Theme</label>
     <div class="flex items-center gap-2">
-      <span class="text-sm text-gray-400">🌙</span>
+      <span class="text-sm text-gray-400"><Icon icon="dark" /></span>
       <button
         role="switch"
         aria-checked=(state.theme === "light")
         on-click("toggleTheme")
-        class={
-          "relative inline-flex h-6 w-11 items-center rounded-full transition-colors": true,
-          "bg-green-500": state.theme === "light",
-          "bg-gray-600": state.theme === "dark"
-        }
+        class=[
+          "relative inline-flex h-6 w-11 items-center rounded-full transition-colors",
+          { "bg-green-500": state.theme === "light", "bg-gray-600": state.theme === "dark" }
+        ]
       >
         <span
-          class={
-            "inline-block h-4 w-4 transform rounded-full bg-white transition-transform": true,
-            "translate-x-6": state.theme === "light",
-            "translate-x-1": state.theme === "dark"
-          }
+          class=[
+            "inline-block h-4 w-4 transform rounded-full bg-white transition-transform",
+            { "translate-x-6": state.theme === "light", "translate-x-1": state.theme === "dark" }
+          ]
         ></span>
       </button>
-      <span class="text-sm text-gray-400">☀️</span>
+      <span class="text-sm text-gray-400"><Icon icon="light" /></span>
     </div>
   </div>
 </div>
