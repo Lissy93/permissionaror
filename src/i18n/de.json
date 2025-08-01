@@ -1,0 +1,95 @@
+{
+  "title": "Permissionator",
+  "titleLong": "Permissionator | CHMOD-Rechner",
+  "subtitle": "Linux CHMOD-Rechner zum Erzeugen, Umwandeln und Überprüfen von Dateiberechtigungen",
+  "subheadings": {
+    "permissions": "Berechtigungen",
+    "output": "Ausgabe",
+    "exampleCommands": "Beispielbefehle",
+    "aboutChmod": "Was ist chmod?",
+    "commonPresets": "Häufige Voreinstellungen",
+    "specialBits": "Spezialbits",
+    "customOctal": "Benutzerdefinierte Oktalzahl",
+    "outputFile": "Ausgabeoptionen",
+    "explanation": "Was das bedeutet",
+    "octalBreakdown": "Wie dies berechnet wurde"
+  },
+  "nav": {
+    "viewOnGitHub": "Auf GitHub ansehen",
+    "learnChmod": "Mehr über chmod erfahren",
+    "subtitle": "Linux CHMOD-Rechner zum Erzeugen, Umwandeln und Überprüfen von Dateiberechtigungen"
+  },
+  "what": {
+    "aboutChmod": "Der Befehl chmod ändert die Dateimodus-Bits auf Unix- und Linux-Systemen. Dateiberechtigungen steuern, wer eine Datei lesen, schreiben oder ausführen darf. Sie werden in Oktalzahlen (wie 755) oder in symbolischer Form (wie u=rwx,g=rx,o=rx) angegeben. Die erste Ziffer in einer vierstelligen Zahl gibt Spezialbits an: setuid (4), setgid (2) und sticky (1).",
+    "commonPresets": [
+      {
+        "number": "600",
+        "description": "Besitzer darf lesen/schreiben; private Dateien wie SSH-Schlüssel"
+      },
+      {
+        "number": "644",
+        "description": "Besitzer darf lesen/schreiben; alle anderen nur lesen; typische Textdateien"
+      },
+      {
+        "number": "700",
+        "description": "Besitzer hat volle Kontrolle; private Skripte oder Verzeichnisse"
+      },
+      {
+        "number": "755",
+        "description": "Besitzer rwx, andere rx; üblich für Verzeichnisse und ausführbare Dateien"
+      },
+      {
+        "number": "775",
+        "description": "Verzeichnisse für Gruppenarbeit"
+      }
+    ],
+    "cards": [
+      {
+        "heading": "Oktal-Grundlagen",
+        "description": "Jede Rolle erhält eine Ziffer: lesen=4, schreiben=2, ausführen=1. Addiere, um die Ziffer zu erhalten: z. B. rwx = 7, rw- = 6, r-x = 5, r-- = 4. Häufige Modi: 644 für Dateien, 755 für Verzeichnisse."
+      },
+      {
+        "heading": "Symbolische Form",
+        "description": "Verwende Buchstaben für Benutzer (u), Gruppe (g), andere (o) mit +, - oder =. Zum Beispiel: chmod u=rw,g=r,o= file.txt setzt Lesen/Schreiben für den Besitzer, Lesen für die Gruppe und keinen Zugriff für andere."
+      },
+      {
+        "heading": "Spezialbits",
+        "description": "setuid führt Programme mit den Rechten des Besitzers aus; setgid führt mit den Rechten der Gruppe aus; sticky verhindert, dass Benutzer in gemeinsamen Verzeichnissen (z. B. /tmp) Dateien anderer löschen."
+      }
+    ]
+  },
+  "explain": {
+    "roles": {
+      "owner": "Der Dateibesitzer",
+      "group": "Benutzer in der Gruppe",
+      "public": "Alle anderen"
+    },
+    "permissions": {
+      "r": "lesen",
+      "w": "schreiben",
+      "x": "ausführen"
+    },
+    "explanation": {
+      "can": "kann",
+      "cannot": "kann nicht",
+      "and": "und",
+      "butNot": "aber nicht",
+      "butNoOneElse": "aber sonst hat niemand Zugriff",
+      "cannotDoAnything": "kann weder lesen, schreiben noch ausführen",
+      "noAccessForOthers": "niemand sonst hat Zugriff"
+    },
+    "everyone": "Alle"
+  },
+  "customExplanations": {
+    "777": "Voller Lese-/Schreib-/Ausführungszugriff für alle — gut für Tests oder temporäre öffentliche Verzeichnisse, aber sehr unsicher für den Produktiveinsatz, da jeder Dateien ändern oder löschen kann.",
+    "755": "Üblich für Verzeichnisse und ausführbare Dateien — der Besitzer kann ändern, andere können lesen und ausführen. Sicher für öffentliche Skripte oder Webserver-Verzeichnisse.",
+    "750": "Besitzer hat volle Kontrolle, Gruppe kann lesen und ausführen, andere haben keinen Zugriff — gut für teaminterne Skripte, um Außenseiter zu blockieren.",
+    "700": "Nur der Besitzer kann lesen, schreiben und ausführen — ideal für private Skripte oder Konfigurationsverzeichnisse wie ~/.ssh.",
+    "644": "Besitzer kann lesen/schreiben, andere nur lesen — Standard für Textdateien, Konfigurationen und Webinhalte, bei denen nur der Besitzer Änderungen vornimmt.",
+    "640": "Besitzer kann lesen/schreiben, Gruppe nur lesen, andere keinen Zugriff — gut für interne Dokumente ohne öffentlichen Zugriff.",
+    "600": "Nur der Besitzer kann lesen und schreiben — typisch für sensible Dateien wie private SSH-Schlüssel, um Gruppen- und öffentlichen Zugriff zu verhindern.",
+    "444": "Nur-Lesen für alle — nützlich für unveränderliche öffentliche Dokumente; erfordert chmod zum erneuten Bearbeiten.",
+    "400": "Nur-Besitzer darf lesen, niemand sonst hat Zugriff — verwendet für sensible statische Dateien wie kryptografische Schlüssel.",
+    "000": "Keine Berechtigungen für irgendjemanden — sperrt jeglichen Zugriff, bis Berechtigungen wiederhergestellt werden; nützlich zum temporären Deaktivieren des Zugriffs."
+  }
+}

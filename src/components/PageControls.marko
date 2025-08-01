@@ -1,16 +1,13 @@
+import { languages, setLanguage, getLanguage } from "../i18n";
+
 class {
   onCreate() {
     // Load theme from localStorage or default to dark
     const savedTheme = localStorage.getItem("theme") || "dark";
     this.state = {
-      language: localStorage.getItem("lang") || "en",
+      language: getLanguage(),
       theme: savedTheme,
-      languages: [
-        { code: "en", label: "English" },
-        { code: "es", label: "Español" },
-        { code: "fr", label: "Français" },
-        { code: "de", label: "Deutsch" }
-      ]
+      languages,
     };
     this.applyTheme(savedTheme);
   }
@@ -34,10 +31,9 @@ class {
   handleLanguageChange(event) {
     const lang = event.target.value;
     this.state.language = lang;
-    localStorage.setItem("lang", lang);
-    // TODO: Hook into i18n translation logic
+    setLanguage(lang);
+    window.dispatchEvent(new CustomEvent("language-changed", { detail: { language: lang } }));
   }
-
 }
 
 <div
@@ -59,7 +55,7 @@ class {
       class="bg-gray-800 border border-gray-600 text-white text-sm rounded-md px-3 py-2 focus:ring-2 focus:ring-green-500"
     >
       <for|lang| of=state.languages>
-        <option value=lang.code>${lang.label}</option>
+        <option value=lang.code selected=(lang.code === state.language)>${lang.flag} ${lang.label}</option>
       </for>
     </select>
   </div>
