@@ -1,5 +1,5 @@
 // Import types for permissions and special bits
-import type { PermState, SpecialBits, OutputOptions } from "./permissions.ts";
+import type { PermState, SpecialBits, OutputOptions } from "./permission.types";
 
 /**
  * Generates chmod outputs based on the current permission state and special bits.

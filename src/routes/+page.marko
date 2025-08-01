@@ -135,11 +135,11 @@ class {
   handlePresetToggle(event) {
     const { preset, checked } = event;
     if (checked) {
-      // Apply the preset to the permission state
-      this.state.permState = setFromPreset(this.state.permState, preset);
+      const newState = setFromPreset(this.state.permState, preset);
+      this.store.set(newState); // keep in sync
+      this.state.permState = newState;
       this.state.activePreset = preset;
     } else {
-      // If user deselects preset manually, just clear activePreset
       this.state.activePreset = null;
     }
   }
@@ -156,6 +156,8 @@ class {
     if (isValid) {
       const parsed = fromOctal(this.state.customOctal);
       if (parsed) {
+        // Keep store in sync so toggles don't revert
+        this.store.set(parsed.permState ?? parsed);
         // Apply normal permission bits
         this.state.permState = parsed.permState ?? parsed;
         // If special bits were included in the octal, update those too
@@ -166,7 +168,9 @@ class {
     }
   }
 
-
+  /**
+   * Validates and applies the user's custom octal input, from the input field
+   */
   applyCustomOctal() {
     const state = fromOctal(this.state.customOctal);
     if (state) {
@@ -174,6 +178,10 @@ class {
     }
   }
 
+  /**
+   * Updates the filename in the example commands output.
+   * Also auto-applies the recursive option, if the filename is a directory
+   */
   handleFilenameInput(event) {
     const value = event.target.value;
     this.state.filename = value;
@@ -187,6 +195,10 @@ class {
     this.updateOutputs();
   }
 
+  /**
+   * Handles toggling of output flags (recursive, verbose, changes, silent)
+   * @param {Object} event - The event containing the option and checked state
+   */
   handleOutputOptionToggle(event) {
     const { option, checked } = event;
     this.state.outputOptions = {

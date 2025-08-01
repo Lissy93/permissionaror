@@ -1,19 +1,37 @@
 class {
-  copyToClipboard() {
-    navigator.clipboard.writeText(this.input.value);
+  onCreate() {
+    this.state = {
+      copied: false
+    };
+  }
+
+  async copyToClipboard() {
+    try {
+      await navigator.clipboard.writeText(this.input.value);
+      this.state.copied = true;
+
+      // Revert back to "Copy" after 2 seconds
+      setTimeout(() => {
+        this.state.copied = false;
+      }, 2000);
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
   }
 }
 
-
-<div class="bg-slate-900/60 rounded-md px-4 py-2 flex justify-between items-center border-1 border-gray-700/80">
+<div class="bg-slate-900/60 rounded-md px-4 py-2 flex justify-between items-center border border-gray-700/80">
   <div>
     <div class="text-sm text-gray-400">${input.label}</div>
-    <code class="font-mono text-lg text-white">${input.value}</code>
+    <code class="font-mono text-lg text-white break-all">${input.value}</code>
   </div>
   <button
-    class="ml-4 text-sm border border-gray-700 px-2 py-1 rounded hover:bg-slate-800"
+    class=(
+      "ml-4 text-sm border border-gray-700 px-2 py-1 rounded transition-all duration-300 " +
+      (state.copied ? "bg-green-400/60 text-white" : "hover:bg-slate-800 text-gray-300")
+    )
     on-click("copyToClipboard")
   >
-    Copy
+    ${state.copied ? "Copied!" : "Copy"}
   </button>
 </div>

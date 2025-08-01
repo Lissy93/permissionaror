@@ -1,20 +1,4 @@
-export type Role = "owner" | "group" | "public";
-export type Perm = "r" | "w" | "x";
-
-export type PermState = Record<Role, Record<Perm, boolean>>;
-
-export type SpecialBits = {
-  suid: boolean; // setuid
-  sgid: boolean; // setgid
-  sticky: boolean; // sticky bit
-};
-
-export type OutputOptions = {
-  recursive: boolean; // -R
-  verbose: boolean; // -v
-  changes: boolean; // -c
-  silent: boolean; // -f
-};
+import { Role, Perm, PermState, SpecialBits, OutputOptions } from "./permission.types";
 
 export const defaultPermState: PermState = {
   owner: { r: true, w: false, x: false },
@@ -97,6 +81,11 @@ export function createPermissionStore(initial: PermState = defaultPermState) {
     return structuredClone(state);
   }
 
+  function set(newState: PermState) {
+    state = structuredClone(newState);
+    return get();
+  }
+
   function reset() {
     state = structuredClone(defaultPermState);
     return get();
@@ -133,6 +122,7 @@ export function createPermissionStore(initial: PermState = defaultPermState) {
 
   return {
     get,
+    set,
     reset,
     denyAll,
     toggle,
