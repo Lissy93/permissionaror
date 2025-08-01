@@ -27,7 +27,14 @@ class {
       chmod: generateChmodOutputs(initialState),
       specialBits: defaultSpecialBits,
       activePreset: null,
-      customOctal: ""
+      customOctal: "",
+      outputOptions: {
+        recursive: false,
+        verbose: false,
+        changes: false,
+        silent: false
+      },
+      filename: ""
     };
 
     // Previous state, used to detect changes
@@ -55,7 +62,12 @@ class {
    * This is called whenever something changes
    * */
   updateOutputs() {
-    this.state.chmod = generateChmodOutputs(this.state.permState, this.state.specialBits);
+    this.state.chmod = generateChmodOutputs(
+      this.state.permState,
+      this.state.specialBits,
+      this.state.outputOptions,
+      this.state.filename,
+    );
     
     this.state.customOctal =
       this.state.chmod.octal4 && !this.state.chmod.octal4.startsWith("0")
@@ -146,14 +158,10 @@ class {
       if (parsed) {
         // Apply normal permission bits
         this.state.permState = parsed.permState ?? parsed;
-
         // If special bits were included in the octal, update those too
         if (parsed.specialBits) {
           this.state.specialBits = parsed.specialBits;
         }
-
-        // Keep outputs in sync
-        this.updateOutputs();
       }
     }
   }
@@ -165,6 +173,29 @@ class {
       this.state.permState = state;
     }
   }
+
+  handleFilenameInput(event) {
+    const value = event.target.value;
+    this.state.filename = value;
+
+    // Auto-toggle recursive based on filename pattern
+    if (value.endsWith("/")) {
+      this.state.outputOptions.recursive = true;
+    } else if (/\.[a-z0-9]+$/i.test(value)) {
+      this.state.outputOptions.recursive = false;
+    }
+    this.updateOutputs();
+  }
+
+  handleOutputOptionToggle(event) {
+    const { option, checked } = event;
+    this.state.outputOptions = {
+      ...this.state.outputOptions,
+      [option]: checked
+    };
+    this.updateOutputs();
+  }
+
 }
 
 $ const permNames = {
@@ -310,12 +341,50 @@ $ const roles = ['owner', 'group', 'public'];
     </Card>
     <Card title=(get("subheadings.exampleCommands"))>
       <div class="flex flex-col gap-2">
-        <OutputCell label="chmod (octal)" value=(`chmod ${state.chmod.octal4} file.txt`) />
-        <OutputCell label="chmod (equals)" value=(`chmod ${state.chmod.symbolicEquals} file.txt`) />
+        <OutputCell label="chmod (octal)" value=(`chmod ${state.chmod.flags} ${state.chmod.octal4} ${state.chmod.target}`) />
+        <OutputCell label="chmod (equals)" value=(`chmod ${state.chmod.flags} ${state.chmod.symbolicEquals} ${state.chmod.target}`) />
       </div>
 
       <Card title=(get("subheadings.outputFile")) inner=(true) key="" class="w-full md:flex-1 mt-4">
-        TODO
+        <input
+          class="input bg-gray-800 text-white rounded-md px-3 py-2 border-0 outline-1 outline-gray-600 mb-4 w-full"
+          placeholder="File or directory"
+          value=state.filename
+          on-input("handleFilenameInput")
+        />
+        <div class="flex flex-wrap gap-3">
+          <Toggle
+            label="Recursive (-R)"
+            checked=state.outputOptions.recursive
+            on-toggle("handleOutputOptionToggle")
+            option="recursive"
+            class="!w-fit"
+          />
+
+          <Toggle
+            label="Verbose (-v)"
+            checked=state.outputOptions.verbose
+            on-toggle("handleOutputOptionToggle")
+            option="verbose"
+            class="!w-fit"
+          />
+
+          <Toggle
+            label="Changes only (-c)"
+            checked=state.outputOptions.changes
+            on-toggle("handleOutputOptionToggle")
+            option="changes"
+            class="!w-fit"
+          />
+
+          <Toggle
+            label="Silent (-f)"
+            checked=state.outputOptions.silent
+            on-toggle("handleOutputOptionToggle")
+            option="silent"
+            class="!w-fit"
+          />
+        </div>
       </Card>
 
     </Card>

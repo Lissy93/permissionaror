@@ -1,5 +1,5 @@
 // Import types for permissions and special bits
-import type { PermState, SpecialBits } from "./permissions.ts";
+import type { PermState, SpecialBits, OutputOptions } from "./permissions.ts";
 
 /**
  * Generates chmod outputs based on the current permission state and special bits.
@@ -7,7 +7,12 @@ import type { PermState, SpecialBits } from "./permissions.ts";
  * @param specialBits - The special bits (suid, sgid, sticky).
  * @returns An object containing the octal and symbolic representations.
  */
-export function generateChmodOutputs(state: PermState, specialBits: SpecialBits = {}) {
+export function generateChmodOutputs(
+  state: PermState,
+  specialBits: SpecialBits = {},
+  outputOptions: OutputOptions = {},
+  filename: string = "",
+) {
   const roles = ["owner", "group", "public"] as const;
   const perms = ["r", "w", "x"] as const;
   const bitValues = { r: 4, w: 2, x: 1 };
@@ -69,10 +74,22 @@ export function generateChmodOutputs(state: PermState, specialBits: SpecialBits 
     return `${"ugo"[i]}=${finalPerms}`;
   }).join(",");
 
+  const selectedFlats = [];
+  if (outputOptions.recursive) selectedFlats.push("R");
+  if (outputOptions.verbose) selectedFlats.push("v");
+  if (outputOptions.changes) selectedFlats.push("c");
+  if (outputOptions.silent) selectedFlats.push("f");
+
+  const flags = selectedFlats.length ? '-' + selectedFlats.join("") : "";
+
+  const target = filename || "file.txt";
+
   return {
     octal3,
     octal4,
     symbolic,
-    symbolicEquals
+    symbolicEquals,
+    flags,
+    target,
   };
 }

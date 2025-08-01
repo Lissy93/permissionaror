@@ -9,6 +9,13 @@ export type SpecialBits = {
   sticky: boolean; // sticky bit
 };
 
+export type OutputOptions = {
+  recursive: boolean; // -R
+  verbose: boolean; // -v
+  changes: boolean; // -c
+  silent: boolean; // -f
+};
+
 export const defaultPermState: PermState = {
   owner: { r: true, w: false, x: false },
   group: { r: true, w: false, x: false },
