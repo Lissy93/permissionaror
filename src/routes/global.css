@@ -19,3 +19,10 @@ html[data-theme='light'] {
 code, h1, h2, h3, h4, h5, h6, .mono {
   font-family: 'Chivo Mono', monospace;
 }
+
+input:invalid {
+  outline: 1px solid var(--color-red-400, #ff6d6d);
+}
+input:valid:focus {
+  outline: 1px solid var(--color-green-400, #4ade80);
+}

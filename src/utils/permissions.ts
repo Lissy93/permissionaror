@@ -133,3 +133,56 @@ export function createPermissionStore(initial: PermState = defaultPermState) {
     toggleCol,
   };
 }
+
+export const presets: Record<string, PermState> = {
+  "600": { owner: { r: true, w: true, x: false }, group: { r: false, w: false, x: false }, public: { r: false, w: false, x: false } },
+  "644": { owner: { r: true, w: true, x: false }, group: { r: true, w: false, x: false }, public: { r: true, w: false, x: false } },
+  "700": { owner: { r: true, w: true, x: true }, group: { r: false, w: false, x: false }, public: { r: false, w: false, x: false } },
+  "744": { owner: { r: true, w: true, x: true }, group: { r: true, w: false, x: false }, public: { r: true, w: false, x: false } },
+  "755": { owner: { r: true, w: true, x: true }, group: { r: true, w: false, x: true }, public: { r: true, w: false, x: true } },
+  "775": { owner: { r: true, w: true, x: true }, group: { r: true, w: true, x: true }, public: { r: true, w: false, x: true } },
+  "777": { owner: { r: true, w: true, x: true }, group: { r: true, w: true, x: true }, public: { r: true, w: true, x: true } },
+  "000": { owner: { r: false, w: false, x: false }, group: { r: false, w: false, x: false }, public: { r: false, w: false, x: false } },
+};
+
+export function setFromPreset(state: PermState, preset: string): PermState {
+  return presets[preset] ? structuredClone(presets[preset]) : state;
+}
+
+export function matchPreset(state: PermState): string | null {
+  for (const [key, value] of Object.entries(presets)) {
+    if (JSON.stringify(state) === JSON.stringify(value)) {
+      return key;
+    }
+  }
+  return null;
+}
+
+export function fromOctal(octal: string): PermState | null {
+  const match = octal.trim().match(/^[0-7]{3,4}$/);
+  if (!match) return null;
+
+  let oct = octal.length === 4 ? octal.slice(1) : octal; // strip special bits if present
+  const roles: Role[] = ["owner", "group", "public"];
+  const perms: Perm[] = ["r", "w", "x"];
+
+  const newState: PermState = {
+    owner: { r: false, w: false, x: false },
+    group: { r: false, w: false, x: false },
+    public: { r: false, w: false, x: false },
+  };
+
+  roles.forEach((role, i) => {
+    const digit = parseInt(oct[i], 10);
+    perms.forEach((p, bitIndex) => {
+      const bitValue = [4, 2, 1][bitIndex];
+      newState[role][p] = (digit & bitValue) !== 0;
+    });
+  });
+
+  return newState;
+}
+
+export function validateOctal(octal: string): boolean {
+  return /^[0-7]{3,4}$/.test(octal.trim());
+}

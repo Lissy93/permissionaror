@@ -5,6 +5,11 @@ import {
   isColSelected,
   defaultSpecialBits,
   setSpecialBit,
+  presets,
+  setFromPreset,
+  matchPreset,
+  fromOctal,
+  validateOctal,
 } from "../utils/permissions.ts";
 
 import { generateChmodOutputs } from "../utils/generateOutputs.ts";
@@ -21,6 +26,8 @@ class {
       permState: this.store.get(),
       chmod: generateChmodOutputs(initialState),
       specialBits: defaultSpecialBits,
+      activePreset: null,
+      customOctal: ""
     };
 
     // Previous state, used to detect changes
@@ -39,6 +46,7 @@ class {
       // Then store previous state, so we can detect changes next time
       this._prevPermState = structuredClone(this.state.permState);
       this._prevSpecialBits = structuredClone(this.state.specialBits);
+      this.state.activePreset = matchPreset(this.state.permState);
     }
   }
 
@@ -48,6 +56,11 @@ class {
    * */
   updateOutputs() {
     this.state.chmod = generateChmodOutputs(this.state.permState, this.state.specialBits);
+    
+    this.state.customOctal =
+      this.state.chmod.octal4 && !this.state.chmod.octal4.startsWith("0")
+      ? this.state.chmod.octal4
+      : this.state.chmod.octal3 || "";
   }
 
   /**
@@ -55,6 +68,7 @@ class {
    */
   resetPermissions() {
     this.state.permState = this.store.reset();
+    this.state.specialBits = { ...defaultSpecialBits };
   }
 
   /**
@@ -100,6 +114,56 @@ class {
   handleSpecialBitToggle(event) {
     const { bit, checked } = event;
     this.state.specialBits = setSpecialBit(this.state.specialBits, bit, checked);
+  }
+
+  /**@abstract
+   * Handles enabling of a preset permission set
+   * @param {Object} event - The event containing the preset and checked state
+   */
+  handlePresetToggle(event) {
+    const { preset, checked } = event;
+    if (checked) {
+      // Apply the preset to the permission state
+      this.state.permState = setFromPreset(this.state.permState, preset);
+      this.state.activePreset = preset;
+    } else {
+      // If user deselects preset manually, just clear activePreset
+      this.state.activePreset = null;
+    }
+  }
+
+  /**
+   * Handles input in the custom octal field. Called whenever input updated
+   * Validates the input and updates the permission state accordingly
+   * @param {Object} event - The input event containing the value
+   */
+  handleCustomOctalInput(event) {
+    this.state.customOctal = event.target.value;
+
+    const isValid = validateOctal(this.state.customOctal);
+    if (isValid) {
+      const parsed = fromOctal(this.state.customOctal);
+      if (parsed) {
+        // Apply normal permission bits
+        this.state.permState = parsed.permState ?? parsed;
+
+        // If special bits were included in the octal, update those too
+        if (parsed.specialBits) {
+          this.state.specialBits = parsed.specialBits;
+        }
+
+        // Keep outputs in sync
+        this.updateOutputs();
+      }
+    }
+  }
+
+
+  applyCustomOctal() {
+    const state = fromOctal(this.state.customOctal);
+    if (state) {
+      this.state.permState = state;
+    }
   }
 }
 
@@ -172,9 +236,6 @@ $ const roles = ['owner', 'group', 'public'];
       </table>
 
       <div class="flex flex-col gap-4 mt-4">
-        <Card title=(get("subheadings.commonPresets")) inner=(true) key="" class="w-full md:flex-1">
-          TODO
-        </Card>
       
         <Card title=(get("subheadings.specialBits")) inner=(true) key="" class="w-full md:flex-1">
            <div class="flex gap-2">
@@ -203,8 +264,37 @@ $ const roles = ['owner', 'group', 'public'];
           </p>
         </Card>
       
-        <Card title=(get("subheadings.outputFile")) inner=(true) key="" class="w-full md:flex-1">
-          TODO
+        <Card title=(get("subheadings.customOctal")) inner=(true) key="" class="w-full md:flex-1">
+          <div class="mt-3 flex gap-2">
+            <input
+              type="text"
+              id="custom-octal-input"
+              name="custom-octal"
+              class="input flex-1 bg-gray-800 text-white rounded-md px-3 py-2 border-0 outline-1 outline-gray-600"
+              placeholder="Enter octal (e.g., 755 or 4755)"
+              value=state.customOctal
+              on-input("handleCustomOctalInput")
+              pattern="^[0-7]{3,4}$"
+              aria-invalid=(state.customOctal && !/^[0-7]{3,4}$/.test(state.customOctal))
+            />
+            
+          </div>
+          <if(state.customOctal && !/^[0-7]{3,4}$/.test(state.customOctal))>
+            <span class="text-red-400/80 text-xs mt-1">Invalid octal: must be 3 or 4 digits (0-7). E.g. 777</span>
+          </if>
+           
+           <h4 class="text-white-300 text-lg mb-2 mt-4">${get('subheadings.commonPresets')}</h4>
+           <div class="flex flex-wrap gap-2">
+            <for|preset| of=Object.keys(presets)>
+              <Toggle
+                class="!w-12"
+                label=preset
+                checked=(state.activePreset === preset)
+                preset=(preset)
+                on-toggle('handlePresetToggle')
+              />
+            </for>
+          </div>
         </Card>
       </div>
 
@@ -223,6 +313,11 @@ $ const roles = ['owner', 'group', 'public'];
         <OutputCell label="chmod (octal)" value=(`chmod ${state.chmod.octal4} file.txt`) />
         <OutputCell label="chmod (equals)" value=(`chmod ${state.chmod.symbolicEquals} file.txt`) />
       </div>
+
+      <Card title=(get("subheadings.outputFile")) inner=(true) key="" class="w-full md:flex-1 mt-4">
+        TODO
+      </Card>
+
     </Card>
     </div>
     <div class="col-span-1 md:col-span-2">
