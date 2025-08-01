@@ -183,3 +183,72 @@ export function fromOctal(octal: string): PermState | null {
 export function validateOctal(octal: string): boolean {
   return /^[0-7]{3,4}$/.test(octal.trim());
 }
+
+
+export function generatePermissionExplanation(
+  state: PermState,
+  t: (key: string) => string
+) {
+  const roles: Role[] = ["owner", "group", "public"];
+  const perms: Perm[] = ["r", "w", "x"];
+  const bitValues = { r: 4, w: 2, x: 1 };
+
+  const getOctalDigit = (role: Role) =>
+    perms.reduce((acc, p) => acc + (state[role][p] ? bitValues[p] : 0), 0);
+
+  const joinPerms = (pList: Perm[]) =>
+    pList.length
+      ? pList.map(p => t(`explain.permissions.${p}`)).join(` ${t("explain.explanation.and")} `)
+      : t("explain.permissions.none");
+
+  const octal3 = roles.map(getOctalDigit).join("");
+  const customKey = `customExplanations.${octal3}`;
+  const custom = t(customKey);
+
+  if (custom && custom !== customKey && custom.length) return [custom];
+
+  const permsForRole = (role: Role) => ({
+    allowed: perms.filter(p => state[role][p]),
+    denied: perms.filter(p => !state[role][p])
+  });
+
+  // --- Special case: only one role has permissions ---
+  const roleAccessCount = roles.map(r => perms.some(p => state[r][p]));
+  if (roleAccessCount.filter(Boolean).length === 1) {
+    const r = roles[roleAccessCount.indexOf(true)];
+    const { allowed, denied } = permsForRole(r);
+    return [
+      `${t(`explain.roles.${r}`)} ${t("explain.explanation.can")} ${joinPerms(allowed)}, ` +
+      `${t("explain.explanation.butNot")} ${joinPerms(denied)}; ${t("explain.explanation.noAccessForOthers")}.`
+    ];
+  }
+
+  // --- Special case: all roles have the same permissions ---
+  if (roles.every(r => JSON.stringify(state[r]) === JSON.stringify(state[roles[0]]))) {
+    const { allowed, denied } = permsForRole(roles[0]);
+    return [
+      `${t("explain.everyone")} ${allowed.length
+        ? `${t("explain.explanation.can")} ${joinPerms(allowed)}, ${t("explain.explanation.butNot")} ${joinPerms(denied)}`
+        : t("explain.explanation.cannotDoAnything")}.`
+    ];
+  }
+
+  // --- Default: per-role explanation ---
+  return roles.map(role => {
+    const { allowed, denied } = permsForRole(role);
+
+    let sentence = `${t(`explain.roles.${role}`)} ` +
+      (allowed.length
+        ? `${t("explain.explanation.can")} ${joinPerms(allowed)}`
+        : `${t("explain.explanation.cannot")} ${joinPerms(perms)}`);
+
+    if (allowed.length && denied.length) {
+      sentence += `, ${t("explain.explanation.butNot")} ${joinPerms(denied)}`;
+    }
+
+    return sentence + ".";
+  });
+}
+
+
+

@@ -10,7 +10,8 @@
     "commonPresets": "Common Presets",
     "specialBits": "Special Bits",
     "customOctal": "Custom Octal",
-    "outputFile": "Output Options"
+    "outputFile": "Output Options",
+    "explanation": "What this means"
   },
   "what": {
     "aboutChmod": "The chmod command changes file mode bits on Unix and Linux systems. File permissions control who can read, write, or execute a file. They are expressed in octal digits (like 755) or symbolic form (like u=rwx,g=rx,o=rx). The first digit in a four-digit mode denotes special bits: setuid (4), setgid (2), and sticky (1).",
@@ -50,5 +51,39 @@
         "description": "setuid runs executables with the owner's privileges; setgid runs with the group's privileges; sticky prevents users from deleting others' files in shared directories (e.g., /tmp)."
       }
     ]
+  },
+  "explain": {
+    "roles": {
+      "owner": "The file owner",
+      "group": "Users in the group",
+      "public": "Everyone"
+    },
+    "permissions": {
+      "r": "read",
+      "w": "write",
+      "x": "execute"
+    },
+    "explanation": {
+      "can": "can",
+      "cannot": "cannot",
+      "and": "and",
+      "butNot": "but not",
+      "butNoOneElse": "but no one else has access",
+      "cannotDoAnything": "cannot read, write, or execute",
+      "noAccessForOthers": "no one else has access"
+    },
+    "everyone": "Everyone"
+  },
+  "customExplanations": {
+    "777": "Full read/write/execute access for everyone — great for testing or temporary public scratch directories, but very insecure for production because anyone can modify or delete files.",
+    "755": "Common for directories and executables — the owner can modify, others can read and execute. Safe for public scripts or web server directories.",
+    "750": "Owner has full control, group can read and execute, others have no access — good for team-shared scripts while blocking outsiders.",
+    "700": "Only the owner can read, write, and execute — ideal for private scripts or configuration directories such as ~/.ssh.",
+    "644": "Owner can read/write, others read-only — standard for text files, configs, and web content where only the owner edits.",
+    "640": "Owner can read/write, group read-only, others no access — good for internal documents with no public access.",
+    "600": "Only the owner can read and write — typical for sensitive files like SSH private keys, ensuring group and public have no access.",
+    "444": "Read-only for everyone — useful for immutable public documents; requires chmod to modify again.",
+    "400": "Owner read-only, no one else can access — used for sensitive static files like cryptographic keys.",
+    "000": "No permissions for anyone — locks all access until permissions are restored; useful for temporarily disabling access."
   }
 }
