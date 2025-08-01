@@ -1,0 +1,80 @@
+import { get } from "../i18n";
+
+class {
+  onCreate() {
+    this.state = {
+      breakdown: "",
+      octal: [],
+      roles: ["Owner", "Group", "Public"],
+      perms: [
+        { key: "r", label: "read", value: 4 },
+        { key: "w", label: "write", value: 2 },
+        { key: "x", label: "execute", value: 1 }
+      ],
+      displayLine: (num) => this.getDisplayLine(num)
+    };
+  }
+
+  onInput(input) {
+    this.state.octal = String(input.octal || "").padStart(3, "0");
+    this.state.roles = ["Owner", "Group", "Public"];
+    this.state.perms = [
+      { key: "r", label: "read", value: 4 },
+      { key: "w", label: "write", value: 2 },
+      { key: "x", label: "execute", value: 1 }
+    ];
+
+    this.state.breakdown = this.state.octal.split("").map((digit, i) => {
+      const num = parseInt(digit, 10);
+      const allowed = this.state.perms.filter(p => (num & p.value) !== 0);
+      const denied = this.state.perms.filter(p => (num & p.value) === 0);
+      return {
+        role: this.state.roles[i],
+        digit: num,
+        allowed,
+        denied
+      };
+    });
+  }
+  
+  getDisplayLine(num) {
+    return this.state.perms
+      .map(p => `${(num & p.value) ? p.value : 0} (${p.label})`)
+      .join(" + ");
+  }
+}
+
+<Card title=(get("subheadings.octalBreakdown"))>
+  <div class="flex justify-around mb-4">
+    <for|b, i| of=state.breakdown>
+      <div class="text-center">
+        <div class="text-gray-500 font-semibold">
+          ${b.role}
+        </div>
+        <div class="text-4xl font-bold">${state.octal[i]}</div>
+        <div class="text-gray-300">
+          <for|p| of=state.perms>${b.allowed.includes(p) ? p.key : "-"}</for>
+        </div>
+      </div>
+    </for>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <for|b| of=state.breakdown>
+      <div class="bg-slate-900/60 rounded-md p-3 border border-gray-700 flex flex-col items-center">
+        <div class="font-semibold mb-1">${b.role}</div>
+        <div class="flex items-center gap-2 mb-1 text-2xl">
+          <for|p| of=state.perms>
+            <span class=("font-mono " + (b.allowed.includes(p) ? "text-green-400" : "text-gray-500 line-through"))>
+              ${p.key.toUpperCase()}
+            </span>
+          </for>
+        </div>
+        <div class="text-sm text-gray-400">
+          ${state.displayLine(b.digit)} = ${b.digit}
+        </div>
+      </div>
+    </for>
+  </div>
+
+</Card>

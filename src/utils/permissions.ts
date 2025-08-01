@@ -1,9 +1,9 @@
 import { Role, Perm, PermState, SpecialBits, OutputOptions } from "./permission.types";
 
 export const defaultPermState: PermState = {
-  owner: { r: true, w: false, x: false },
+  owner: { r: true, w: true, x: false },
   group: { r: true, w: false, x: false },
-  public: { r: false, w: false, x: false },
+  public: { r: true, w: false, x: false },
 };
 
 export const defaultSpecialBits: SpecialBits = {

@@ -11,7 +11,8 @@
     "specialBits": "Special Bits",
     "customOctal": "Custom Octal",
     "outputFile": "Output Options",
-    "explanation": "What this means"
+    "explanation": "What this means",
+    "octalBreakdown": "How this was calculated"
   },
   "what": {
     "aboutChmod": "The chmod command changes file mode bits on Unix and Linux systems. File permissions control who can read, write, or execute a file. They are expressed in octal digits (like 755) or symbolic form (like u=rwx,g=rx,o=rx). The first digit in a four-digit mode denotes special bits: setuid (4), setgid (2), and sticky (1).",

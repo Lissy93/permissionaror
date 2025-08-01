@@ -27,7 +27,7 @@ class {
       permState: this.store.get(),
       chmod: generateChmodOutputs(initialState),
       specialBits: defaultSpecialBits,
-      activePreset: null,
+      activePreset: matchPreset(initialState),
       customOctal: "",
       outputOptions: {
         recursive: false,
@@ -137,7 +137,7 @@ class {
     const { preset, checked } = event;
     if (checked) {
       const newState = setFromPreset(this.state.permState, preset);
-      this.store.set(newState); // keep in sync
+      this.store.set(newState);
       this.state.permState = newState;
       this.state.activePreset = preset;
     } else {
@@ -413,8 +413,10 @@ $ const explanations = generatePermissionExplanation(state.permState, get);
           />
         </div>
       </Card>
-
     </Card>
+    </div>
+    <div class="col-span-1 md:col-span-2">
+      <OctalBreakdown octal=(state.chmod.octal3) />
     </div>
     <div class="col-span-1 md:col-span-2">
       <AboutChmod />
