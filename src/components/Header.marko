@@ -2,13 +2,17 @@ import { get } from "../i18n";
 
 class {
   onCreate() {
-    this.state = { settingsOpen: false };
+    this.state = {
+      settingsOpen: false,
+      isHomepage: true,
+    };
   }
   toggleSettings() {
     this.state.settingsOpen = !this.state.settingsOpen;
   }
   onMount() {
     window.addEventListener("click", this.handlePageClick);
+    this.state.isHomepage = window.location.pathname === "/"
   }
   onDestroy() {
     window.removeEventListener("click", this.handlePageClick);
@@ -26,7 +30,7 @@ class {
 
 <header class="flex items-center justify-center md:justify-between gap-4 px-3 py-2 flex-wrap">
   <a class="flex items-center gap-4" href="/">
-    <img.logo class="w-14" src="./../routes/favicon.png" alt="Marko"/>
+    <img.logo class="w-14 opacity-80" src="./../routes/favicon.png" alt="Marko"/>
     <div>
       <h1 class="text-3xl text-green-400">${get('title')}</h1>
       <p class="m-0">${get('nav.subtitle')}</p>
@@ -35,28 +39,59 @@ class {
 
   <div class="flex flex-row gap-2 items-start">
     <nav class="flex items-start gap-2 hidden sm:flex font-semibold">
-      <a
-        href="/learn-linux-chmod-command"
-        aria-label="About chmod command"
-        title="Learn all about using chmod to set file permissions"
-        class="hover:bg-green-400/50 text-gray-100 bg-gray-900 border-1 border-green-400 px-3 py-1 rounded transition min-w-42 text-center flex gap-2">
-        <Icon icon="learn" />
-        ${get('nav.learnChmod')}
-      </a>
+
+      <if(state.isHomepage)>
+        <a
+          href="/learn-linux-chmod-command"
+          aria-label=(get('nav.learnChmodAria'))
+          title=(get('nav.learnChmodTitle'))
+          class=[
+            "text-gray-100 hover:bg-green-400/50 bg-gray-900 border-1 border-green-400",
+            "px-3 py-1 text-center transition min-w-36 justify-center",
+            "rounded flex gap-2"
+          ]>
+          <Icon icon="learn" />
+          ${get('nav.learnChmod')}
+        </a>
+      </if>
+      <else>
+        <a
+          href="/"
+          aria-label="chmod calculator"
+          title="Learn all about using chmod to set file permissions"
+          class=[
+            "text-gray-100 hover:bg-green-400/50 bg-gray-900 border-1 border-green-400",
+            "px-3 py-1 text-center transition min-w-36 justify-center",
+            "rounded flex gap-2"
+          ]>
+          <Icon icon="calculator" />
+          ${get('nav.chmodCalculator')}
+        </a>
+      </else>
       <a
         href="https://github.com/lissy93/permissionator"
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="View on GitHub"
-        title="Get the source code on GitHub, and self-host, edit, contribute or report issues"
-        class="bg-green-400/20 hover:bg-green-400/50 text-gray-100 px-3 py-1 rounded border-1 border-green-400 transition min-w-42 text-center flex gap-2">
+        title=(get('nav.viewOnGitHubTitle'))
+        aria-label=(get('nav.viewOnGitHubAria'))
+        class=[
+          "text-gray-100 bg-green-400/20 hover:bg-green-400/50",
+          "px-3 py-1 text-center transition min-w-36 justify-center",
+          "rounded border-1 border-green-400",
+          "flex gap-2"
+        ]>
           <Icon icon="github" />
           ${get('nav.viewOnGitHub')}
       </a>
       <a
         on-click("toggleSettings")
         id="settings-container"
-        class="text-green-400 hover:bg-green-400/50 hover:text-gray-100 bg-gray-900 px-3 py-1 rounded transition text-center cursor-pointer rounded border-1 border-transparent hover:border-green-400">
+        title=(get('nav.settingsTitle'))
+        class=[
+          "text-green-400 hover:text-gray-100 bg-gray-900 hover:bg-green-400/50",
+          "px-3 py-1 text-center transition cursor-pointer ",
+          "rounded border-1 border-transparent hover:border-green-400"
+        ]>
         <Icon icon="settings" />
       </a>
     </nav>

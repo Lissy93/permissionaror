@@ -23,6 +23,9 @@ Licensed under MIT (C) Alicia Sykes 2025 <https://github.com/lissy93>
     <if(input.inner)>
       <h4 class="text-white-300 text-lg mb-2">${input.title}</h4>
     </if>
+    <else-if(input.main)>
+      <h1 class="text-green-300 text-4xl mb-4 font-semibold">${input.title}</h1>
+    </else-if>
     <else>
       <h3 class="text-green-300 text-2xl mb-3">${input.title}</h3>
     </else>
