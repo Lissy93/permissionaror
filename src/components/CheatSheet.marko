@@ -1,0 +1,122 @@
+import { t, get } from "../i18n";
+
+<Card title=(t("subheadings.cheatSheet"))>
+
+  <div class="w-fit max-w-[600px] mx-auto flex flex-col gap-2">
+    <h4 class="text-xl text-slate-200">${t('examples.1.title')}</h4>
+    <p>
+      ${t('examples.1.explanation')}
+    </p>
+    <code class="bg-slate-900/60 text-green-300 rounded-lg border border-gray-700 py-2 !px-16 sm:p-3 w-fit md:flex-1 flex text-xl mx-auto">
+      chmod -rwxr-xr-x ./file.txt
+    </code>
+  </div>
+
+  <img
+    src="/images/chmod-symbolic-representation.png"
+    class="clip-img w-full max-w-full md:max-w-4xl mx-auto"
+    title=(get('images.chmod-symbolic-representation.title'))
+    alt=(get('images.chmod-symbolic-representation.alt'))
+    decoding="async"
+    loading="lazy"
+    width="896"
+  />
+
+  <hr class="mb-6 border-2 border-slate-600" />
+
+  <div class="w-fit max-w-[600px] mx-auto flex flex-col gap-2">
+    <h4 class="text-xl text-slate-200">${t('examples.2.title')}</h4>
+    <p>
+      ${t('examples.2.explanation')}
+    </p>
+    <code class="bg-slate-900/60 text-green-300 rounded-lg border border-gray-700 py-2 !px-16 sm:p-3 w-fit md:flex-1 flex text-xl mx-auto">
+      chmod 755 ./file.txt
+    </code>
+  </div>
+
+  <img
+    src="/images/chmod-numeric-representation.png"
+    class="clip-img w-full max-w-full md:max-w-4xl mx-auto"
+    title=(get('images.chmod-numeric-representation.title'))
+    alt=(get('images.chmod-numeric-representation.alt'))
+    decoding="async"
+    loading="lazy"
+    width="896"
+  />
+  <img
+    src="/images/chmod-calculating-file-permissions.png"
+    class="clip-img w-full max-w-full md:max-w-4xl mx-auto mt-[-2rem]"
+    title=(get('images.chmod-calculating-file-permissions.title'))
+    alt=(get('images.chmod-calculating-file-permissions.alt'))
+    decoding="async"
+    loading="lazy"
+    width="896"
+  />
+
+  <hr class="mb-6 border-2 border-slate-600" />
+
+  <div class="w-fit max-w-[600px] mx-auto flex flex-col gap-2">
+    <h4 class="text-xl text-slate-200">${t('examples.3.title')}</h4>
+    <p>
+      ${t('examples.3.explanation')}
+    </p>
+    <code class="bg-slate-900/60 text-green-300 rounded-lg border border-gray-700 py-2 !px-16 sm:p-3 w-fit md:flex-1 flex text-xl mx-auto">
+      chmod g-w ./file.txt
+    </code>
+  </div>
+  <img
+    src="/images/chmod-modifying-file-permissions-command.png"
+    class="clip-img w-full max-w-full md:max-w-4xl mx-auto"
+    title=(get('images.chmod-modifying-file-permissions-command.title'))
+    alt=(get('images.chmod-modifying-file-permissions-command.alt'))
+    decoding="async"
+    loading="lazy"
+    width="896"
+  />
+
+  <hr class="mb-6 border-2 border-slate-600" />
+
+  <div class="w-fit max-w-[600px] mx-auto flex flex-col gap-2">
+    <h4 class="text-xl text-slate-200">${t('examples.4.title')}</h4>
+    <p>
+      ${t('examples.4.explanation')}
+    </p>
+    <code class="bg-slate-900/60 text-green-300 rounded-lg border border-gray-700 py-2 !px-16 sm:p-3 w-fit md:flex-1 flex text-xl mx-auto">
+      chmod u+x ./file.txt
+    </code>
+  </div>
+
+  <img
+    src="/images/chmod-modifying-file-permissions-reference.png"
+    class="w-full max-w-full md:max-w-4xl mx-auto"
+    style="clip-path: inset(45px 0 0 0); margin-top: -45px; margin-bottom: 45px;"
+    title=(get('images.chmod-modifying-file-permissions-reference.title'))
+    alt=(get('images.chmod-modifying-file-permissions-reference.alt'))
+    decoding="async"
+    loading="lazy"
+    width="896"
+  />
+
+  <hr class="mb-6 border-2 border-slate-600" />
+
+  <div class="w-fit max-w-[600px] mx-auto flex flex-col gap-2">
+    <h4 class="text-xl text-slate-200">${t('examples.5.title')}</h4>
+    <p>
+      ${t('examples.5.explanation')}
+    </p>
+    <code class="bg-slate-900/60 text-green-300 rounded-lg border border-gray-700 py-2 !px-16 sm:p-3 w-fit md:flex-1 flex text-xl mx-auto">
+      chmod 644 ./file.txt
+    </code>
+  </div>
+
+  <img
+    src="/images/chmod-reference-table.png"
+    class="clip-img w-full max-w-full md:max-w-4xl mx-auto yx-2 mt-6"
+    style="clip-path: inset(40px 0 50px 0); margin-top: -40px;"
+    title=(get('images.chmod-reference-table.title'))
+    alt=(get('images.chmod-reference-table.alt'))
+    decoding="async"
+    loading="lazy"
+    width="896"
+  />
+</Card>

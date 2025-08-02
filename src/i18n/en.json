@@ -12,7 +12,8 @@
     "customOctal": "Custom Octal",
     "outputFile": "Output Options",
     "explanation": "What this means",
-    "octalBreakdown": "How this was calculated"
+    "octalBreakdown": "How this was calculated",
+    "cheatSheet": "Cheat Sheet"
   },
   "nav": {
     "subtitle": "Linux chmod calculator for generating, converting and verifying file permissions",
@@ -28,27 +29,30 @@
     "settingsTitle": "Switch to dark mode, or change the language"
   },
   "what": {
-    "aboutChmod": "The chmod command changes file mode bits on Unix and Linux systems. File permissions control who can read, write, or execute a file. They are expressed in octal digits (like 755) or symbolic form (like u=rwx,g=rx,o=rx). The first digit in a four-digit mode denotes special bits: setuid (4), setgid (2), and sticky (1).",
+    "aboutChmod": "File permissions in Linux control who can read, write/edit and execute any given file. The chmod command is used to set these permissions.",
+    "aboutChmod2": "These file permissions are a core feature of Linux and UNIX-like systems. They prevent unauthorized access or modifications of files, safeguard users from accidental changes, and ensure that only the right users can execute programs.",
+    "aboutChmod3": "To set or update permissions, we use the `chmod` command. In the format of `chmod [permissions] [file/directory]`. The permissions can either be expressed in octal digits (like 755) or symbolic form (like u=rwx,g=rx,o=rx). The chmod combination is always specified in the order of (1) user, (2) group and (3) others/public.",
+    "commonExamples": "Common Examples",
     "commonPresets": [
       {
-        "number": "600",
+        "number": "chmod 600 ~/.ssh/id_rsa",
         "description": "Owner read/write; private files like SSH keys"
       },
       {
-        "number": "644",
+        "number": "chmod 644 /var/www/html/index.html",
         "description": "Owner read/write; everyone else read; typical text files"
       },
       {
-        "number": "700",
+        "number": "chmod 700 /home/user/private_script.sh",
         "description": "Owner full control; private scripts or directories"
       },
       {
-        "number": "755",
-        "description": "Owner rwx, others rx; common for directories and executables"
+        "number": "chmod 755 /usr/local/bin/my_script.sh",
+        "description": "Owner and group users have full access, all other users can only read and run"
       },
       {
-        "number": "775",
-        "description": "Group-collaboration directories"
+        "number": "chmod 775 /shared/project",
+        "description": "Everyone can read and execute, but only the owner can write; good for shared directories"
       }
     ],
     "cards": [
@@ -65,6 +69,28 @@
         "description": "setuid runs executables with the owner's privileges; setgid runs with the group's privileges; sticky prevents users from deleting others' files in shared directories (e.g., /tmp)."
       }
     ]
+  },
+  "examples": {
+    "1": {
+      "title": "Example #1 - Symbolic Form",
+      "explanation": "This command will give read, write and execute permissions to the owner, and read and execute (but not write) to users in the group, and all other users"
+    },
+    "2": {
+      "title": "Example #2 - Octal Denotion",
+      "explanation": "This command will give read, write and execute permissions to the owner, and read and execute (but not write) to users in the group, and all other users"
+    },
+    "3": {
+      "title": "Example #3 - Updating a single permission",
+      "explanation": "This command will remove write permissions for the group, but leave read and execute permissions intact. The owner and others will not be affected."
+    },
+    "4": {
+      "title": "Example #4 - Updating a single permission",
+      "explanation": "Give the owner execute permission, while leaving read and write permissions intact. The group and others will not be affected. Below is the full list of options"
+    },
+    "5": {
+      "title": "Example #5 - Common Preset  Quick Reference",
+      "explanation": "This will make a file readable and writable by the owner, and just readable for the group and others. Remember, the first digit is user, second is group, third is others. So you can use the quick reference below to build your own permissions."
+    }
   },
   "explain": {
     "roles": {
@@ -100,82 +126,141 @@
     "400": "Owner read-only, no one else can access — used for sensitive static files like cryptographic keys.",
     "000": "No permissions for anyone — locks all access until permissions are restored; useful for temporarily disabling access."
   },
-  "learn": {
+ "learn": {
     "title": "All about Linux File Permissions and chmod",
-    "intro": "File permissions in Linux decide who can view, change or run a file. Understanding them is key to keeping your system working smoothly and securely. In this guide, we’ll go from the absolute basics to the more advanced stuff, step by step.",
-    
-    "whatIsChmod": {
-      "title": "What is chmod?",
+    "intro": "File permissions denote which users can read, write or execute files. It's important that only the users who need access to a file have it, to keep your system secure and functioning properly.",
+    "whatArePermissions": {
+      "title": "What are file permissions?",
       "content": [
-        "chmod is the command used to change file permissions on Unix-like systems. The name comes from 'change mode'.",
-        "With chmod you can allow or deny specific actions for the file's owner, members of its group, or everyone else. You can use it in symbolic form (letters) or octal form (numbers)."
+        "File permissions control who can read, write, or execute a file or folder on a Linux system.",
+        "They exist to keep your data safe, prevent unwanted changes, and ensure programs only run when intended.",
+        "Permissions are one of the foundations of Linux security — without them, anyone could change system files or read your private data.",
+        "Permissions are set using the chmod command, which we’ll cover in detail below."
       ]
     },
-
-    "howPermissionsWork": {
-      "title": "How permissions work",
-      "intro": "Each file and folder in Linux has three sets of permissions, one for each of these groups:",
+    "userTypes": {
+      "title": "User types",
+      "intro": "Linux permissions are applied separately for three different categories of users:",
       "points": [
-        "Owner – the person who created or owns the file.",
-        "Group – people who are part of the file's group.",
-        "Others – everyone else on the system."
+        {
+          "name": "Owner",
+          "description": "Usually the person who created or owns the file."
+        },
+        {
+          "name": "Group",
+          "description": "Other users who are members of the file’s group."
+        },
+        {
+          "name": "Others",
+          "description": "Everyone else on the system who is not the owner or in the group."
+        }
       ]
     },
-
     "permissionTypes": {
-      "title": "The three permission types",
+      "title": "Permission types",
       "items": [
-        { "name": "Read (r)", "description": "Lets you view a file's contents or list a folder's files." },
-        { "name": "Write (w)", "description": "Lets you edit a file or add/remove files in a folder." },
-        { "name": "Execute (x)", "description": "Lets you run a file as a program or enter a folder." }
+        { "name": "Read (r)", "description": "View file contents or list files in a folder." },
+        { "name": "Write (w)", "description": "Modify a file or add/remove files in a folder." },
+        { "name": "Execute (x)", "description": "Run a file as a program or enter a folder." }
       ]
     },
-
-    "symbolicVsOctal": {
-      "title": "Symbolic vs Octal",
+    "chmodIntro": {
+      "title": "The chmod command",
       "content": [
-        "Symbolic form uses letters to set permissions. For example, 'u=rwx,g=rx,o=rx' means the owner has read/write/execute, and everyone else has read/execute.",
-        "Octal form uses numbers. For example, '755' means the same thing as above.",
-        "Octal is shorter and quicker to type, while symbolic is easier to read for beginners."
+        "chmod stands for 'change mode'. It changes the permissions of a file or folder.",
+        "You can use it in symbolic form (letters, like rwx) or numeric form (octal numbers, like 777).",
+        "It works on single files or entire folders."
       ]
     },
-
+    "symbolicRepresentation": {
+      "title": "Symbolic representation",
+      "content": [
+        "The first option for specifying permissions is via symbolic mode, which uses letters to define permissions for each user type.",
+        "This makes it easier to remember, read and understand. Yet it's more verbose than octal.",
+        "So, r means read, w means write, and x means execute. If one of these characters is replaced with a dash (-), it means that permission is not granted."
+      ]
+    },
+    "octalRepresentation": {
+      "title": "Octal (numeric) representation",
+      "content": [
+        "Octal mode uses numbers to represent permissions.",
+        "Where read = 4, write = 2 and execute = 1. ",
+        "Then add these up to get a number, in this example 7, which means the specified user can read, write and execute the file.",
+        "Similar to before, this is specified in the order of owner, group and others. ",
+        "So 755 means the owner has rwx (7), group has rx (5), and others have rx (5)."
+      ],
+      "howCalculated": "If these numbers seem random to you, then it's helpful to know that they are calculated like any other binary digits. So, 111 (rwx) is 7, 101 (r-x) is 5, and 100 (r--) is 4."
+    },
+    "updateSinglePermission": {
+      "title": "Updating a single permission",
+      "content": [
+        "Often, you won't want to change all permissions for a given file/folder, but just update one part.",
+        "For example, just adding execute permission for the owner, removing write access for public users or setting read-only for the group.",
+        "This can be done with the symbolic mode, using the `+`, `-` or `=` operators, following the format of `chmod [who][operator][permission] file`.",
+        "Where `who` can be `u` (owner), `g` (group), `o` (others), or `a` (all).",
+        "`operator` can be `+` (add), `-` (remove), or `=` (set exactly).",
+        "Example: `chmod g-w file.txt` removes write permission from the group."
+      ]
+    },
+    "recursiveChanges": {
+      "title": "Changing permissions recursively",
+      "content": [
+        "Use the `-R` flag to change permissions for all files and folders inside a directory.",
+        "For example: `chmod -R 755 /var/www` will apply 755 to every file and folder under /var/www.",
+        "But be careful, as recursive changes can break system files if used incorrectly."
+      ]
+    },
+    "ownership": {
+      "title": "Ownership and chmod",
+      "content": [
+        "Permissions work alongside ownership. Each file has an owner and a group.",
+        "If you need to change who owns a file, use `chown`.",
+        "Example: `sudo chown user:group file.txt` changes both the owner and group."
+      ]
+    },
     "specialBits": {
       "title": "Special bits",
-      "intro": "Beyond the basic permissions, there are three special bits that change how files and folders behave:",
+      "intro": "Beyond the standard read/write/execute, Linux has special permission bits:",
       "items": [
-        { "name": "Setuid (4)", "description": "Runs the file with the owner's permissions, not the person running it. Often used for system commands that need extra access." },
-        { "name": "Setgid (2)", "description": "Runs the file with the group's permissions. On folders, new files inherit the folder's group." },
-        { "name": "Sticky (1)", "description": "Prevents people from deleting files they don’t own inside a folder. Common on shared folders like /tmp." }
+        { "name": "Setuid (4)", "description": "Runs the file with the owner’s permissions instead of the user’s." },
+        { "name": "Setgid (2)", "description": "Runs the file with the group’s permissions. On directories, new files inherit the group." },
+        { "name": "Sticky (1)", "description": "On directories, prevents users from deleting files they don’t own. Common on /tmp." }
       ]
     },
-
     "commonPresets": {
       "title": "Common chmod presets",
-      "intro": "These are some of the most used permission settings:",
+      "intro": "Here are common permission sets and their uses:",
       "table": [
-        { "code": "600", "description": "Owner can read/write, no access for anyone else. Common for SSH private keys." },
-        { "code": "644", "description": "Owner can read/write, others can read only. Default for many text and config files." },
-        { "code": "700", "description": "Owner can read/write/execute, no one else can access. Good for private scripts." },
-        { "code": "755", "description": "Owner can read/write/execute, others can read/execute. Common for scripts and web directories." },
-        { "code": "777", "description": "Everyone can read/write/execute. Avoid on important files; fine for temporary shared scratch space." }
+        { "code": "600", "description": "Owner can read/write. No access for others. SSH private keys." },
+        { "code": "644", "description": "Owner can read/write. Others can read. Default for many files." },
+        { "code": "700", "description": "Owner has full control. No access for others. Private scripts." },
+        { "code": "755", "description": "Owner can read/write/execute. Others can read/execute. Common for scripts." },
+        { "code": "777", "description": "Everyone can read/write/execute. Avoid unless for temporary shared folders." }
       ]
     },
-
+    "debugging": {
+      "title": "Debugging file permissions",
+      "intro": "If something doesn’t work, you may see these errors:",
+      "errors": [
+        { "message": "Permission denied", "fix": "Check if you have execute permission on files or read permission on folders. Add with `chmod +x file` or `chmod +r folder`." },
+        { "message": "Operation not permitted", "fix": "You may need `sudo` to change system-owned files." },
+        { "message": "Read-only file system", "fix": "The filesystem is mounted read-only. Remount with write permissions or contact your admin." },
+        { "message": "Cannot open file: No such file or directory", "fix": "The file path may be wrong. Check with `ls`." }
+      ]
+    },
     "securityTips": {
       "title": "Security tips",
       "points": [
-        "Only give execute permission if the file needs to be run.",
-        "For sensitive files, restrict access to just the owner.",
-        "Use 644 for public-readable files and 600 for private ones.",
-        "Avoid 777 on files that matter; it lets anyone edit or delete them.",
-        "Test permissions on a non-critical file first if unsure."
+        "Only make a file executable if it needs to be run.",
+        "Use 600 for private files and 644 for public-readable files.",
+        "Avoid 777 unless absolutely necessary.",
+        "Check permissions with `ls -l` before changing them.",
+        "Test changes on non-critical files first."
       ]
     },
-
     "nextSteps": {
       "title": "Next steps",
-      "content": "Try changing permissions in a safe test folder. Use this tool to experiment with symbolic and octal forms. Once you’re confident, you can set correct permissions for your actual files."
+      "content": "Try creating a test directory and experimenting with chmod in both symbolic and numeric forms. Once you’re confident, you can safely set permissions for real files."
     }
   },
   "images": {
