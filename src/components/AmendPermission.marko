@@ -1,0 +1,142 @@
+import { get } from "../i18n";
+
+class {
+  onCreate() {
+    this.state = {
+      selectedClass: "u",       // The class, e.g. u (user), g (group), o (others), a (all)
+      selectedOperator: "+",    // The operator, e.g. + (add), - (remove), = (set)
+      selectedPermission: "x",  // The permission, e.g. r (read), w (write), x (execute)
+      fileName: "[file-name]",  // Default file name for the command
+      generatedCommand: '',     // The generated chmod command
+      description: ''           // Description of the generated command
+    };
+  }
+
+
+  onUpdate() {
+    // If a filename was already set in the parent, use it
+    if (this.input.filename) {
+      this.state.fileName = this.input.filename;
+    }
+  }
+
+  /* Called whenever class (user/group/others/all) is updated */
+  handleClassToggle({ perm }) {
+    this.state.selectedClass = perm;
+    this.triggerUpdate();
+  }
+
+  /* Called whenever operator (+/-/=) is updated */
+  handleOperatorToggle({ perm }) {
+    this.state.selectedOperator = perm;
+    this.triggerUpdate();
+  }
+
+  /* Called whenever permission (read/write/execute) is updated */
+  handlePermissionToggle({ perm }) {
+    this.state.selectedPermission = perm;
+    this.triggerUpdate();
+  }
+
+  
+  /* Triggers the update of the output command and human description */
+  triggerUpdate() {
+    this.updateCommand();
+    this.updateDescription();
+  }
+
+  /* Generates a human-readable description of the current permissions command */
+  updateDescription() {
+    const { selectedClass, selectedOperator, selectedPermission } = this.state;
+    const className = { u: "user", g: "group", o: "others", a: "everyone" }[selectedClass];
+    const operatorName = { "+": "add", "-": "remove", "=": "set" }[selectedOperator];
+    const permissionName = { r: "read", w: "write", x: "execute" }[selectedPermission];
+    this.state.description = `${operatorName} ${permissionName} permission for ${className}`;
+  }
+
+  /* Updates the state of the generated command based user inputs */
+  updateCommand () {
+    this.state.generatedCommand =  `chmod ${this.state.selectedClass}`
+      + `${this.state.selectedOperator}${this.state.selectedPermission} `
+      + `${this.state.fileName}`;
+  }
+}
+
+$ const classes = [
+  { value: "u", label: "User (u)" },
+  { value: "g", label: "Group (g)" },
+  { value: "o", label: "Others (o)" },
+  { value: "a", label: "All (a)" }
+];
+
+$ const operators = [
+  { value: "+", label: "Add (+)" },
+  { value: "-", label: "Remove (-)" },
+  { value: "=", label: "Set (=)" }
+];
+
+$ const permissions = [
+  { value: "r", label: "Read (r)" },
+  { value: "w", label: "Write (w)" },
+  { value: "x", label: "Execute (x)" }
+];
+
+<Card title=(get("singlePermissionTool.title"))>
+  <p class="mb-4">
+    ${get("singlePermissionTool.description1")}<br>
+    ${get("singlePermissionTool.description2")}
+  </p>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+    <!-- Class selection -->
+    <Card title="Class" inner="true" >
+      <div class="flex flex-col gap-2">
+        <for|cls| of=classes>
+          <Toggle
+            label=(cls.label)
+            perm=(cls.value)
+            checked=(state.selectedClass === cls.value)
+            on-toggle("handleClassToggle")
+          />
+        </for>
+      </div>
+    </Card>
+
+    <!-- Operator selection -->
+    <Card title="Operator" inner="true">
+      <div class="flex flex-col gap-2">
+        <for|op| of=operators>
+          <Toggle
+            label=(op.label)
+            perm=(op.value)
+            checked=(state.selectedOperator === op.value)
+            on-toggle("handleOperatorToggle")
+          />
+        </for>
+      </div>
+    </Card>
+
+    <!-- Permission selection -->
+    <Card title="Permission" inner="true">
+      <div class="flex flex-col gap-2">
+        <for|perm| of=permissions>
+          <Toggle
+            label=(perm.label)
+            perm=(perm.value)
+            checked=(state.selectedPermission === perm.value)
+            on-toggle("handlePermissionToggle")
+          />
+        </for>
+      </div>
+    </Card>
+  </div>
+
+  <if(state.description)>
+    <p class="my-2 text-gray-300">${get('singlePermissionTool.useThis')} ${state.description}</p>
+  </if>
+
+  <if(state.generatedCommand)>
+    <OutputCell class="mt-4" label=(get('singlePermissionTool.outputLabel')) value=(state.generatedCommand) />
+  </if>
+
+</Card>

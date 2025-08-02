@@ -92,6 +92,13 @@
       "explanation": "This will make a file readable and writable by the owner, and just readable for the group and others. Remember, the first digit is user, second is group, third is others. So you can use the quick reference below to build your own permissions."
     }
   },
+  "singlePermissionTool": {
+    "title": "Single Permission chmod Generator",
+    "description1": "This tool allows you to generate a chmod command for a single permission change.",
+    "description2": "This means that all other permissions will remain unchanged. So you can easily modify/add/remove one permission for a given user type.",
+    "outputLabel": "Generated Command",
+    "useThis": "Use this command to"
+  },
   "explain": {
     "roles": {
       "owner": "The file owner",

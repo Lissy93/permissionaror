@@ -439,6 +439,9 @@ $ const explanations = generatePermissionExplanation(state.permState, get);
       <OctalBreakdown octal=(state.chmod.octal3) />
     </div>
     <div class="col-span-1 md:col-span-2">
+      <AmendPermission filename=(state.filename) />
+    </div>
+    <div class="col-span-1 md:col-span-2">
       <AboutChmod />
     </div>
     <div class="col-span-1 md:col-span-2">
