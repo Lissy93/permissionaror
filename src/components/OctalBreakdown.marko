@@ -70,6 +70,13 @@ class {
             </span>
           </for>
         </div>
+        <div class="flex items-center gap-1 mb-1 text-2xl opacity-60 bg-slate-800 rounded-xl ">
+          <for|p| of=state.perms>
+            <span class=("font-mono text-sm px-2 py-1 " + (b.allowed.includes(p) ? "text-green-400 " : "text-gray-500"))>
+              ${b.allowed.includes(p) ? "1" : "0"}
+            </span>
+          </for>
+        </div>
         <div class="text-sm text-gray-400">
           ${state.displayLine(b.digit)} = ${b.digit}
         </div>
