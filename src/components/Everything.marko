@@ -1,0 +1,451 @@
+import { get, setLanguage, getLanguage } from "../i18n";
+import {
+  createPermissionStore,
+  isRowSelected,
+  isColSelected,
+  defaultSpecialBits,
+  setSpecialBit,
+  presets,
+  setFromPreset,
+  matchPreset,
+  fromOctal,
+  validateOctal,
+  generatePermissionExplanation,
+} from "../utils/permissions.ts";
+
+import { generateChmodOutputs } from "../utils/generateOutputs.ts";
+// import { detectLang, setLang } from "../i18n";
+
+class {
+  onCreate() {
+    this.roles = ["owner", "group", "public"];
+    this.permissions = ["r", "w", "x"];
+    // Create the permission store instance
+    this.store = createPermissionStore();
+    const initialState = this.store.get();
+    // Initialize the store with defaults (permissions, output and special bits)
+    this.state = {
+      permState: this.store.get(),
+      chmod: generateChmodOutputs(initialState),
+      specialBits: defaultSpecialBits,
+      activePreset: matchPreset(initialState),
+      customOctal: "",
+      outputOptions: {
+        recursive: false,
+        verbose: false,
+        changes: false,
+        silent: false
+      },
+      filename: "",
+      language: getLanguage(),
+    };
+
+    // Previous state, used to detect changes
+    this._prevPermState = initialState;
+    this._prevSpecialBits = { ...defaultSpecialBits };
+
+    // Function for handling language changes by updating state
+    this.listener = (event) => {
+      const language = event.detail.language;
+      this.state.language = language;
+      setLanguage(language);
+    };
+
+    // Listen for language changes in browser
+    if (typeof window !== "undefined") {
+      window.addEventListener("language-changed", this.listener);
+    }
+  }
+
+  onDestroy() {
+    if (typeof window !== "undefined") {
+      window.removeEventListener("language-changed", this.listener);
+    }
+  }
+
+  onUpdate() {
+    // Get current state and compare with previous state
+    const permChanged = JSON.stringify(this._prevPermState) !== JSON.stringify(this.state.permState);
+    const bitsChanged = JSON.stringify(this._prevSpecialBits) !== JSON.stringify(this.state.specialBits);
+    // If either permissions or special bits have changed, update outputs
+    if (permChanged || bitsChanged) {
+      // Trigger update of outputs
+      this.updateOutputs();
+      // Then store previous state, so we can detect changes next time
+      this._prevPermState = structuredClone(this.state.permState);
+      this._prevSpecialBits = structuredClone(this.state.specialBits);
+      this.state.activePreset = matchPreset(this.state.permState);
+    }
+  }
+
+  /**
+   * Generates command and chmod options based on the user's current selections
+   * This is called whenever something changes
+   * */
+  updateOutputs() {
+    this.state.chmod = generateChmodOutputs(
+      this.state.permState,
+      this.state.specialBits,
+      this.state.outputOptions,
+      this.state.filename,
+    );
+    
+    this.state.customOctal =
+      this.state.chmod.octal4 && !this.state.chmod.octal4.startsWith("0")
+      ? this.state.chmod.octal4
+      : this.state.chmod.octal3 || "";
+  }
+
+  /**
+   * Resets the permissions to the default state. Called on "Reset" button click
+   */
+  resetPermissions() {
+    this.state.permState = this.store.reset();
+    this.state.specialBits = { ...defaultSpecialBits };
+  }
+
+  /**
+   * Sets all permissions to deny / zero. Called on "Deny All" button click
+   */
+  denyAllPermissions() {
+    this.state.specialBits = { ...defaultSpecialBits };
+    this.state.permState = this.store.denyAll();
+  }
+
+  /**
+   * Handles toggling a single cell in the permissions table
+   * Called whenever a checkbox withing the permissions matrix is toggled
+   * @param {Object} event - The event containing role, perm and checked state
+   */
+  handleCellToggle(event) {
+    const { role, perm, checked } = event;
+    this.state.permState = this.store.toggle(role, perm, checked);
+  }
+
+  /**
+   * Handles toggling a whole row (aka owner/group/public) in the matrix
+   * @param {Object} event - The event containing the role being toggled
+   */
+  handleRowToggle(event) {
+    const { role } = event;
+    this.state.permState = this.store.toggleRow(role, this.permissions);
+  }
+
+  /**
+   * Handles toggling a whole column (aka read/write/execute) in the matrix
+   * @param {Object} event - The event containing the permission being toggled
+   */
+  handleColToggle(event) {
+    const { perm } = event;
+    this.state.permState = this.store.toggleCol(perm, this.roles);
+  }
+
+  /**
+   * Handles toggling a special bit (setuid, setgid, sticky)
+   * @param {Object} event - The event containing the bit being toggled
+   */
+  handleSpecialBitToggle(event) {
+    const { bit, checked } = event;
+    this.state.specialBits = setSpecialBit(this.state.specialBits, bit, checked);
+  }
+
+  /**@abstract
+   * Handles enabling of a preset permission set
+   * @param {Object} event - The event containing the preset and checked state
+   */
+  handlePresetToggle(event) {
+    const { preset, checked } = event;
+    if (checked) {
+      const newState = setFromPreset(this.state.permState, preset);
+      this.store.set(newState);
+      this.state.permState = newState;
+      this.state.activePreset = preset;
+    } else {
+      this.state.activePreset = null;
+    }
+  }
+
+  /**
+   * Handles input in the custom octal field. Called whenever input updated
+   * Validates the input and updates the permission state accordingly
+   * @param {Object} event - The input event containing the value
+   */
+  handleCustomOctalInput(event) {
+    this.state.customOctal = event.target.value;
+
+    const isValid = validateOctal(this.state.customOctal);
+    if (isValid) {
+      const parsed = fromOctal(this.state.customOctal);
+      if (parsed) {
+        // Keep store in sync so toggles don't revert
+        this.store.set(parsed.permState ?? parsed);
+        // Apply normal permission bits
+        this.state.permState = parsed.permState ?? parsed;
+        // If special bits were included in the octal, update those too
+        if (parsed.specialBits) {
+          this.state.specialBits = parsed.specialBits;
+        }
+      }
+    }
+  }
+
+  /**
+   * Validates and applies the user's custom octal input, from the input field
+   */
+  applyCustomOctal() {
+    const state = fromOctal(this.state.customOctal);
+    if (state) {
+      this.state.permState = state;
+    }
+  }
+
+  /**
+   * Updates the filename in the example commands output.
+   * Also auto-applies the recursive option, if the filename is a directory
+   */
+  handleFilenameInput(event) {
+    const value = event.target.value;
+    this.state.filename = value;
+
+    // Auto-toggle recursive based on filename pattern
+    if (value.endsWith("/")) {
+      this.state.outputOptions.recursive = true;
+    } else if (/\.[a-z0-9]+$/i.test(value)) {
+      this.state.outputOptions.recursive = false;
+    }
+    this.updateOutputs();
+  }
+
+  /**
+   * Handles toggling of output flags (recursive, verbose, changes, silent)
+   * @param {Object} event - The event containing the option and checked state
+   */
+  handleOutputOptionToggle(event) {
+    const { option, checked } = event;
+    this.state.outputOptions = {
+      ...this.state.outputOptions,
+      [option]: checked
+    };
+    this.updateOutputs();
+  }
+
+}
+
+$ const permNames = {
+  r: "read",
+  w: "write",
+  x: "execute"
+};
+
+$ const permissions = ['r', 'w', 'x'];
+$ const roles = ['owner', 'group', 'public'];
+$ const explanations = generatePermissionExplanation(state.permState, get);
+
+
+<div class="w-full max-w-7xl mx-auto px-4">
+  <div class="mt-2 grid grid-cols-1 gap-4 md:grid-cols-2">
+    <Card title=(get("subheadings.permissions"))>
+      <@cardControls>
+        <div class="flex gap-2">
+          <Button variant="neutral" text="Reset" on-click('resetPermissions') />
+          <Button variant="danger" text="Deny All" on-click('denyAllPermissions') />
+        </div>
+      </@cardControls>
+
+      <!-- Main permissions selector table -->
+      <table class="border-separate border-spacing-2">
+        <thead>
+          <tr>
+            <th class=""></th>
+            <for|perm| of=permissions>
+              <th class="text-left font-semibold w-24">
+                <Toggle
+                  label=(permNames[perm])
+                  type="column"
+                  perm=(perm)
+                  checked=(isColSelected(state.permState, perm, roles))
+                  on-toggle('handleColToggle')
+                  class="capitalize"
+                />
+              </th>
+            </for>
+          </tr>
+        </thead>
+        <tbody>
+          <for|role| of=roles>
+            <tr>
+              <td class="font-semibold">
+                <Toggle
+                  label=(role)
+                  type="row"
+                  checked=(isRowSelected(state.permState, role, permissions))
+                  on-toggle('handleRowToggle')
+                  role=(role)
+                  class="capitalize"
+                />
+              </td>
+              <for|perm| of=permissions>
+                <td class="mono">
+                  <Toggle
+                    label=(perm.toUpperCase())
+                    checked=(state.permState[role][perm])
+                    on-toggle('handleCellToggle')
+                    role=(role)
+                    perm=(perm)
+                  />
+                </td>
+              </for>
+            </tr>
+          </for>
+        </tbody>
+      </table>
+
+      <div class="flex flex-col gap-4 mt-4">
+      
+        <Card title=(get("subheadings.specialBits")) inner=(true) key="" class="w-full md:flex-1">
+           <div class="flex gap-2">
+            <Toggle
+              label="SetUID"
+              checked=(state.specialBits.suid)
+              on-toggle('handleSpecialBitToggle')
+              bit="suid"
+            />
+            <Toggle
+              label="SetGID"
+              checked=(state.specialBits.sgid)
+              on-toggle('handleSpecialBitToggle')
+              bit="sgid"
+            />
+            <Toggle
+              label="Sticky"
+              checked=(state.specialBits.sticky)
+              on-toggle('handleSpecialBitToggle')
+              bit="sticky"
+            />
+          </div>
+          <p class="mt-3 text-sm text-gray-400">
+            <code>setuid</code> and <code>setgid</code> replace the execute bit with s/S on owner/group;<br>
+            <code>sticky</code> replaces others' execute with t/T.
+          </p>
+        </Card>
+      
+        <Card title=(get("subheadings.customOctal")) inner=(true) key="" class="w-full md:flex-1">
+          <div class="mt-3 flex gap-2">
+            <input
+              type="text"
+              id="custom-octal-input"
+              name="custom-octal"
+              class="input flex-1 bg-gray-800 text-white rounded-md px-3 py-2 border-0 outline-1 outline-gray-600"
+              placeholder="Enter octal (e.g., 755 or 4755)"
+              value=state.customOctal
+              on-input("handleCustomOctalInput")
+              pattern="^[0-7]{3,4}$"
+              aria-invalid=(state.customOctal && !/^[0-7]{3,4}$/.test(state.customOctal))
+            />
+            
+          </div>
+          <if(state.customOctal && !/^[0-7]{3,4}$/.test(state.customOctal))>
+            <span class="text-red-400/80 text-xs mt-1">Invalid octal: must be 3 or 4 digits (0-7). E.g. 777</span>
+          </if>
+           
+           <h4 class="text-white-300 text-lg mb-2 mt-4">${get('subheadings.commonPresets')}</h4>
+           <div class="flex flex-wrap gap-2">
+            <for|preset| of=Object.keys(presets)>
+              <Toggle
+                class="!w-12"
+                label=preset
+                checked=(state.activePreset === preset)
+                preset=(preset)
+                on-toggle('handlePresetToggle')
+              />
+            </for>
+          </div>
+        </Card>
+        <div>
+          <h4 class="text-white-300 text-lg mb-1">${get('subheadings.explanation')}</h4>
+          <if(explanations.length === 1)>
+            <p class="text-md text-gray-300">${explanations[0]}</p>
+          </if>
+          <else>
+          <ul class="list-disc pl-5 text-md text-gray-300">
+            <for|line| of=explanations>
+              <li>${line}</li>
+            </for>
+          </ul>
+          </else>
+        </div>
+      </div>
+
+    </Card>
+    <div class="flex gap-4 flex-col">
+    <Card title=(get("subheadings.output"))>
+      <div class="flex flex-col gap-2">
+        <OutputCell label="Octal (3-digit)" value=(state.chmod.octal3) />
+        <OutputCell label="Octal (4-digit)" value=(state.chmod.octal4) />
+        <OutputCell label="Symbolic (rwx)" value=(state.chmod.symbolic) />
+        <OutputCell label="Symbolic (equals)" value=(state.chmod.symbolicEquals) />
+      </div>
+    </Card>
+    <Card title=(get("subheadings.exampleCommands"))>
+      <div class="flex flex-col gap-2">
+        <OutputCell label="chmod (octal)" value=(`chmod ${state.chmod.flags} ${state.chmod.octal4} ${state.chmod.target}`) />
+        <OutputCell label="chmod (equals)" value=(`chmod ${state.chmod.flags} ${state.chmod.symbolicEquals} ${state.chmod.target}`) />
+      </div>
+
+      <Card title=(get("subheadings.outputFile")) inner=(true) key="" class="w-full md:flex-1 mt-4">
+        <input
+          class="input bg-gray-800 text-white rounded-md px-3 py-2 border-0 outline-1 outline-gray-600 mb-4 w-full"
+          placeholder="File or directory"
+          value=state.filename
+          on-input("handleFilenameInput")
+        />
+        <div class="flex flex-wrap gap-3">
+          <Toggle
+            label="Recursive (-R)"
+            checked=state.outputOptions.recursive
+            on-toggle("handleOutputOptionToggle")
+            option="recursive"
+            class="!w-fit"
+          />
+
+          <Toggle
+            label="Verbose (-v)"
+            checked=state.outputOptions.verbose
+            on-toggle("handleOutputOptionToggle")
+            option="verbose"
+            class="!w-fit"
+          />
+
+          <Toggle
+            label="Changes only (-c)"
+            checked=state.outputOptions.changes
+            on-toggle("handleOutputOptionToggle")
+            option="changes"
+            class="!w-fit"
+          />
+
+          <Toggle
+            label="Silent (-f)"
+            checked=state.outputOptions.silent
+            on-toggle("handleOutputOptionToggle")
+            option="silent"
+            class="!w-fit"
+          />
+        </div>
+      </Card>
+    </Card>
+    </div>
+    <div class="col-span-1 md:col-span-2">
+      <OctalBreakdown octal=(state.chmod.octal3) />
+    </div>
+    <div class="col-span-1 md:col-span-2">
+      <AmendPermission filename=(state.filename) />
+    </div>
+    <div class="col-span-1 md:col-span-2">
+      <AboutChmod />
+    </div>
+    <div class="col-span-1 md:col-span-2">
+      <CheatSheet />
+    </div>
+  </div>
+</div>
