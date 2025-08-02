@@ -2,7 +2,10 @@ import { t, get } from "../i18n";
 
 <Card title=(t("subheadings.aboutChmod"))>
   <p class="my-4">${t("what.aboutChmod")}</p>
+  <p class="my-4">${t("what.aboutChmod2")}</p>
+  <p class="my-4">${t("what.aboutChmod3")}</p>
 
+  <h4 class="text-lg text-slate-300">${t('what.commonExamples')}</h4>
   <ul>
     <for|index, preset| in=(get("what.commonPresets"))>
       <li class="flex gap-2" key=(index)>
