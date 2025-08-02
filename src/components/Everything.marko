@@ -14,9 +14,13 @@ import {
 } from "../utils/permissions.ts";
 
 import { generateChmodOutputs } from "../utils/generateOutputs.ts";
-// import { detectLang, setLang } from "../i18n";
 
 class {
+  onInput(input) {
+    if (input.lang) {
+      setLanguage(input.lang);
+    }
+  }
   onCreate() {
     this.roles = ["owner", "group", "public"];
     this.permissions = ["r", "w", "x"];
