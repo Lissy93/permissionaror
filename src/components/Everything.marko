@@ -20,6 +20,12 @@ class {
     if (input.lang) {
       setLanguage(input.lang);
     }
+    if (input.octal) {
+      this.state.customOctal = input.octal;
+      this.applyCustomOctal();
+      this.state.activePreset = matchPreset(this.state.permState);
+      this.updateOutputs();
+    }
   }
   onCreate() {
     this.roles = ["owner", "group", "public"];
