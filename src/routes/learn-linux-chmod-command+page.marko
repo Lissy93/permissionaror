@@ -1,0 +1,171 @@
+import { get } from "../i18n";
+
+<div class="p-2 xs:p-4 sm:p-6">
+
+  <Card class="max-w-5xl mx-auto px-4 py-10 mt-4 prose prose-invert prose-lg" title=get("learn.title") main="true">
+    <p class="lead text-gray-300 mb-8">${get("learn.intro")}</p>
+
+
+    <!-- What is chmod -->
+    <section id="what-is-chmod" class="mb-12">
+      <h2 class="text-3xl font-semibold mb-3">${get("learn.whatIsChmod.title")}</h2>
+      <p class="mb-4">${get("learn.whatIsChmod.content.0")}</p>
+      <p>${get("learn.whatIsChmod.content.1")}</p>
+    </section>
+
+    <!-- How permissions work -->
+    <section id="how-permissions-work" class="mb-12">
+      <h2 class="text-3xl font-semibold mb-3">${get("learn.howPermissionsWork.title")}</h2>
+      <p class="mb-4">${get("learn.howPermissionsWork.intro")}</p>
+      <ul class="list-disc pl-5 space-y-2">
+        <for|item| of=get("learn.howPermissionsWork.points")>
+          <li>${item}</li>
+        </for>
+      </ul>
+    </section>
+
+    <!-- Permission types -->
+    <section id="permission-types" class="mb-12">
+      <h2 class="text-3xl font-semibold mb-3">${get("learn.permissionTypes.title")}</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <for|perm| of=get("learn.permissionTypes.items")>
+          <div class="bg-slate-900 rounded-lg p-4 border border-gray-700">
+            <h3 class="text-xl font-bold mb-2">${perm.name}</h3>
+            <p>${perm.description}</p>
+          </div>
+        </for>
+      </div>
+    </section>
+
+    <!-- Symbolic vs Octal -->
+    <section id="symbolic-vs-octal" class="mb-12">
+      <h2 class="text-3xl font-semibold mb-3">${get("learn.symbolicVsOctal.title")}</h2>
+      <p class="mb-4">${get("learn.symbolicVsOctal.content.0")}</p>
+      <p class="mb-4">${get("learn.symbolicVsOctal.content.1")}</p>
+      <p>${get("learn.symbolicVsOctal.content.2")}</p>
+      <img
+        src="/images/chmod-symbolic-representation.png"
+        class="clip-img w-full max-w-full md:max-w-4xl mx-auto yx-2"
+        title=(get('images.chmod-symbolic-representation.title'))
+        alt=(get('images.chmod-symbolic-representation.alt'))
+        decoding="async"
+        loading="lazy"
+        width="896"
+      />
+      <img
+        src="/images/chmod-numeric-representation.png"
+        class="clip-img w-full max-w-full md:max-w-4xl mx-auto yx-2"
+        title=(get('images.chmod-numeric-representation.title'))
+        alt=(get('images.chmod-numeric-representation.alt'))
+        decoding="async"
+        loading="lazy"
+        width="896"
+      />
+      <img
+        src="/images/chmod-calculating-file-permissions.png"
+        class="clip-img w-full max-w-full md:max-w-4xl mx-auto yx-2"
+        title=(get('images.chmod-calculating-file-permissions.title'))
+        alt=(get('images.chmod-calculating-file-permissions.alt'))
+        decoding="async"
+        loading="lazy"
+        width="896"
+      />
+      <img
+        src="/images/chmod-reference-table.png"
+        class="clip-img w-full max-w-full md:max-w-4xl mx-auto yx-2"
+        title=(get('images.chmod-reference-table.title'))
+        alt=(get('images.chmod-reference-table.alt'))
+        decoding="async"
+        loading="lazy"
+        width="896"
+      />
+    </section>
+
+    <!-- Special bits -->
+    <section id="special-bits" class="mb-12">
+      <h2 class="text-3xl font-semibold mb-3">${get("learn.specialBits.title")}</h2>
+      <p class="mb-4">${get("learn.specialBits.intro")}</p>
+      <ul class="list-disc pl-5 space-y-2">
+        <for|bit| of=get("learn.specialBits.items")>
+          <li>
+            <strong>${bit.name}</strong> – ${bit.description}
+          </li>
+        </for>
+      </ul>
+    </section>
+
+    <!-- Common presets -->
+    <section id="common-presets" class="mb-12">
+      <h2 class="text-3xl font-semibold mb-3">${get("learn.commonPresets.title")}</h2>
+      <p class="mb-4">${get("learn.commonPresets.intro")}</p>
+      <table class="table-auto w-full border-collapse border border-gray-700">
+        <thead>
+          <tr class="bg-gray-800">
+            <th class="border border-gray-700 p-2 text-left">Octal</th>
+            <th class="border border-gray-700 p-2 text-left">Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <for|preset| of=get("learn.commonPresets.table")>
+            <tr class="hover:bg-gray-800/50">
+              <td class="border border-gray-700 p-2 font-mono">${preset.code}</td>
+              <td class="border border-gray-700 p-2">${preset.description}</td>
+            </tr>
+          </for>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Modifying file permissions -->
+    <section id="security-tips" class="mb-12">
+      // <h2 class="text-3xl font-semibold mb-3">${get("learn.securityTips.title")}</h2>
+      // <ul class="list-disc pl-5 space-y-2">
+      //   <for|tip| of=get("learn.securityTips.points")>
+      //     <li>${tip}</li>
+      //   </for>
+      // </ul>
+      
+      <img
+        src="/images/chmod-modifying-file-permissions-command.png"
+        class="clip-img w-full max-w-full md:max-w-4xl mx-auto yx-2"
+        title=(get('images.chmod-modifying-file-permissions-command.title'))
+        alt=(get('images.chmod-modifying-file-permissions-command.alt'))
+        decoding="async"
+        loading="lazy"
+        width="896"
+      />
+
+      <img
+        src="/images/chmod-modifying-file-permissions-reference.png"
+        class="w-full max-w-full md:max-w-4xl mx-auto yx-2"
+        title=(get('images.chmod-modifying-file-permissions-reference.title'))
+        alt=(get('images.chmod-modifying-file-permissions-reference.alt'))
+        decoding="async"
+        loading="lazy"
+        width="896"
+      />
+    </section>
+
+    <!-- Security tips -->
+    <section id="security-tips" class="mb-12">
+      <h2 class="text-3xl font-semibold mb-3">${get("learn.securityTips.title")}</h2>
+      <ul class="list-disc pl-5 space-y-2">
+        <for|tip| of=get("learn.securityTips.points")>
+          <li>${tip}</li>
+        </for>
+      </ul>
+    </section>
+
+    <!-- Next steps -->
+    <section id="next-steps" class="mb-12">
+      <h2 class="text-3xl font-semibold mb-3">${get("learn.nextSteps.title")}</h2>
+      <p>${get("learn.nextSteps.content")}</p>
+    </section>
+  </Card>
+</div>
+
+style {
+  .clip-img {
+    clip-path: inset(0 0 50px 0);
+  }
+}

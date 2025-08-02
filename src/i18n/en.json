@@ -15,9 +15,17 @@
     "octalBreakdown": "How this was calculated"
   },
   "nav": {
-    "viewOnGitHub": "View on GitHub",
-    "learnChmod": "Learn about chmod",
-    "subtitle": "Linux chmod calculator for generating, converting and verifying file permissions"
+    "subtitle": "Linux chmod calculator for generating, converting and verifying file permissions",
+    "viewOnGitHub": "GitHub",
+    "viewOnGitHubTitle": "View, edit, download the sourcecode for permissionator on GitHub",
+    "viewOnGitHubAria": "View chmod calculator on GitHub",
+    "learnChmod": "Learn chmod",
+    "learnChmodTitle": "About chmod command",
+    "learnChmodAria": "Learn all about the chmod command",
+    "chmodCalculator": "chmod Calculator",
+    "chmodCalculatorTitle": "Use the chmod calculator for generating Linux file permissions",
+    "chmodCalculatorAria": "Try the chmod Calculator",
+    "settingsTitle": "Switch to dark mode, or change the language"
   },
   "what": {
     "aboutChmod": "The chmod command changes file mode bits on Unix and Linux systems. File permissions control who can read, write, or execute a file. They are expressed in octal digits (like 755) or symbolic form (like u=rwx,g=rx,o=rx). The first digit in a four-digit mode denotes special bits: setuid (4), setgid (2), and sticky (1).",
@@ -91,5 +99,109 @@
     "444": "Read-only for everyone — useful for immutable public documents; requires chmod to modify again.",
     "400": "Owner read-only, no one else can access — used for sensitive static files like cryptographic keys.",
     "000": "No permissions for anyone — locks all access until permissions are restored; useful for temporarily disabling access."
+  },
+  "learn": {
+    "title": "All about Linux File Permissions and chmod",
+    "intro": "File permissions in Linux decide who can view, change or run a file. Understanding them is key to keeping your system working smoothly and securely. In this guide, we’ll go from the absolute basics to the more advanced stuff, step by step.",
+    
+    "whatIsChmod": {
+      "title": "What is chmod?",
+      "content": [
+        "chmod is the command used to change file permissions on Unix-like systems. The name comes from 'change mode'.",
+        "With chmod you can allow or deny specific actions for the file's owner, members of its group, or everyone else. You can use it in symbolic form (letters) or octal form (numbers)."
+      ]
+    },
+
+    "howPermissionsWork": {
+      "title": "How permissions work",
+      "intro": "Each file and folder in Linux has three sets of permissions, one for each of these groups:",
+      "points": [
+        "Owner – the person who created or owns the file.",
+        "Group – people who are part of the file's group.",
+        "Others – everyone else on the system."
+      ]
+    },
+
+    "permissionTypes": {
+      "title": "The three permission types",
+      "items": [
+        { "name": "Read (r)", "description": "Lets you view a file's contents or list a folder's files." },
+        { "name": "Write (w)", "description": "Lets you edit a file or add/remove files in a folder." },
+        { "name": "Execute (x)", "description": "Lets you run a file as a program or enter a folder." }
+      ]
+    },
+
+    "symbolicVsOctal": {
+      "title": "Symbolic vs Octal",
+      "content": [
+        "Symbolic form uses letters to set permissions. For example, 'u=rwx,g=rx,o=rx' means the owner has read/write/execute, and everyone else has read/execute.",
+        "Octal form uses numbers. For example, '755' means the same thing as above.",
+        "Octal is shorter and quicker to type, while symbolic is easier to read for beginners."
+      ]
+    },
+
+    "specialBits": {
+      "title": "Special bits",
+      "intro": "Beyond the basic permissions, there are three special bits that change how files and folders behave:",
+      "items": [
+        { "name": "Setuid (4)", "description": "Runs the file with the owner's permissions, not the person running it. Often used for system commands that need extra access." },
+        { "name": "Setgid (2)", "description": "Runs the file with the group's permissions. On folders, new files inherit the folder's group." },
+        { "name": "Sticky (1)", "description": "Prevents people from deleting files they don’t own inside a folder. Common on shared folders like /tmp." }
+      ]
+    },
+
+    "commonPresets": {
+      "title": "Common chmod presets",
+      "intro": "These are some of the most used permission settings:",
+      "table": [
+        { "code": "600", "description": "Owner can read/write, no access for anyone else. Common for SSH private keys." },
+        { "code": "644", "description": "Owner can read/write, others can read only. Default for many text and config files." },
+        { "code": "700", "description": "Owner can read/write/execute, no one else can access. Good for private scripts." },
+        { "code": "755", "description": "Owner can read/write/execute, others can read/execute. Common for scripts and web directories." },
+        { "code": "777", "description": "Everyone can read/write/execute. Avoid on important files; fine for temporary shared scratch space." }
+      ]
+    },
+
+    "securityTips": {
+      "title": "Security tips",
+      "points": [
+        "Only give execute permission if the file needs to be run.",
+        "For sensitive files, restrict access to just the owner.",
+        "Use 644 for public-readable files and 600 for private ones.",
+        "Avoid 777 on files that matter; it lets anyone edit or delete them.",
+        "Test permissions on a non-critical file first if unsure."
+      ]
+    },
+
+    "nextSteps": {
+      "title": "Next steps",
+      "content": "Try changing permissions in a safe test folder. Use this tool to experiment with symbolic and octal forms. Once you’re confident, you can set correct permissions for your actual files."
+    }
+  },
+  "images": {
+    "chmod-calculating-file-permissions": {
+      "title": "Linux File Permissions Explained: rwx to Numeric Conversion",
+      "alt": "Visual guide showing how Linux file permissions convert from symbolic form (rwx, r-x, r-x) to binary and then to numeric form (7, 5, 5) for user, group, and others."
+    },
+    "chmod-modifying-file-permissions-command": {
+      "title": "Understanding chmod Syntax: Who, Operators, and Permissions",
+      "alt": "Diagram explaining chmod syntax with three sections: 'Who' showing u for user, g for group, o for others, a for all; 'Operators' showing + to add, - to remove, and = to set exact permissions; and 'Permissions' showing r for read, w for write, and x for execute."
+    },
+    "chmod-modifying-file-permissions-reference": {
+      "title": "chmod Command Examples for Modifying File Permissions",
+      "alt": "Table showing examples of chmod commands for modifying file permissions, including who the changes apply to, the operation performed, the permission type, and an explanation. Examples include u+r for adding read access to owner, g-w for removing write access from group, and a=x for setting execute-only permission for all."
+    },
+    "chmod-numeric-representation": {
+      "title": "chmod 755 Explained: Numeric and Symbolic File Permissions",
+      "alt": "Diagram showing chmod 755 in numeric and symbolic forms. Numeric form 755 corresponds to rwx for owner, r-x for group, and r-x for others, meaning owner can read, write, and execute, while group and others can only read and execute."
+    },
+    "chmod-reference-table": {
+      "title": "Linux File Permission Values: Octal, Symbolic, and Meaning",
+      "alt": "Table mapping octal numeric values 0–7 to symbolic file permissions and their meanings. For example, 0 is no permissions (---), 4 is read only (r--), 5 is read and execute (r-x), and 7 is read, write, and execute (rwx)."
+    },
+    "chmod-symbolic-representation": {
+      "title": "Understanding Linux File Permission Strings",
+      "alt": "Diagram explaining the structure of Linux file permission strings. Shows file type indicator followed by permissions for owner, group, and public. Example '-rwxr-xr-x' means owner can read, write, and execute, group can read and execute, others can read and execute."
+    }
   }
 }
