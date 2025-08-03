@@ -78,8 +78,37 @@ export function setLanguage(lang: string) {
     currentLang = lang;
     if (typeof window !== "undefined") {
       localStorage.setItem("lang", lang);
+       document.documentElement.setAttribute("lang", lang);
+       updateDocumentProperties(lang);
     }
   }
+}
+
+/* Updates the document properties for the current language */
+function updateDocumentProperties(lang) {
+  if (!document) return;
+  // Build canonical URL
+  const { origin, pathname } = window.location;
+  const cleanPath = pathname.replace(/^\/[a-z]{2}(\/|$)/, "");
+  const canonical = `${origin}/${lang}/${cleanPath}`;
+  
+  // Update canonical link in <head>
+  let link = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+  if (!link) {
+    link = document.createElement("link");
+    link.setAttribute("rel", "canonical");
+    document.head.appendChild(link);
+  }
+  link.setAttribute("href", canonical);
+  // Update <title> if translations provide it
+  if (translations[lang]?.titleLong) {
+    document.title = translations[lang].titleLong;
+  }
+  // Update meta description
+  const descMeta = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+  if (descMeta && translations[lang]?.meta?.description) {
+    descMeta.setAttribute("content", translations[lang].meta.description);
+  } 
 }
 
 /**
