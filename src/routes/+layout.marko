@@ -3,15 +3,37 @@ import "./global.css";
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- Encoding and page settings -->
   <meta charset="UTF-8">
-  <link rel="icon" type="image/png" sizes="32x32" href="./favicon.png">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="A basic Marko app.">
-  <title>${$global.meta.titleLong || 'Marko'}</title>
+  <meta name="theme-color" content="#05df72">
+  <meta name="robots" content="index, follow">
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
+  <link rel="canonical" href="https://permissionator.as93.net/" />
+  
+  <!-- Icons -->
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+  
+  <!-- SEO metadata -->
+  <title>${$global.meta.titleLong || 'Permissionator | CHMOD Calculator for Linux File Permissions'}</title>
+  <meta name="description" content="Linux chmod calculator for generating, converting and verifying file permissions">
+  <meta name="keywords" content="chmod, calculator, linux, file permissions, permission calculator, permission generator">
+  <meta name="author" content="Alicia Sykes">
+  
+  <!-- Open Graph metadata for social sharing -->
+  <meta property="og:title" content="Permissionaror | chmod calculator">
+  <meta property="og:description" content="Set Linux file permissions with this interactive chmod calculator. Supports numeric and symbolic notation for quick, error-free permission settings.">
+  <meta property="og:image" content="https://permissionaror.as93.net/banner.png">
+  <meta property="og:url" content="https://permissionaror.as93.net">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Permissionaror">
+  
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-
 
   <!-- Language alternatives -->
   <link rel="alternate" hreflang="en" href="https://permissionaror.as93.net/" />
@@ -34,6 +56,18 @@ import "./global.css";
   if (localStorage && document) {
     const theme = localStorage.getItem("theme") || "dark";
     document.documentElement.setAttribute("data-theme", theme);
+  }
+  </script>
+  <!-- Structured Data (Schema.org JSON-LD for Rich Results) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Permissionaror",
+    "url": "https://permissionaror.as93.net/",
+    "description": "Visual chmod calculator and permission manager. Supports multiple languages.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any"
   }
   </script>
 </head>
