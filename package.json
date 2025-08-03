@@ -10,7 +10,8 @@
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
-    "@marko/run": "^0.8.0"
+    "@marko/run": "^0.8.0",
+    "@marko/run-adapter-netlify": "^3.0.1"
   },
   "private": true,
   "scripts": {
