@@ -1,14 +1,52 @@
+// Import the language translations as json
 import en from "./en.json";
 import de from "./de.json";
+import fr from "./fr.json";
+import ru from "./ru.json";
+import id from "./id.json";
+import it from "./it.json";
+import es from "./es-ES.json";
+import ja from "./ja-JP.json";
+import pt from "./pt-BR.json";
+import ch from "./zh-CN.json";
+import hi from "./hi-IN.json";
+import sa from "./ar-SA.json";
+import kr from "./ko-KR.json";
+
 
 // List of supported languages
 export const languages = [
   { code: "en", label: "English", flag: "🇬🇧" },
-  { code: "de", label: "Deutsch", flag: "🇩🇪" }
+  { code: "de", label: "Deutsch", flag: "🇩🇪" },
+  { code: "fr", label: "Français", flag: "🇫🇷" },
+  { code: "ru", label: "Русский", flag: "🇷🇺" },
+  { code: "es", label: "Español", flag: "🇪🇸" },
+  { code: "ja", label: "日本語", flag: "🇯🇵" },
+  { code: "pt", label: "Português", flag: "🇧🇷" },
+  { code: "zh-CN", label: "中文 (简体)", flag: "🇨🇳" },
+  { code: "hi-IN", label: "हिन्दी", flag: "🇮🇳" },
+  { code: "ar-SA", label: "العربية", flag: "🇸🇦" },
+  { code: "ko-KR", label: "한국어", flag: "🇰🇷" },
+  { code: "id", label: "Bahasa Indonesia", flag: "🇮🇩" },
+  { code: "it", label: "Italiano", flag: "🇮🇹" },
 ];
 
 // Map of language codes to their respective translation objects
-const translations: Record<string, any> = { en, de };
+const translations: Record<string, any> = {
+  en,
+  de,
+  fr,
+  ru,
+  es,
+  ja,
+  pt,
+  id,
+  it,
+  'zh-CN': ch,
+  'hi-IN': hi,
+  'ar-SA': sa,
+  'ko-KR': kr,
+};
 
 // Default language to use for all fallbacks, if missing key/or no language set
 const defaultLang = "en";

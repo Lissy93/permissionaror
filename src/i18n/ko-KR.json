@@ -1,0 +1,299 @@
+{
+  "title": "Permissionator",
+  "titleLong": "Permissionator | CHMOD 계산기",
+  "subtitle": "Linux 파일 권한을 생성·변환·검증하는 chmod 계산기",
+  "subheadings": {
+    "permissions": "권한",
+    "output": "출력",
+    "exampleCommands": "명령 예시",
+    "aboutChmod": "chmod란?",
+    "commonPresets": "자주 쓰는 프리셋",
+    "specialBits": "특수 비트",
+    "customOctal": "사용자 지정 8진수",
+    "outputFile": "출력 옵션",
+    "explanation": "무슨 뜻인지",
+    "octalBreakdown": "어떻게 계산했는지",
+    "cheatSheet": "요약표"
+  },
+  "nav": {
+    "subtitle": "Linux 파일 권한을 생성·변환·검증하는 chmod 계산기",
+    "viewOnGitHub": "GitHub",
+    "viewOnGitHubTitle": "GitHub에서 Permissionator 소스코드를 보고, 편집하고, 다운로드",
+    "viewOnGitHubAria": "GitHub에서 chmod 계산기 보기",
+    "learnChmod": "chmod 배우기",
+    "learnChmodTitle": "chmod 명령어 소개",
+    "learnChmodAria": "chmod 명령어 전반 배우기",
+    "chmodCalculator": "chmod 계산기",
+    "chmodCalculatorTitle": "Linux 파일 권한 생성을 위해 chmod 계산기 사용",
+    "chmodCalculatorAria": "chmod 계산기 사용해 보기",
+    "settingsTitle": "다크 모드로 전환하거나 언어 변경"
+  },
+  "what": {
+    "aboutChmod": "Linux의 파일 권한은 누가 파일을 읽고, 쓰고/편집하고, 실행할 수 있는지 제어한다. 이 권한은 chmod 명령어로 설정한다.",
+    "aboutChmod2": "이 권한은 Linux와 UNIX 계열 시스템의 핵심 기능이다. 무단 접근이나 변경을 막고, 실수로 인한 수정에서 보호하며, 필요한 사용자만 프로그램을 실행하도록 보장한다.",
+    "aboutChmod3": "권한을 설정/업데이트하려면 `chmod`를 사용한다. 형식은 `chmod [권한] [파일/디렉터리]`. 권한은 8진수(예: 755)나 기호 형식(예: u=rwx,g=rx,o=rx)으로 표현한다. 순서는 항상 (1) 사용자, (2) 그룹, (3) 기타/공개다.",
+    "commonExamples": "일반적인 예시",
+    "commonPresets": [
+      {
+        "number": "chmod 600 ~/.ssh/id_rsa",
+        "description": "소유자 읽기/쓰기; SSH 키 같은 개인 파일"
+      },
+      {
+        "number": "chmod 644 /var/www/html/index.html",
+        "description": "소유자 읽기/쓰기; 나머지는 읽기만; 일반 텍스트 파일"
+      },
+      {
+        "number": "chmod 700 /home/user/private_script.sh",
+        "description": "소유자 완전 권한; 개인 스크립트나 디렉터리"
+      },
+      {
+        "number": "chmod 755 /usr/local/bin/my_script.sh",
+        "description": "소유자와 그룹 사용자 전체 접근, 그 외 사용자는 읽기/실행만 가능"
+      },
+      {
+        "number": "chmod 775 /shared/project",
+        "description": "모두 읽기와 실행 가능하지만 쓰기는 소유자만; 공유 디렉터리에 적합"
+      }
+    ],
+    "cards": [
+      {
+        "heading": "8진수 기초",
+        "description": "역할마다 한 자리씩: 읽기=4, 쓰기=2, 실행=1. 더해서 값 결정: 예) rwx=7, rw-=6, r-x=5, r--=4. 흔한 모드: 파일 644, 디렉터리 755."
+      },
+      {
+        "heading": "기호 형식",
+        "description": "사용자(u), 그룹(g), 기타(o)에 +, -, =를 쓴다. 예: chmod u=rw,g=r,o= file.txt는 소유자 읽기/쓰기, 그룹 읽기, 기타 접근 없음으로 설정."
+      },
+      {
+        "heading": "특수 비트",
+        "description": "setuid는 소유자 권한으로 실행, setgid는 그룹 권한으로 실행, sticky는 공유 디렉터리에서 다른 사람 파일 삭제를 막는다(예: /tmp)."
+      }
+    ]
+  },
+  "examples": {
+    "1": {
+      "title": "예제 #1 - 기호 형식",
+      "explanation": "이 명령은 소유자에겐 읽기·쓰기·실행을, 그룹과 기타 사용자에겐 읽기와 실행(쓰기 제외)을 부여한다."
+    },
+    "2": {
+      "title": "예제 #2 - 8진수 표기",
+      "explanation": "이 명령은 소유자에겐 읽기·쓰기·실행을, 그룹과 기타 사용자에겐 읽기와 실행(쓰기 제외)을 부여한다."
+    },
+    "3": {
+      "title": "예제 #3 - 단일 권한 업데이트",
+      "explanation": "이 명령은 그룹의 쓰기 권한만 제거하고 읽기와 실행은 유지한다. 소유자와 기타 사용자는 영향 없다."
+    },
+    "4": {
+      "title": "예제 #4 - 단일 권한 업데이트",
+      "explanation": "소유자에겐 실행 권한만 추가하고 읽기와 쓰기는 유지한다. 그룹과 기타는 영향 없다. 아래는 전체 옵션 목록."
+    },
+    "5": {
+      "title": "예제 #5 - 자주 쓰는 프리셋 — 빠른 참조",
+      "explanation": "파일을 소유자는 읽기/쓰기 가능, 그룹과 기타는 읽기만 가능하게 만든다. 기억해라: 첫 자리는 사용자, 둘째는 그룹, 셋째는 기타. 아래 요약표로 원하는 권한을 조합할 수 있다."
+    }
+  },
+  "singlePermissionTool": {
+    "title": "단일 권한 chmod 생성기",
+    "description1": "이 도구로 단일 권한 변경용 chmod 명령을 생성할 수 있다.",
+    "description2": "즉, 다른 권한은 그대로 유지된다. 특정 사용자 유형에 대해 한 가지 권한을 쉽게 수정/추가/제거할 수 있다.",
+    "outputLabel": "생성된 명령",
+    "useThis": "이 명령으로"
+  },
+  "explain": {
+    "roles": {
+      "owner": "파일 소유자",
+      "group": "그룹 사용자",
+      "public": "모든 사용자"
+    },
+    "permissions": {
+      "r": "읽기",
+      "w": "쓰기",
+      "x": "실행"
+    },
+    "explanation": {
+      "can": "할 수 있음",
+      "cannot": "할 수 없음",
+      "and": "및",
+      "butNot": "하지만",
+      "butNoOneElse": "하지만 다른 사람은 접근 없음",
+      "cannotDoAnything": "읽기·쓰기·실행 모두 불가",
+      "noAccessForOthers": "다른 사람은 접근 없음"
+    },
+    "everyone": "모두"
+  },
+  "customExplanations": {
+    "777": "모두에게 읽기/쓰기/실행 전체 허용 — 테스트나 임시 공개 디렉터리에 유용하지만, 누구나 수정·삭제할 수 있어 운영 환경에선 매우 위험하다.",
+    "755": "디렉터리와 실행 파일에 흔함 — 소유자는 수정 가능, 그 외 사용자는 읽기와 실행만. 공개 스크립트나 웹 서버 디렉터리에 적합하다.",
+    "750": "소유자는 완전 권한, 그룹은 읽기·실행, 기타는 접근 없음 — 팀 공유 스크립트에 좋고 외부인은 차단된다.",
+    "700": "소유자만 읽기·쓰기·실행 가능 — ~/.ssh 같은 개인 스크립트나 설정 디렉터리에 적합.",
+    "644": "소유자는 읽기/쓰기, 그 외는 읽기만 — 소유자만 편집하는 텍스트·설정·웹 콘텐츠의 표준.",
+    "640": "소유자는 읽기/쓰기, 그룹은 읽기만, 기타는 접근 없음 — 공개하지 않는 내부 문서에 적합.",
+    "600": "소유자만 읽기와 쓰기 — SSH 개인 키 같은 민감한 파일에 일반적이며, 그룹/공개는 접근 불가.",
+    "444": "모두 읽기만 — 변경 불가한 공개 문서에 유용; 수정하려면 다시 chmod가 필요.",
+    "400": "소유자만 읽기, 다른 사람은 접근 없음 — 암호 키 같은 민감한 정적 파일에 사용.",
+    "000": "누구에게도 권한 없음 — 권한 복구 전까지 모든 접근을 잠근다; 일시적으로 접근을 막을 때 유용."
+  },
+  "learn": {
+    "title": "Linux 파일 권한과 chmod 완전 정복",
+    "intro": "권한은 누가 파일을 읽고, 쓰고, 실행할 수 있는지 나타낸다. 필요한 사람에게만 접근을 주면 시스템을 안전하고 안정적으로 유지할 수 있다.",
+    "whatArePermissions": {
+      "title": "파일 권한이란?",
+      "content": [
+        "파일/폴더를 누가 읽고, 쓰고, 실행할 수 있는지를 Linux에서 권한이 제어한다.",
+        "데이터를 보호하고 원치 않는 변경을 막으며, 프로그램이 의도된 때에만 실행되도록 보장한다.",
+        "권한은 Linux 보안의 핵심 축 중 하나다 — 없으면 누구나 시스템 파일을 바꾸거나 개인 데이터를 읽을 수 있다.",
+        "권한은 chmod 명령으로 설정한다. 아래에서 자세히 다룬다."
+      ]
+    },
+    "userTypes": {
+      "title": "사용자 유형",
+      "intro": "Linux 권한은 세 가지 사용자 범주에 각각 적용된다:",
+      "points": [
+        {
+          "name": "소유자",
+          "description": "보통 파일을 만든 사람 또는 소유자."
+        },
+        {
+          "name": "그룹",
+          "description": "해당 파일의 그룹에 속한 사용자."
+        },
+        {
+          "name": "기타",
+          "description": "소유자도 그룹도 아닌 시스템의 나머지 사용자."
+        }
+      ]
+    },
+    "permissionTypes": {
+      "title": "권한 종류",
+      "items": [
+        { "name": "읽기 (r)", "description": "파일 내용을 보거나 폴더의 파일 목록을 본다." },
+        { "name": "쓰기 (w)", "description": "파일을 수정하거나 폴더에 파일을 추가/삭제한다." },
+        { "name": "실행 (x)", "description": "파일을 프로그램으로 실행하거나 폴더에 들어간다." }
+      ]
+    },
+    "chmodIntro": {
+      "title": "chmod 명령어",
+      "content": [
+        "chmod는 ‘change mode’의 약자다. 파일이나 폴더의 권한을 바꾼다.",
+        "기호 형식(문자, 예: rwx)이나 숫자 형식(8진수, 예: 777)으로 사용할 수 있다.",
+        "단일 파일부터 폴더 전체까지 적용된다."
+      ]
+    },
+    "symbolicRepresentation": {
+      "title": "기호 표기",
+      "content": [
+        "첫 번째 방법은 기호 모드로, 사용자 유형별로 문자를 써서 권한을 지정한다.",
+        "기억·읽기·이해가 쉬우나 8진수보다 조금 장황하다.",
+        "r은 읽기, w는 쓰기, x는 실행이다. 문자가 하이픈(-)으로 바뀌면 그 권한은 부여되지 않은 것이다."
+      ]
+    },
+    "octalRepresentation": {
+      "title": "8진수(숫자) 표기",
+      "content": [
+        "8진수 모드는 숫자로 권한을 표현한다.",
+        "읽기 = 4, 쓰기 = 2, 실행 = 1.",
+        "이들을 더해 숫자를 만든다. 예를 들어 7은 읽기·쓰기·실행을 모두 허용한다는 뜻이다.",
+        "마찬가지로 소유자, 그룹, 기타 순서로 지정한다.",
+        "즉 755는 소유자 rwx(7), 그룹 rx(5), 기타 rx(5)를 의미한다."
+      ],
+      "howCalculated": "숫자가 랜덤처럼 보인다면, 이게 이진수 계산과 같다는 걸 알면 쉽다. 111(rwx)=7, 101(r-x)=5, 100(r--)=4."
+    },
+    "updateSinglePermission": {
+      "title": "단일 권한 업데이트",
+      "content": [
+        "대부분은 파일/폴더의 모든 권한이 아니라 일부만 바꾸고 싶을 때가 많다.",
+        "예를 들어 소유자에 실행만 추가, 공개 사용자에서 쓰기 제거, 그룹을 읽기 전용으로 설정 등.",
+        "이는 기호 모드에서 `+`, `-`, `=` 연산자를 써서 `chmod [대상][연산자][권한] 파일` 형식으로 실행한다.",
+        "여기서 `대상`은 `u`(소유자), `g`(그룹), `o`(기타), `a`(전체)다.",
+        "`연산자`는 `+`(추가), `-`(제거), `=`(정확히 설정)다.",
+        "예: `chmod g-w file.txt`는 그룹의 쓰기 권한을 제거한다."
+      ]
+    },
+    "recursiveChanges": {
+      "title": "재귀적으로 권한 변경",
+      "content": [
+        "`-R` 플래그로 디렉터리 안의 모든 파일과 폴더에 권한 변경을 적용할 수 있다.",
+        "예: `chmod -R 755 /var/www`는 /var/www 아래 모든 항목에 755를 적용한다.",
+        "단, 잘못 쓰면 시스템 파일을 망가뜨릴 수 있으니 주의하자."
+      ]
+    },
+    "ownership": {
+      "title": "소유권과 chmod",
+      "content": [
+        "권한은 소유권과 함께 동작한다. 각 파일에는 소유자와 그룹이 있다.",
+        "파일의 소유자를 바꿔야 한다면 `chown`을 사용한다.",
+        "예: `sudo chown user:group file.txt`는 소유자와 그룹을 모두 바꾼다."
+      ]
+    },
+    "specialBits": {
+      "title": "특수 비트",
+      "intro": "읽기/쓰기/실행 외에도 Linux엔 특수 권한 비트가 있다:",
+      "items": [
+        { "name": "Setuid (4)", "description": "호출한 사용자 대신 파일 소유자의 권한으로 실행한다." },
+        { "name": "Setgid (2)", "description": "그룹 권한으로 실행한다. 디렉터리에선 새 파일이 그룹을 상속한다." },
+        { "name": "Sticky (1)", "description": "디렉터리에서 사용자가 남의 파일을 삭제하지 못하게 막는다. /tmp에서 흔하다." }
+      ]
+    },
+    "commonPresets": {
+      "title": "자주 쓰는 chmod 프리셋",
+      "intro": "대표적인 권한 조합과 용도:",
+      "table": [
+        { "code": "600", "description": "소유자 읽기/쓰기. 기타 접근 없음. SSH 개인 키." },
+        { "code": "644", "description": "소유자 읽기/쓰기. 기타 읽기. 많은 파일의 기본값." },
+        { "code": "700", "description": "소유자 완전 권한. 기타 접근 없음. 개인 스크립트." },
+        { "code": "755", "description": "소유자 읽기/쓰기/실행. 기타 읽기/실행. 스크립트에서 흔함." },
+        { "code": "777", "description": "모두 읽기/쓰기/실행. 임시 공유 폴더가 아니면 피하자." }
+      ]
+    },
+    "debugging": {
+      "title": "파일 권한 디버깅",
+      "intro": "문제가 생기면 이런 에러를 볼 수 있다:",
+      "errors": [
+        { "message": "Permission denied", "fix": "파일 실행 권한이나 폴더 읽기 권한이 있는지 확인. `chmod +x file` 또는 `chmod +r folder`로 추가." },
+        { "message": "Operation not permitted", "fix": "시스템 소유 파일일 수 있으니 `sudo`가 필요할 수 있다." },
+        { "message": "Read-only file system", "fix": "파일 시스템이 읽기 전용으로 마운트됨. 쓰기 가능으로 재마운트하거나 관리자에게 문의." },
+        { "message": "Cannot open file: No such file or directory", "fix": "경로가 잘못됐을 수 있다. `ls`로 확인." }
+      ]
+    },
+    "securityTips": {
+      "title": "보안 팁",
+      "points": [
+        "정말 필요할 때만 파일을 실행 가능하게 하자.",
+        "개인 파일엔 600, 공개 읽기 파일엔 644를 쓰자.",
+        "정말 필요한 경우가 아니면 777은 피하자.",
+        "변경 전 `ls -l`로 권한을 확인하자.",
+        "먼저 중요하지 않은 파일에서 테스트하자."
+      ]
+    },
+    "nextSteps": {
+      "title": "다음 단계",
+      "content": "테스트용 디렉터리를 만들어 chmod를 기호/숫자 두 방식으로 연습해 보자. 익숙해지면 실제 파일에도 안전하게 적용할 수 있다."
+    }
+  },
+  "images": {
+    "chmod-calculating-file-permissions": {
+      "title": "Linux 파일 권한 해설: rwx에서 숫자로",
+      "alt": "기호 형식(rwx, r-x, r-x)에서 이진수를 거쳐 사용자·그룹·기타에 대한 숫자(7, 5, 5)로 바뀌는 과정을 보여 주는 시각 가이드."
+    },
+    "chmod-modifying-file-permissions-command": {
+      "title": "chmod 문법 이해: 대상, 연산자, 권한",
+      "alt": "세 섹션으로 chmod 문법 설명: ‘대상’은 u(사용자), g(그룹), o(기타), a(전체); ‘연산자’는 + 추가, - 제거, = 정확히 설정; ‘권한’은 r 읽기, w 쓰기, x 실행."
+    },
+    "chmod-modifying-file-permissions-reference": {
+      "title": "파일 권한 수정용 chmod 명령 예시",
+      "alt": "변경 대상, 수행 작업, 권한 종류, 설명을 담은 chmod 예시 표. 예: u+r(소유자에 읽기 추가), g-w(그룹에서 쓰기 제거), a=x(전체 실행만)."
+    },
+    "chmod-numeric-representation": {
+      "title": "chmod 755 해설: 숫자와 기호 권한",
+      "alt": "숫자·기호 형식의 chmod 755를 보여 주는 다이어그램. 755는 소유자 rwx, 그룹 r-x, 기타 r-x에 해당하며, 소유자는 읽기·쓰기·실행, 그룹/기타는 읽기·실행만 가능함을 뜻한다."
+    },
+    "chmod-reference-table": {
+      "title": "Linux 권한 값: 8진수, 기호, 의미",
+      "alt": "8진수 0–7을 기호 권한과 의미에 매핑한 표. 예: 0은 권한 없음(---), 4는 읽기만(r--), 5는 읽기+실행(r-x), 7은 읽기+쓰기+실행(rwx)."
+    },
+    "chmod-symbolic-representation": {
+      "title": "Linux 권한 문자열 이해하기",
+      "alt": "Linux 권한 문자열 구조를 설명하는 다이어그램. 파일 유형 표식 뒤에 소유자·그룹·공용 권한이 온다. 예 ‘-rwxr-xr-x’는 소유자는 읽기/쓰기/실행, 그룹과 기타는 읽기/실행 가능을 의미."
+    }
+  }
+}

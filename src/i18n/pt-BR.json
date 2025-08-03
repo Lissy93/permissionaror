@@ -1,0 +1,299 @@
+{
+  "title": "Permissionator",
+  "titleLong": "Permissionator | Calculadora de CHMOD",
+  "subtitle": "Calculadora de chmod para gerar, converter e verificar permissões de arquivos no Linux",
+  "subheadings": {
+    "permissions": "Permissões",
+    "output": "Saída",
+    "exampleCommands": "Comandos de exemplo",
+    "aboutChmod": "O que é chmod?",
+    "commonPresets": "Predefinições comuns",
+    "specialBits": "Bits especiais",
+    "customOctal": "Octal personalizado",
+    "outputFile": "Opções de saída",
+    "explanation": "O que isso significa",
+    "octalBreakdown": "Como foi calculado",
+    "cheatSheet": "Guia rápido"
+  },
+  "nav": {
+    "subtitle": "Calculadora de chmod para gerar, converter e verificar permissões de arquivos no Linux",
+    "viewOnGitHub": "GitHub",
+    "viewOnGitHubTitle": "Ver, editar e baixar o código-fonte do Permissionator no GitHub",
+    "viewOnGitHubAria": "Ver a calculadora de chmod no GitHub",
+    "learnChmod": "Aprender chmod",
+    "learnChmodTitle": "Sobre o comando chmod",
+    "learnChmodAria": "Aprenda tudo sobre o comando chmod",
+    "chmodCalculator": "Calculadora de chmod",
+    "chmodCalculatorTitle": "Use a calculadora de chmod para gerar permissões de arquivo no Linux",
+    "chmodCalculatorAria": "Experimente a calculadora de chmod",
+    "settingsTitle": "Ativar modo escuro ou mudar o idioma"
+  },
+  "what": {
+    "aboutChmod": "As permissões de arquivos no Linux controlam quem pode ler, escrever/editar e executar um arquivo. O comando chmod é usado para definir essas permissões.",
+    "aboutChmod2": "Essas permissões são um recurso essencial do Linux e de sistemas tipo UNIX. Elas evitam acesso ou alterações não autorizadas, protegem contra mudanças acidentais e garantem que só os usuários certos executem programas.",
+    "aboutChmod3": "Para definir ou atualizar permissões, usamos o comando `chmod`, no formato `chmod [permissões] [arquivo/diretório]`. As permissões podem ser expressas em dígitos octais (como 755) ou em forma simbólica (como u=rwx,g=rx,o=rx). A combinação do chmod é sempre indicada na ordem: (1) usuário, (2) grupo e (3) outros/público.",
+    "commonExamples": "Exemplos comuns",
+    "commonPresets": [
+      {
+        "number": "chmod 600 ~/.ssh/id_rsa",
+        "description": "Proprietário leitura/escrita; arquivos privados como chaves SSH"
+      },
+      {
+        "number": "chmod 644 /var/www/html/index.html",
+        "description": "Proprietário leitura/escrita; demais apenas leitura; arquivos de texto típicos"
+      },
+      {
+        "number": "chmod 700 /home/user/private_script.sh",
+        "description": "Proprietário com controle total; scripts ou diretórios privados"
+      },
+      {
+        "number": "chmod 755 /usr/local/bin/my_script.sh",
+        "description": "O proprietário e os usuários do grupo têm acesso total; os demais só podem ler e executar"
+      },
+      {
+        "number": "chmod 775 /shared/project",
+        "description": "Todos podem ler e executar, mas só o proprietário pode escrever; bom para diretórios compartilhados"
+      }
+    ],
+    "cards": [
+      {
+        "heading": "Noções básicas de octal",
+        "description": "Cada papel recebe um dígito: leitura=4, escrita=2, execução=1. Some para obter o dígito: ex., rwx = 7, rw- = 6, r-x = 5, r-- = 4. Modos comuns: 644 para arquivos, 755 para diretórios."
+      },
+      {
+        "heading": "Forma simbólica",
+        "description": "Use letras para usuário (u), grupo (g) e outros (o) com +, - ou =. Por exemplo: chmod u=rw,g=r,o= file.txt define leitura/escrita para o proprietário, leitura para o grupo e sem acesso para outros."
+      },
+      {
+        "heading": "Bits especiais",
+        "description": "setuid executa programas com os privilégios do proprietário; setgid executa com os privilégios do grupo; sticky impede que usuários apaguem arquivos de outros em diretórios compartilhados (ex.: /tmp)."
+      }
+    ]
+  },
+  "examples": {
+    "1": {
+      "title": "Exemplo #1 - Forma simbólica",
+      "explanation": "Este comando dará permissão de leitura, escrita e execução ao proprietário, e leitura e execução (mas não escrita) ao grupo e a todos os demais usuários."
+    },
+    "2": {
+      "title": "Exemplo #2 - Notação octal",
+      "explanation": "Este comando dará permissão de leitura, escrita e execução ao proprietário, e leitura e execução (mas não escrita) ao grupo e a todos os demais usuários."
+    },
+    "3": {
+      "title": "Exemplo #3 - Atualizando uma única permissão",
+      "explanation": "Este comando removerá a permissão de escrita do grupo, mas manterá leitura e execução. O proprietário e os outros não serão afetados."
+    },
+    "4": {
+      "title": "Exemplo #4 - Atualizando uma única permissão",
+      "explanation": "Dá ao proprietário permissão de execução mantendo leitura e escrita. O grupo e os demais não serão afetados. Abaixo está a lista completa de opções."
+    },
+    "5": {
+      "title": "Exemplo #5 - Predefinições comuns — Referência rápida",
+      "explanation": "Isso tornará um arquivo legível e gravável pelo proprietário, e apenas legível para o grupo e outros. Lembre: o primeiro dígito é usuário, o segundo é grupo, o terceiro é outros. Assim você pode usar a referência rápida abaixo para montar suas próprias permissões."
+    }
+  },
+  "singlePermissionTool": {
+    "title": "Gerador de chmod para uma única permissão",
+    "description1": "Esta ferramenta permite gerar um comando chmod para uma única alteração de permissão.",
+    "description2": "Isso significa que todas as outras permissões permanecem inalteradas. Assim você pode modificar/adicionar/remover facilmente uma permissão para um tipo de usuário.",
+    "outputLabel": "Comando gerado",
+    "useThis": "Use este comando para"
+  },
+  "explain": {
+    "roles": {
+      "owner": "O proprietário do arquivo",
+      "group": "Usuários do grupo",
+      "public": "Todos os demais"
+    },
+    "permissions": {
+      "r": "ler",
+      "w": "escrever",
+      "x": "executar"
+    },
+    "explanation": {
+      "can": "pode",
+      "cannot": "não pode",
+      "and": "e",
+      "butNot": "mas não",
+      "butNoOneElse": "mas ninguém mais tem acesso",
+      "cannotDoAnything": "não pode ler, escrever nem executar",
+      "noAccessForOthers": "ninguém mais tem acesso"
+    },
+    "everyone": "Todos"
+  },
+  "customExplanations": {
+    "777": "Acesso total de leitura/escrita/execução para todos — ótimo para testes ou diretórios públicos temporários, mas muito inseguro em produção porque qualquer um pode modificar ou apagar arquivos.",
+    "755": "Comum para diretórios e executáveis — o proprietário pode modificar; os demais podem ler e executar. Seguro para scripts públicos ou diretórios de servidor web.",
+    "750": "O proprietário tem controle total, o grupo pode ler e executar e outros não têm acesso — bom para scripts compartilhados pela equipe, bloqueando terceiros.",
+    "700": "Só o proprietário pode ler, escrever e executar — ideal para scripts privados ou diretórios de configuração como ~/.ssh.",
+    "644": "O proprietário pode ler/escrever; os demais só leitura — padrão para arquivos de texto, configs e conteúdo web onde só o proprietário edita.",
+    "640": "O proprietário pode ler/escrever, o grupo só leitura e outros sem acesso — bom para documentos internos sem acesso público.",
+    "600": "Apenas o proprietário pode ler e escrever — típico para arquivos sensíveis como chaves privadas SSH, garantindo que grupo e público não tenham acesso.",
+    "444": "Somente leitura para todos — útil para documentos públicos imutáveis; exige usar chmod novamente para modificar.",
+    "400": "Somente leitura para o proprietário; ninguém mais acessa — usado para arquivos estáticos sensíveis como chaves criptográficas.",
+    "000": "Sem permissões para ninguém — bloqueia todo acesso até restaurar as permissões; útil para desabilitar temporariamente o acesso."
+  },
+  "learn": {
+    "title": "Tudo sobre permissões de arquivos no Linux e chmod",
+    "intro": "Permissões indicam quais usuários podem ler, escrever ou executar arquivos. É importante que só quem precisa de acesso o tenha, para manter seu sistema seguro e funcionando direito.",
+    "whatArePermissions": {
+      "title": "O que são permissões de arquivo?",
+      "content": [
+        "Permissões controlam quem pode ler, escrever ou executar um arquivo ou pasta em um sistema Linux.",
+        "Elas existem para manter seus dados seguros, evitar mudanças indesejadas e garantir que programas só rodem quando previsto.",
+        "Permissões são um dos pilares da segurança do Linux — sem elas, qualquer um poderia alterar arquivos do sistema ou ler seus dados privados.",
+        "As permissões são definidas com o comando chmod, que veremos em detalhe abaixo."
+      ]
+    },
+    "userTypes": {
+      "title": "Tipos de usuário",
+      "intro": "As permissões no Linux são aplicadas separadamente a três categorias de usuários:",
+      "points": [
+        {
+          "name": "Proprietário",
+          "description": "Normalmente quem criou ou é dono do arquivo."
+        },
+        {
+          "name": "Grupo",
+          "description": "Outros usuários que fazem parte do grupo do arquivo."
+        },
+        {
+          "name": "Outros",
+          "description": "Todos os demais no sistema que não são o proprietário nem estão no grupo."
+        }
+      ]
+    },
+    "permissionTypes": {
+      "title": "Tipos de permissão",
+      "items": [
+        { "name": "Leitura (r)", "description": "Ver o conteúdo de um arquivo ou listar arquivos de uma pasta." },
+        { "name": "Escrita (w)", "description": "Modificar um arquivo ou adicionar/remover arquivos em uma pasta." },
+        { "name": "Execução (x)", "description": "Executar um arquivo como programa ou entrar em uma pasta." }
+      ]
+    },
+    "chmodIntro": {
+      "title": "O comando chmod",
+      "content": [
+        "chmod significa 'change mode'. Ele altera as permissões de um arquivo ou pasta.",
+        "Você pode usá-lo na forma simbólica (letras, como rwx) ou na forma numérica (números octais, como 777).",
+        "Funciona em arquivos únicos ou em pastas inteiras."
+      ]
+    },
+    "symbolicRepresentation": {
+      "title": "Representação simbólica",
+      "content": [
+        "A primeira opção para especificar permissões é o modo simbólico, que usa letras para definir permissões por tipo de usuário.",
+        "Isso facilita lembrar, ler e entender, mas é mais verboso que o octal.",
+        "Então, r significa leitura, w escrita e x execução. Se um desses caracteres for substituído por um traço (-), significa que a permissão não foi concedida."
+      ]
+    },
+    "octalRepresentation": {
+      "title": "Representação octal (numérica)",
+      "content": [
+        "O modo octal usa números para representar as permissões.",
+        "Onde leitura = 4, escrita = 2 e execução = 1.",
+        "Depois some para chegar ao número; neste exemplo 7, que significa que o usuário indicado pode ler, escrever e executar o arquivo.",
+        "Similar ao anterior, isso é especificado na ordem proprietário, grupo e outros.",
+        "Então 755 significa que o proprietário tem rwx (7), o grupo tem rx (5) e outros têm rx (5)."
+      ],
+      "howCalculated": "Se esses números parecem aleatórios, ajuda saber que são calculados como quaisquer dígitos binários. Assim, 111 (rwx) é 7, 101 (r-x) é 5 e 100 (r--) é 4."
+    },
+    "updateSinglePermission": {
+      "title": "Atualizando uma única permissão",
+      "content": [
+        "Muitas vezes você não vai querer mudar todas as permissões de um arquivo/pasta, e sim alterar só uma parte.",
+        "Por exemplo, apenas adicionar execução para o proprietário, remover escrita para usuários públicos ou definir somente leitura para o grupo.",
+        "Isso pode ser feito no modo simbólico usando os operadores `+`, `-` ou `=`, seguindo o formato `chmod [quem][operador][permissão] arquivo`.",
+        "`quem` pode ser `u` (proprietário), `g` (grupo), `o` (outros) ou `a` (todos).",
+        "`operador` pode ser `+` (adicionar), `-` (remover) ou `=` (definir exatamente).",
+        "Exemplo: `chmod g-w file.txt` remove a permissão de escrita do grupo."
+      ]
+    },
+    "recursiveChanges": {
+      "title": "Alterando permissões recursivamente",
+      "content": [
+        "Use a opção `-R` para mudar as permissões de todos os arquivos e pastas dentro de um diretório.",
+        "Por exemplo: `chmod -R 755 /var/www` aplicará 755 a cada arquivo e pasta em /var/www.",
+        "Mas cuidado: mudanças recursivas podem quebrar arquivos do sistema se usadas incorretamente."
+      ]
+    },
+    "ownership": {
+      "title": "Propriedade e chmod",
+      "content": [
+        "As permissões funcionam junto com a propriedade. Cada arquivo tem um proprietário e um grupo.",
+        "Se você precisar mudar quem é o dono de um arquivo, use `chown`.",
+        "Exemplo: `sudo chown user:group file.txt` altera tanto o proprietário quanto o grupo."
+      ]
+    },
+    "specialBits": {
+      "title": "Bits especiais",
+      "intro": "Além de leitura/escrita/execução, o Linux tem bits de permissão especiais:",
+      "items": [
+        { "name": "Setuid (4)", "description": "Executa o arquivo com as permissões do proprietário em vez das do usuário." },
+        { "name": "Setgid (2)", "description": "Executa o arquivo com as permissões do grupo. Em diretórios, arquivos novos herdam o grupo." },
+        { "name": "Sticky (1)", "description": "Em diretórios, impede que usuários apaguem arquivos que não são deles. Comum em /tmp." }
+      ]
+    },
+    "commonPresets": {
+      "title": "Predefinições comuns do chmod",
+      "intro": "Aqui vão conjuntos de permissões comuns e seus usos:",
+      "table": [
+        { "code": "600", "description": "Proprietário pode ler/escrever. Sem acesso para outros. Chaves privadas SSH." },
+        { "code": "644", "description": "Proprietário pode ler/escrever. Outros podem ler. Padrão para muitos arquivos." },
+        { "code": "700", "description": "Proprietário tem controle total. Sem acesso para outros. Scripts privados." },
+        { "code": "755", "description": "Proprietário pode ler/escrever/executar. Outros podem ler/executar. Comum para scripts." },
+        { "code": "777", "description": "Todos podem ler/escrever/executar. Evite, a menos que seja para pastas compartilhadas temporárias." }
+      ]
+    },
+    "debugging": {
+      "title": "Depurar permissões de arquivos",
+      "intro": "Se algo não funcionar, você pode ver estes erros:",
+      "errors": [
+        { "message": "Permission denied", "fix": "Verifique se você tem permissão de execução em arquivos ou de leitura em pastas. Adicione com `chmod +x arquivo` ou `chmod +r pasta`." },
+        { "message": "Operation not permitted", "fix": "Você pode precisar de `sudo` para alterar arquivos do sistema." },
+        { "message": "Read-only file system", "fix": "O sistema de arquivos está montado como somente leitura. Remonte com escrita ou fale com seu admin." },
+        { "message": "Cannot open file: No such file or directory", "fix": "O caminho pode estar errado. Confira com `ls`." }
+      ]
+    },
+    "securityTips": {
+      "title": "Dicas de segurança",
+      "points": [
+        "Só torne um arquivo executável se ele realmente precisar rodar.",
+        "Use 600 para arquivos privados e 644 para arquivos de leitura pública.",
+        "Evite 777 a menos que seja absolutamente necessário.",
+        "Confira as permissões com `ls -l` antes de mudá-las.",
+        "Teste mudanças primeiro em arquivos não críticos."
+      ]
+    },
+    "nextSteps": {
+      "title": "Próximos passos",
+      "content": "Tente criar um diretório de teste e experimentar o chmod nas formas simbólica e numérica. Quando estiver confiante, você pode definir permissões com segurança em arquivos reais."
+    }
+  },
+  "images": {
+    "chmod-calculating-file-permissions": {
+      "title": "Permissões de arquivos no Linux explicadas: conversão de rwx para numérico",
+      "alt": "Guia visual mostrando como as permissões no Linux convertem da forma simbólica (rwx, r-x, r-x) para binário e depois para a forma numérica (7, 5, 5) para usuário, grupo e outros."
+    },
+    "chmod-modifying-file-permissions-command": {
+      "title": "Entendendo a sintaxe do chmod: quem, operadores e permissões",
+      "alt": "Diagrama explicando a sintaxe do chmod com três seções: 'Quem' mostrando u para usuário, g para grupo, o para outros, a para todos; 'Operadores' mostrando + para adicionar, - para remover e = para definir exatamente; e 'Permissões' mostrando r para ler, w para escrever e x para executar."
+    },
+    "chmod-modifying-file-permissions-reference": {
+      "title": "Exemplos de comandos chmod para modificar permissões de arquivo",
+      "alt": "Tabela mostrando exemplos de comandos chmod para modificar permissões, incluindo para quem as mudanças se aplicam, a operação realizada, o tipo de permissão e uma explicação. Exemplos incluem u+r para adicionar leitura ao proprietário, g-w para remover escrita do grupo e a=x para definir apenas execução para todos."
+    },
+    "chmod-numeric-representation": {
+      "title": "chmod 755 explicado: permissões numéricas e simbólicas",
+      "alt": "Diagrama mostrando o chmod 755 nas formas numérica e simbólica. A forma numérica 755 corresponde a rwx para o proprietário, r-x para o grupo e r-x para outros, significando que o proprietário pode ler, escrever e executar, enquanto grupo e outros podem apenas ler e executar."
+    },
+    "chmod-reference-table": {
+      "title": "Valores de permissão no Linux: octal, simbólico e significado",
+      "alt": "Tabela que mapeia valores octais de 0–7 para permissões simbólicas e seus significados. Por exemplo, 0 é sem permissões (---), 4 é somente leitura (r--), 5 é leitura e execução (r-x) e 7 é leitura, escrita e execução (rwx)."
+    },
+    "chmod-symbolic-representation": {
+      "title": "Entendendo as strings de permissão do Linux",
+      "alt": "Diagrama explicando a estrutura das strings de permissão no Linux. Mostra o indicador de tipo de arquivo seguido de permissões para proprietário, grupo e público. O exemplo '-rwxr-xr-x' significa que o proprietário pode ler, escrever e executar, o grupo pode ler e executar e outros podem ler e executar."
+    }
+  }
+}

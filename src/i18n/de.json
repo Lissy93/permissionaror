@@ -1,62 +1,103 @@
 {
   "title": "Permissionator",
   "titleLong": "Permissionator | CHMOD-Rechner",
-  "subtitle": "Linux CHMOD-Rechner zum Erzeugen, Umwandeln und Überprüfen von Dateiberechtigungen",
+  "subtitle": "chmod-Rechner für Linux zum Generieren, Konvertieren und Prüfen von Dateiberechtigungen",
   "subheadings": {
     "permissions": "Berechtigungen",
     "output": "Ausgabe",
-    "exampleCommands": "Beispielbefehle",
+    "exampleCommands": "Beispiel-Befehle",
     "aboutChmod": "Was ist chmod?",
     "commonPresets": "Häufige Voreinstellungen",
     "specialBits": "Spezialbits",
-    "customOctal": "Benutzerdefinierte Oktalzahl",
+    "customOctal": "Benutzerdefiniertes Oktal",
     "outputFile": "Ausgabeoptionen",
     "explanation": "Was das bedeutet",
-    "octalBreakdown": "Wie dies berechnet wurde"
+    "octalBreakdown": "So wurde es berechnet",
+    "cheatSheet": "Spickzettel"
   },
   "nav": {
-    "viewOnGitHub": "Auf GitHub ansehen",
-    "learnChmod": "Mehr über chmod erfahren",
-    "subtitle": "Linux CHMOD-Rechner zum Erzeugen, Umwandeln und Überprüfen von Dateiberechtigungen"
+    "subtitle": "chmod-Rechner für Linux zum Generieren, Konvertieren und Prüfen von Dateiberechtigungen",
+    "viewOnGitHub": "GitHub",
+    "viewOnGitHubTitle": "Quellcode von Permissionator auf GitHub ansehen, bearbeiten und herunterladen",
+    "viewOnGitHubAria": "chmod-Rechner auf GitHub ansehen",
+    "learnChmod": "chmod lernen",
+    "learnChmodTitle": "Über den Befehl chmod",
+    "learnChmodAria": "Lerne alles über den Befehl chmod",
+    "chmodCalculator": "chmod-Rechner",
+    "chmodCalculatorTitle": "Nutze den chmod-Rechner, um Linux-Dateiberechtigungen zu erzeugen",
+    "chmodCalculatorAria": "Probiere den chmod-Rechner aus",
+    "settingsTitle": "Zum Dunkelmodus wechseln oder die Sprache ändern"
   },
   "what": {
-    "aboutChmod": "Der Befehl chmod ändert die Dateimodus-Bits auf Unix- und Linux-Systemen. Dateiberechtigungen steuern, wer eine Datei lesen, schreiben oder ausführen darf. Sie werden in Oktalzahlen (wie 755) oder in symbolischer Form (wie u=rwx,g=rx,o=rx) angegeben. Die erste Ziffer in einer vierstelligen Zahl gibt Spezialbits an: setuid (4), setgid (2) und sticky (1).",
+    "aboutChmod": "Dateiberechtigungen in Linux steuern, wer eine Datei lesen, schreiben/bearbeiten und ausführen darf. Mit dem Befehl chmod setzt man diese Berechtigungen.",
+    "aboutChmod2": "Diese Berechtigungen sind ein Kernelement von Linux und UNIX-ähnlichen Systemen. Sie verhindern unbefugten Zugriff oder Änderungen, schützen vor unbeabsichtigten Modifikationen und stellen sicher, dass nur die richtigen Nutzer Programme ausführen können.",
+    "aboutChmod3": "Zum Setzen oder Aktualisieren nutzen wir `chmod` im Format `chmod [Berechtigungen] [Datei/Verzeichnis]`. Die Berechtigungen können als Oktalzahl (z. B. 755) oder in symbolischer Form (z. B. u=rwx,g=rx,o=rx) angegeben werden. Die Reihenfolge ist immer: (1) Benutzer, (2) Gruppe, (3) Andere/öffentlich.",
+    "commonExamples": "Häufige Beispiele",
     "commonPresets": [
       {
-        "number": "600",
-        "description": "Besitzer darf lesen/schreiben; private Dateien wie SSH-Schlüssel"
+        "number": "chmod 600 ~/.ssh/id_rsa",
+        "description": "Besitzer Lesen/Schreiben; private Dateien wie SSH-Schlüssel"
       },
       {
-        "number": "644",
-        "description": "Besitzer darf lesen/schreiben; alle anderen nur lesen; typische Textdateien"
+        "number": "chmod 644 /var/www/html/index.html",
+        "description": "Besitzer Lesen/Schreiben; alle anderen nur Lesen; typische Textdateien"
       },
       {
-        "number": "700",
-        "description": "Besitzer hat volle Kontrolle; private Skripte oder Verzeichnisse"
+        "number": "chmod 700 /home/user/private_script.sh",
+        "description": "Besitzer mit Vollzugriff; private Skripte oder Verzeichnisse"
       },
       {
-        "number": "755",
-        "description": "Besitzer rwx, andere rx; üblich für Verzeichnisse und ausführbare Dateien"
+        "number": "chmod 755 /usr/local/bin/my_script.sh",
+        "description": "Besitzer und Gruppen-Nutzer haben vollen Zugriff, alle anderen dürfen nur lesen und ausführen"
       },
       {
-        "number": "775",
-        "description": "Verzeichnisse für Gruppenarbeit"
+        "number": "chmod 775 /shared/project",
+        "description": "Alle dürfen lesen und ausführen, aber nur der Besitzer darf schreiben; gut für gemeinsam genutzte Verzeichnisse"
       }
     ],
     "cards": [
       {
         "heading": "Oktal-Grundlagen",
-        "description": "Jede Rolle erhält eine Ziffer: lesen=4, schreiben=2, ausführen=1. Addiere, um die Ziffer zu erhalten: z. B. rwx = 7, rw- = 6, r-x = 5, r-- = 4. Häufige Modi: 644 für Dateien, 755 für Verzeichnisse."
+        "description": "Jede Rolle bekommt eine Ziffer: lesen=4, schreiben=2, ausführen=1. Summieren für die Ziffer: z. B. rwx = 7, rw- = 6, r-x = 5, r-- = 4. Übliche Modi: 644 für Dateien, 755 für Verzeichnisse."
       },
       {
         "heading": "Symbolische Form",
-        "description": "Verwende Buchstaben für Benutzer (u), Gruppe (g), andere (o) mit +, - oder =. Zum Beispiel: chmod u=rw,g=r,o= file.txt setzt Lesen/Schreiben für den Besitzer, Lesen für die Gruppe und keinen Zugriff für andere."
+        "description": "Verwende Buchstaben für Benutzer (u), Gruppe (g), Andere (o) mit +, - oder =. Beispiel: chmod u=rw,g=r,o= file.txt setzt Lesen/Schreiben für den Besitzer, Lesen für die Gruppe und keinen Zugriff für Andere."
       },
       {
         "heading": "Spezialbits",
-        "description": "setuid führt Programme mit den Rechten des Besitzers aus; setgid führt mit den Rechten der Gruppe aus; sticky verhindert, dass Benutzer in gemeinsamen Verzeichnissen (z. B. /tmp) Dateien anderer löschen."
+        "description": "setuid führt Programme mit den Rechten des Besitzers aus; setgid mit den Rechten der Gruppe; sticky verhindert in gemeinsamen Verzeichnissen, dass Nutzer Dateien anderer löschen (z. B. /tmp)."
       }
     ]
+  },
+  "examples": {
+    "1": {
+      "title": "Beispiel #1 – Symbolische Form",
+      "explanation": "Dieser Befehl gibt dem Besitzer Lesen, Schreiben und Ausführen und dem Gruppen-Nutzer sowie allen anderen Lesen und Ausführen (aber kein Schreiben)."
+    },
+    "2": {
+      "title": "Beispiel #2 – Oktale Notation",
+      "explanation": "Dieser Befehl gibt dem Besitzer Lesen, Schreiben und Ausführen und dem Gruppen-Nutzer sowie allen anderen Lesen und Ausführen (aber kein Schreiben)."
+    },
+    "3": {
+      "title": "Beispiel #3 – Eine einzelne Berechtigung aktualisieren",
+      "explanation": "Dieser Befehl entfernt die Schreibberechtigung für die Gruppe, lässt Lesen und Ausführen aber unverändert. Besitzer und Andere sind nicht betroffen."
+    },
+    "4": {
+      "title": "Beispiel #4 – Eine einzelne Berechtigung aktualisieren",
+      "explanation": "Gibt dem Besitzer Ausführen, während Lesen und Schreiben erhalten bleiben. Gruppe und Andere sind nicht betroffen. Unten findest du die vollständige Liste der Optionen."
+    },
+    "5": {
+      "title": "Beispiel #5 – Häufige Voreinstellungen — Kurzübersicht",
+      "explanation": "Damit wird eine Datei für den Besitzer les- und schreibbar und für Gruppe und Andere nur lesbar. Denk dran: Erste Ziffer = Benutzer, zweite = Gruppe, dritte = Andere. Mit der Kurzübersicht unten baust du dir schnell eigene Berechtigungen."
+    }
+  },
+  "singlePermissionTool": {
+    "title": "chmod-Generator für eine einzelne Berechtigung",
+    "description1": "Dieses Tool erzeugt einen chmod-Befehl für genau eine Berechtigungsänderung.",
+    "description2": "Alle anderen Berechtigungen bleiben unverändert. So kannst du für einen bestimmten Nutzertyp leicht eine Berechtigung ändern/hinzufügen/entfernen.",
+    "outputLabel": "Generierter Befehl",
+    "useThis": "Verwende diesen Befehl, um"
   },
   "explain": {
     "roles": {
@@ -75,21 +116,184 @@
       "and": "und",
       "butNot": "aber nicht",
       "butNoOneElse": "aber sonst hat niemand Zugriff",
-      "cannotDoAnything": "kann weder lesen, schreiben noch ausführen",
-      "noAccessForOthers": "niemand sonst hat Zugriff"
+      "cannotDoAnything": "kann nicht lesen, schreiben oder ausführen",
+      "noAccessForOthers": "sonst hat niemand Zugriff"
     },
     "everyone": "Alle"
   },
   "customExplanations": {
-    "777": "Voller Lese-/Schreib-/Ausführungszugriff für alle — gut für Tests oder temporäre öffentliche Verzeichnisse, aber sehr unsicher für den Produktiveinsatz, da jeder Dateien ändern oder löschen kann.",
-    "755": "Üblich für Verzeichnisse und ausführbare Dateien — der Besitzer kann ändern, andere können lesen und ausführen. Sicher für öffentliche Skripte oder Webserver-Verzeichnisse.",
-    "750": "Besitzer hat volle Kontrolle, Gruppe kann lesen und ausführen, andere haben keinen Zugriff — gut für teaminterne Skripte, um Außenseiter zu blockieren.",
-    "700": "Nur der Besitzer kann lesen, schreiben und ausführen — ideal für private Skripte oder Konfigurationsverzeichnisse wie ~/.ssh.",
-    "644": "Besitzer kann lesen/schreiben, andere nur lesen — Standard für Textdateien, Konfigurationen und Webinhalte, bei denen nur der Besitzer Änderungen vornimmt.",
-    "640": "Besitzer kann lesen/schreiben, Gruppe nur lesen, andere keinen Zugriff — gut für interne Dokumente ohne öffentlichen Zugriff.",
-    "600": "Nur der Besitzer kann lesen und schreiben — typisch für sensible Dateien wie private SSH-Schlüssel, um Gruppen- und öffentlichen Zugriff zu verhindern.",
-    "444": "Nur-Lesen für alle — nützlich für unveränderliche öffentliche Dokumente; erfordert chmod zum erneuten Bearbeiten.",
-    "400": "Nur-Besitzer darf lesen, niemand sonst hat Zugriff — verwendet für sensible statische Dateien wie kryptografische Schlüssel.",
-    "000": "Keine Berechtigungen für irgendjemanden — sperrt jeglichen Zugriff, bis Berechtigungen wiederhergestellt werden; nützlich zum temporären Deaktivieren des Zugriffs."
+    "777": "Voller Lese/Schreib/Ausführungs-Zugriff für alle — super für Tests oder temporäre öffentliche Scratch-Verzeichnisse, aber in Produktion sehr unsicher, weil jeder Dateien ändern oder löschen kann.",
+    "755": "Üblich für Verzeichnisse und Executables — der Besitzer darf ändern, andere dürfen lesen und ausführen. Sicher für öffentliche Skripte oder Webserver-Verzeichnisse.",
+    "750": "Besitzer hat Vollzugriff, Gruppe darf lesen und ausführen, Andere haben keinen Zugriff — gut für team-geteilte Skripte, während Außenstehende blockiert werden.",
+    "700": "Nur der Besitzer darf lesen, schreiben und ausführen — ideal für private Skripte oder Konfig-Verzeichnisse wie ~/.ssh.",
+    "644": "Besitzer darf lesen/schreiben, andere nur lesen — Standard für Textdateien, Konfigurationen und Web-Content, bei dem nur der Besitzer editiert.",
+    "640": "Besitzer darf lesen/schreiben, Gruppe nur lesen, Andere kein Zugriff — gut für interne Dokumente ohne öffentlichen Zugriff.",
+    "600": "Nur der Besitzer darf lesen und schreiben — typisch für sensible Dateien wie private SSH-Schlüssel; Gruppe und Öffentlichkeit haben keinen Zugriff.",
+    "444": "Nur-Lesen für alle — nützlich für unveränderliche öffentliche Dokumente; zum Ändern erneut chmod nötig.",
+    "400": "Nur der Besitzer darf lesen, sonst niemand — genutzt für sensible statische Dateien wie kryptografische Schlüssel.",
+    "000": "Keine Berechtigungen für niemanden — sperrt alles, bis Berechtigungen wiederhergestellt sind; nützlich zum temporären Deaktivieren des Zugriffs."
+  },
+  "learn": {
+    "title": "Alles über Linux-Dateiberechtigungen und chmod",
+    "intro": "Berechtigungen legen fest, welche Nutzer Dateien lesen, schreiben oder ausführen dürfen. Wichtig ist, dass nur die wirklich nötigen Nutzer Zugriff haben, damit dein System sicher und stabil bleibt.",
+    "whatArePermissions": {
+      "title": "Was sind Dateiberechtigungen?",
+      "content": [
+        "Berechtigungen steuern, wer auf einem Linux-System eine Datei oder einen Ordner lesen, schreiben oder ausführen darf.",
+        "Sie schützen deine Daten, verhindern unerwünschte Änderungen und stellen sicher, dass Programme nur wie vorgesehen laufen.",
+        "Berechtigungen sind ein Grundpfeiler der Linux-Sicherheit — ohne sie könnte jeder Systemdateien ändern oder deine privaten Daten lesen.",
+        "Gesetzt werden sie mit dem Befehl chmod, den wir unten im Detail erklären."
+      ]
+    },
+    "userTypes": {
+      "title": "Benutzertypen",
+      "intro": "In Linux gelten Berechtigungen getrennt für drei Nutzerkategorien:",
+      "points": [
+        {
+          "name": "Besitzer",
+          "description": "Meist die Person, die die Datei erstellt oder besitzt."
+        },
+        {
+          "name": "Gruppe",
+          "description": "Andere Nutzer, die Mitglied der Datei-Gruppe sind."
+        },
+        {
+          "name": "Andere",
+          "description": "Alle übrigen im System, die weder Besitzer sind noch zur Gruppe gehören."
+        }
+      ]
+    },
+    "permissionTypes": {
+      "title": "Arten von Berechtigungen",
+      "items": [
+        { "name": "Lesen (r)", "description": "Dateiinhalt ansehen oder Dateien in einem Ordner auflisten." },
+        { "name": "Schreiben (w)", "description": "Eine Datei ändern oder Dateien in einem Ordner hinzufügen/entfernen." },
+        { "name": "Ausführen (x)", "description": "Eine Datei als Programm starten oder einen Ordner betreten." }
+      ]
+    },
+    "chmodIntro": {
+      "title": "Der Befehl chmod",
+      "content": [
+        "chmod steht für „change mode“. Er ändert die Berechtigungen einer Datei oder eines Ordners.",
+        "Du kannst ihn in symbolischer Form (Buchstaben wie rwx) oder numerisch (Oktalzahlen wie 777) verwenden.",
+        "Funktioniert für einzelne Dateien oder ganze Ordner."
+      ]
+    },
+    "symbolicRepresentation": {
+      "title": "Symbolische Darstellung",
+      "content": [
+        "Die erste Möglichkeit ist der symbolische Modus, der Buchstaben für jeden Benutzertyp nutzt.",
+        "Das ist leichter zu merken, zu lesen und zu verstehen, aber ausführlicher als Oktal.",
+        "r steht für Lesen, w für Schreiben, x für Ausführen. Ersetzt ein Bindestrich (-) einen Buchstaben, ist diese Berechtigung nicht gewährt."
+      ]
+    },
+    "octalRepresentation": {
+      "title": "Oktale (numerische) Darstellung",
+      "content": [
+        "Der oktale Modus nutzt Zahlen für Berechtigungen.",
+        "Dabei gilt: Lesen = 4, Schreiben = 2, Ausführen = 1.",
+        "Diese werden addiert; im Beispiel ergibt das 7, was Lesen, Schreiben und Ausführen bedeutet.",
+        "Wie zuvor ist die Reihenfolge Besitzer, Gruppe, Andere.",
+        "755 bedeutet also: Besitzer rwx (7), Gruppe rx (5) und Andere rx (5)."
+      ],
+      "howCalculated": "Wenn dir die Zahlen zufällig erscheinen: Sie werden wie Binärzahlen berechnet. 111 (rwx) ist 7, 101 (r-x) ist 5 und 100 (r--) ist 4."
+    },
+    "updateSinglePermission": {
+      "title": "Eine einzelne Berechtigung ändern",
+      "content": [
+        "Oft willst du nicht alle Berechtigungen eines Objekts ändern, sondern nur einen Teil.",
+        "Zum Beispiel Ausführen nur für den Besitzer hinzufügen, Schreiben für die Öffentlichkeit entfernen oder die Gruppe auf Nur-Lesen setzen.",
+        "Das geht im symbolischen Modus mit den Operatoren `+`, `-` oder `=`, im Format `chmod [wer][operator][berechtigung] datei`.",
+        "Dabei kann `wer` `u` (Besitzer), `g` (Gruppe), `o` (Andere) oder `a` (alle) sein.",
+        "`operator` ist `+` (hinzufügen), `-` (entfernen) oder `=` (genau setzen).",
+        "Beispiel: `chmod g-w file.txt` entfernt dem Gruppe-Eintrag das Schreibrecht."
+      ]
+    },
+    "recursiveChanges": {
+      "title": "Berechtigungen rekursiv ändern",
+      "content": [
+        "Mit der Option `-R` änderst du die Berechtigungen aller Dateien und Ordner in einem Verzeichnis.",
+        "Beispiel: `chmod -R 755 /var/www` setzt 755 für alles unter /var/www.",
+        "Sei vorsichtig: Rekursive Änderungen können bei falscher Nutzung Systemdateien beschädigen."
+      ]
+    },
+    "ownership": {
+      "title": "Besitz und chmod",
+      "content": [
+        "Berechtigungen wirken zusammen mit dem Besitz. Jede Datei hat einen Besitzer und eine Gruppe.",
+        "Wenn du den Besitzer ändern musst, nutze `chown`.",
+        "Beispiel: `sudo chown user:group file.txt` ändert Besitzer und Gruppe."
+      ]
+    },
+    "specialBits": {
+      "title": "Spezialbits",
+      "intro": "Neben Lesen/Schreiben/Ausführen gibt es spezielle Berechtigungs-Bits:",
+      "items": [
+        { "name": "Setuid (4)", "description": "Führt die Datei mit den Rechten des Besitzers statt des aufrufenden Nutzers aus." },
+        { "name": "Setgid (2)", "description": "Führt die Datei mit den Rechten der Gruppe aus. In Verzeichnissen erben neue Dateien die Gruppe." },
+        { "name": "Sticky (1)", "description": "Verhindert in Verzeichnissen, dass Nutzer fremde Dateien löschen. Häufig in /tmp." }
+      ]
+    },
+    "commonPresets": {
+      "title": "Häufige chmod-Voreinstellungen",
+      "intro": "Hier sind gängige Berechtigungssätze und wofür sie gedacht sind:",
+      "table": [
+        { "code": "600", "description": "Besitzer darf lesen/schreiben. Kein Zugriff für andere. SSH-Private Keys." },
+        { "code": "644", "description": "Besitzer darf lesen/schreiben. Andere dürfen lesen. Standard für viele Dateien." },
+        { "code": "700", "description": "Besitzer hat Vollzugriff. Kein Zugriff für andere. Private Skripte." },
+        { "code": "755", "description": "Besitzer darf lesen/schreiben/ausführen. Andere dürfen lesen/ausführen. Häufig für Skripte." },
+        { "code": "777", "description": "Alle dürfen lesen/schreiben/ausführen. Vermeiden, außer für temporäre gemeinsame Ordner." }
+      ]
+    },
+    "debugging": {
+      "title": "Fehlerbehebung bei Dateiberechtigungen",
+      "intro": "Wenn etwas nicht klappt, siehst du vielleicht diese Fehler:",
+      "errors": [
+        { "message": "Permission denied", "fix": "Prüfe, ob du Ausführrechte auf Dateien oder Leserechte auf Ordnern hast. Ergänze mit `chmod +x datei` oder `chmod +r ordner`." },
+        { "message": "Operation not permitted", "fix": "Du brauchst eventuell `sudo`, um systemeigene Dateien zu ändern." },
+        { "message": "Read-only file system", "fix": "Das Dateisystem ist nur lesbar eingehängt. Mit Schreibrechten erneut einhängen oder Admin kontaktieren." },
+        { "message": "Cannot open file: No such file or directory", "fix": "Der Pfad ist eventuell falsch. Prüfe mit `ls`." }
+      ]
+    },
+    "securityTips": {
+      "title": "Sicherheitstipps",
+      "points": [
+        "Mach eine Datei nur dann ausführbar, wenn sie wirklich laufen muss.",
+        "Nutze 600 für private Dateien und 644 für öffentlich lesbare Dateien.",
+        "Vermeide 777, außer es ist unbedingt nötig.",
+        "Prüfe Berechtigungen mit `ls -l`, bevor du sie änderst.",
+        "Teste Änderungen zuerst an unkritischen Dateien."
+      ]
+    },
+    "nextSteps": {
+      "title": "Nächste Schritte",
+      "content": "Lege ein Testverzeichnis an und probiere chmod in symbolischer und numerischer Form aus. Wenn du sicher bist, kannst du Berechtigungen gefahrlos an echten Dateien setzen."
+    }
+  },
+  "images": {
+    "chmod-calculating-file-permissions": {
+      "title": "Linux-Dateiberechtigungen erklärt: von rwx zur numerischen Darstellung",
+      "alt": "Visuelle Anleitung, wie Linux-Berechtigungen von der symbolischen Form (rwx, r-x, r-x) über binär zur numerischen Form (7, 5, 5) für Benutzer, Gruppe und Andere werden."
+    },
+    "chmod-modifying-file-permissions-command": {
+      "title": "chmod-Syntax verstehen: Wer, Operatoren und Berechtigungen",
+      "alt": "Diagramm zur chmod-Syntax mit drei Bereichen: „Wer“ mit u für user, g für group, o für others, a für all; „Operatoren“ mit + zum Hinzufügen, - zum Entfernen und = zum exakten Setzen; und „Berechtigungen“ mit r für lesen, w für schreiben, x für ausführen."
+    },
+    "chmod-modifying-file-permissions-reference": {
+      "title": "chmod-Beispiele zum Ändern von Dateiberechtigungen",
+      "alt": "Tabelle mit Beispielen für chmod-Befehle zum Ändern von Berechtigungen, einschließlich Ziel (wer), Operation, Berechtigungstyp und Erklärung. Beispiele: u+r für Lesen für den Besitzer hinzufügen, g-w für Schreiben der Gruppe entfernen, a=x für nur Ausführen für alle."
+    },
+    "chmod-numeric-representation": {
+      "title": "chmod 755 erklärt: numerische und symbolische Berechtigungen",
+      "alt": "Diagramm mit chmod 755 in numerischer und symbolischer Form. 755 entspricht rwx für den Besitzer, r-x für die Gruppe und r-x für Andere; der Besitzer darf lesen, schreiben und ausführen, Gruppe und Andere nur lesen und ausführen."
+    },
+    "chmod-reference-table": {
+      "title": "Linux-Berechtigungswerte: Oktal, symbolisch und Bedeutung",
+      "alt": "Tabelle, die oktale Werte 0–7 den symbolischen Berechtigungen und ihrer Bedeutung zuordnet. Z. B. 0 = keine Rechte (---), 4 = nur Lesen (r--), 5 = Lesen und Ausführen (r-x), 7 = Lesen, Schreiben und Ausführen (rwx)."
+    },
+    "chmod-symbolic-representation": {
+      "title": "Linux-Berechtigungsstrings verstehen",
+      "alt": "Diagramm zur Struktur von Linux-Berechtigungsstrings. Zeigt den Dateityp-Indikator gefolgt von Rechten für Besitzer, Gruppe und öffentlich. Das Beispiel „-rwxr-xr-x“ bedeutet: Besitzer darf lesen, schreiben und ausführen; Gruppe darf lesen und ausführen; Andere dürfen lesen und ausführen."
+    }
   }
 }

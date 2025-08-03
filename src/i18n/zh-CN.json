@@ -1,0 +1,299 @@
+{
+  "title": "Permissionator",
+  "titleLong": "Permissionator | CHMOD 计算器",
+  "subtitle": "用于生成、转换和验证 Linux 文件权限的 chmod 计算器",
+  "subheadings": {
+    "permissions": "权限",
+    "output": "输出",
+    "exampleCommands": "示例命令",
+    "aboutChmod": "什么是 chmod？",
+    "commonPresets": "常用预设",
+    "specialBits": "特殊位",
+    "customOctal": "自定义八进制",
+    "outputFile": "输出选项",
+    "explanation": "这代表什么",
+    "octalBreakdown": "如何计算的",
+    "cheatSheet": "速查表"
+  },
+  "nav": {
+    "subtitle": "用于生成、转换和验证 Linux 文件权限的 chmod 计算器",
+    "viewOnGitHub": "GitHub",
+    "viewOnGitHubTitle": "在 GitHub 查看、编辑、下载 Permissionator 源码",
+    "viewOnGitHubAria": "在 GitHub 查看 chmod 计算器",
+    "learnChmod": "学习 chmod",
+    "learnChmodTitle": "关于 chmod 命令",
+    "learnChmodAria": "了解有关 chmod 命令的一切",
+    "chmodCalculator": "chmod 计算器",
+    "chmodCalculatorTitle": "使用 chmod 计算器生成 Linux 文件权限",
+    "chmodCalculatorAria": "试用 chmod 计算器",
+    "settingsTitle": "切换深色模式或更改语言"
+  },
+  "what": {
+    "aboutChmod": "Linux 文件权限控制谁能读取、写入/编辑和执行某个文件。chmod 命令用于设置这些权限。",
+    "aboutChmod2": "这些权限是 Linux 和类 UNIX 系统的核心特性。它们能阻止未授权访问或修改，保护用户免受误操作，并确保只有合适的用户才能运行程序。",
+    "aboutChmod3": "设置或更新权限，我们使用 `chmod` 命令，格式为 `chmod [权限] [文件/目录]`。权限可以用八进制数字（如 755）或符号形式（如 u=rwx,g=rx,o=rx）表示。chmod 的顺序始终是：(1) 用户，(2) 组，(3) 其他/公开。",
+    "commonExamples": "常见示例",
+    "commonPresets": [
+      {
+        "number": "chmod 600 ~/.ssh/id_rsa",
+        "description": "所有者读/写；适用于 SSH 密钥等私有文件"
+      },
+      {
+        "number": "chmod 644 /var/www/html/index.html",
+        "description": "所有者读/写；其他人只读；典型文本文件"
+      },
+      {
+        "number": "chmod 700 /home/user/private_script.sh",
+        "description": "所有者完全控制；私有脚本或目录"
+      },
+      {
+        "number": "chmod 755 /usr/local/bin/my_script.sh",
+        "description": "所有者和组用户拥有完全访问，其他用户只能读取和执行"
+      },
+      {
+        "number": "chmod 775 /shared/project",
+        "description": "所有人可读可执行，但只有所有者可写；适合共享目录"
+      }
+    ],
+    "cards": [
+      {
+        "heading": "八进制基础",
+        "description": "每个角色对应一位：读=4，写=2，执行=1。相加得到该位：如 rwx=7，rw-=6，r-x=5，r--=4。常见模式：文件 644，目录 755。"
+      },
+      {
+        "heading": "符号形式",
+        "description": "对用户 (u)、组 (g)、其他 (o) 使用 +、- 或 =。例如：chmod u=rw,g=r,o= file.txt 为所有者设为读写，为组设为只读，其他无访问。"
+      },
+      {
+        "heading": "特殊位",
+        "description": "setuid 以所有者的权限运行可执行文件；setgid 以组的权限运行；sticky 在共享目录中阻止用户删除他人的文件（如 /tmp）。"
+      }
+    ]
+  },
+  "examples": {
+    "1": {
+      "title": "示例 #1 - 符号形式",
+      "explanation": "该命令为所有者赋予读、写、执行权限，为组和其他用户赋予读和执行（不含写）。"
+    },
+    "2": {
+      "title": "示例 #2 - 八进制表示",
+      "explanation": "该命令为所有者赋予读、写、执行权限，为组和其他用户赋予读和执行（不含写）。"
+    },
+    "3": {
+      "title": "示例 #3 - 更新单个权限",
+      "explanation": "该命令移除组的写权限，但保留读和执行。所有者与其他用户不受影响。"
+    },
+    "4": {
+      "title": "示例 #4 - 更新单个权限",
+      "explanation": "为所有者添加执行权限，同时保留读和写。组和其他不受影响。下方是完整选项列表。"
+    },
+    "5": {
+      "title": "示例 #5 - 常用预设 — 快速参考",
+      "explanation": "这会使文件对所有者可读可写，对组和其他仅可读。记住：第 1 位是用户，第 2 位是组，第 3 位是其他。你可以用下方速查表来组合自己的权限。"
+    }
+  },
+  "singlePermissionTool": {
+    "title": "单个权限 chmod 生成器",
+    "description1": "此工具可为一次单个权限变更生成一个 chmod 命令。",
+    "description2": "这意味着其余权限保持不变。你可以为某个用户类型轻松地修改/添加/移除一个权限。",
+    "outputLabel": "生成的命令",
+    "useThis": "使用此命令来"
+  },
+  "explain": {
+    "roles": {
+      "owner": "文件所有者",
+      "group": "组内用户",
+      "public": "所有人"
+    },
+    "permissions": {
+      "r": "读",
+      "w": "写",
+      "x": "执行"
+    },
+    "explanation": {
+      "can": "可以",
+      "cannot": "不可以",
+      "and": "和",
+      "butNot": "但不",
+      "butNoOneElse": "但其他人无法访问",
+      "cannotDoAnything": "不能读、写或执行",
+      "noAccessForOthers": "其他人无访问权限"
+    },
+    "everyone": "所有人"
+  },
+  "customExplanations": {
+    "777": "对所有人开放读/写/执行 — 适合测试或临时公共目录，但在生产中非常不安全，因为任何人都能修改或删除文件。",
+    "755": "常见于目录和可执行文件 — 所有者可修改，其他人可读和执行。适合公共脚本或 Web 服务器目录。",
+    "750": "所有者完全控制，组可读和执行，其他无访问 — 适合团队共享脚本，同时阻止外部访问。",
+    "700": "只有所有者可读、写、执行 — 理想用于私有脚本或 ~/.ssh 等配置目录。",
+    "644": "所有者可读/写，其他人只读 — 文本、配置和仅由所有者编辑的网页内容的标准设置。",
+    "640": "所有者可读/写，组只读，其他无访问 — 适合内部文档，不对外公开。",
+    "600": "只有所有者可读写 — 常见于 SSH 私钥等敏感文件，确保组与公众无权访问。",
+    "444": "所有人只读 — 适用于不可变的公开文档；需再次使用 chmod 才能修改。",
+    "400": "所有者只读，其他人不可访问 — 用于加密密钥等敏感的静态文件。",
+    "000": "任何人都没有权限 — 锁定全部访问，直到恢复权限；可用于临时禁用访问。"
+  },
+  "learn": {
+    "title": "关于 Linux 文件权限与 chmod 的一切",
+    "intro": "文件权限表示哪些用户可以读、写或执行文件。只让需要的人访问，能让系统更安全、更稳定。",
+    "whatArePermissions": {
+      "title": "什么是文件权限？",
+      "content": [
+        "文件权限控制谁能在 Linux 系统上读取、写入或执行某个文件或文件夹。",
+        "它们用于保护你的数据、避免不必要的更改，并确保程序只在需要时运行。",
+        "权限是 Linux 安全的基石之一——没有它们，任何人都能修改系统文件或读取你的隐私数据。",
+        "权限通过 chmod 命令设置，下面会详细介绍。"
+      ]
+    },
+    "userTypes": {
+      "title": "用户类型",
+      "intro": "Linux 的权限分别应用到三类用户：",
+      "points": [
+        {
+          "name": "所有者",
+          "description": "通常是创建或拥有该文件的人。"
+        },
+        {
+          "name": "组",
+          "description": "属于该文件组的其他用户。"
+        },
+        {
+          "name": "其他",
+          "description": "系统中既不是所有者也不在该组的所有其他人。"
+        }
+      ]
+    },
+    "permissionTypes": {
+      "title": "权限类型",
+      "items": [
+        { "name": "读取 (r)", "description": "查看文件内容或列出文件夹内的文件。" },
+        { "name": "写入 (w)", "description": "修改文件，或在文件夹中添加/删除文件。" },
+        { "name": "执行 (x)", "description": "把文件当程序运行，或进入一个文件夹。" }
+      ]
+    },
+    "chmodIntro": {
+      "title": "chmod 命令",
+      "content": [
+        "chmod 是“change mode”的缩写。用于修改文件或文件夹的权限。",
+        "可以使用符号形式（字母，如 rwx）或数字形式（八进制，如 777）。",
+        "可作用于单个文件或整个文件夹。"
+      ]
+    },
+    "symbolicRepresentation": {
+      "title": "符号表示",
+      "content": [
+        "指定权限的首选方式是符号模式，用字母为各用户类型定义权限。",
+        "这种方式更容易记、易读、易懂，但比八进制更啰嗦。",
+        "r 表示读，w 表示写，x 表示执行。若某字符被连字符 (-) 代替，则表示未授予该权限."
+      ]
+    },
+    "octalRepresentation": {
+      "title": "八进制（数字）表示",
+      "content": [
+        "八进制模式使用数字表示权限。",
+        "其中 读 = 4，写 = 2，执行 = 1。",
+        "将它们相加得到一个数字，例如 7，表示指定用户可以读、写和执行该文件。",
+        "同样按所有者、组、其他的顺序指定。",
+        "因此 755 表示所有者为 rwx (7)，组为 rx (5)，其他为 rx (5)。"
+      ],
+      "howCalculated": "如果这些数字看起来像随机的，了解它们与二进制一样计算会更清楚：111 (rwx) 是 7，101 (r-x) 是 5，100 (r--) 是 4。"
+    },
+    "updateSinglePermission": {
+      "title": "更新单个权限",
+      "content": [
+        "很多时候你不会想改一个文件/文件夹的全部权限，只是改其中一部分。",
+        "例如只给所有者加执行、移除公共用户的写入，或把组设为只读。",
+        "可用符号模式完成，使用 `+`、`-` 或 `=` 运算符，格式为 `chmod [对象][运算符][权限] 文件`。",
+        "其中 `对象` 可以是 `u`（所有者）、`g`（组）、`o`（其他）或 `a`（全部）。",
+        "`运算符` 可以是 `+`（添加）、`-`（移除）或 `=`（精确设置）。",
+        "示例：`chmod g-w file.txt` 从组移除写权限。"
+      ]
+    },
+    "recursiveChanges": {
+      "title": "递归修改权限",
+      "content": [
+        "使用 `-R` 标志可对目录内所有文件和文件夹修改权限。",
+        "例如：`chmod -R 755 /var/www` 会把 755 应用于 /var/www 下的每个文件和文件夹。",
+        "但要小心，递归修改用错会破坏系统文件。"
+      ]
+    },
+    "ownership": {
+      "title": "所有权与 chmod",
+      "content": [
+        "权限与所有权配合工作。每个文件都有一个所有者和一个组。",
+        "如果需要更改文件的所有者，用 `chown`。",
+        "示例：`sudo chown user:group file.txt` 会同时修改所有者和组。"
+      ]
+    },
+    "specialBits": {
+      "title": "特殊位",
+      "intro": "除了读/写/执行，Linux 还有一些特殊权限位：",
+      "items": [
+        { "name": "Setuid (4)", "description": "以文件所有者的权限运行，而不是当前用户的权限。" },
+        { "name": "Setgid (2)", "description": "以组的权限运行。用于目录时，新文件会继承该组。" },
+        { "name": "Sticky (1)", "description": "用于目录，阻止用户删除不属于自己的文件。/tmp 上很常见。" }
+      ]
+    },
+    "commonPresets": {
+      "title": "常见的 chmod 预设",
+      "intro": "以下是常见的权限组合及其用途：",
+      "table": [
+        { "code": "600", "description": "所有者可读/写。其他无访问。SSH 私钥。" },
+        { "code": "644", "description": "所有者可读/写。其他可读。许多文件的默认值。" },
+        { "code": "700", "description": "所有者完全控制。其他无访问。私有脚本。" },
+        { "code": "755", "description": "所有者可读/写/执行。其他可读/执行。脚本常用。" },
+        { "code": "777", "description": "所有人可读/写/执行。除临时共享文件夹外尽量避免。" }
+      ]
+    },
+    "debugging": {
+      "title": "调试文件权限",
+      "intro": "如果某些操作失败，你可能会看到这些错误：",
+      "errors": [
+        { "message": "Permission denied", "fix": "检查你是否对文件有执行权限或对文件夹有读取权限。可用 `chmod +x file` 或 `chmod +r folder` 添加。" },
+        { "message": "Operation not permitted", "fix": "修改系统所有的文件可能需要 `sudo`。" },
+        { "message": "Read-only file system", "fix": "文件系统以只读方式挂载。以可写方式重新挂载或联系管理员。" },
+        { "message": "Cannot open file: No such file or directory", "fix": "路径可能错误。用 `ls` 检查。" }
+      ]
+    },
+    "securityTips": {
+      "title": "安全小贴士",
+      "points": [
+        "只有确实需要运行时才让文件可执行。",
+        "私有文件用 600，公众可读的文件用 644。",
+        "除非万不得已，避免使用 777。",
+        "修改前先用 `ls -l` 查看权限。",
+        "先在非关键文件上测试变更。"
+      ]
+    },
+    "nextSteps": {
+      "title": "下一步",
+      "content": "创建一个测试目录，分别用符号和数字形式练习 chmod。熟练后，就能放心地为真实文件设置权限。"
+    }
+  },
+  "images": {
+    "chmod-calculating-file-permissions": {
+      "title": "Linux 文件权限详解：从 rwx 到数值转换",
+      "alt": "可视化指南展示 Linux 文件权限如何从符号形式（rwx, r-x, r-x）转换为二进制，再转换为数值形式（7, 5, 5），分别对应用户、组和其他。"
+    },
+    "chmod-modifying-file-permissions-command": {
+      "title": "理解 chmod 语法：对象、运算符与权限",
+      "alt": "图表将 chmod 语法分为三部分：“对象”显示 u 表示用户、g 表示组、o 表示其他、a 表示全部；“运算符”显示 + 添加、- 移除、= 精确设置；“权限”显示 r 读、w 写、x 执行。"
+    },
+    "chmod-modifying-file-permissions-reference": {
+      "title": "修改文件权限的 chmod 命令示例",
+      "alt": "表格展示修改文件权限的 chmod 命令示例，包括变更对象、执行的操作、权限类型和说明。示例包括 u+r（给所有者加读）、g-w（从组移除写）、a=x（将所有人设为仅执行）。"
+    },
+    "chmod-numeric-representation": {
+      "title": "解读 chmod 755：数字与符号权限",
+      "alt": "图表显示 chmod 755 的数字与符号形式。数字 755 对应所有者 rwx、组 r-x、其他 r-x，表示所有者可读写执行，组与其他只能读取和执行。"
+    },
+    "chmod-reference-table": {
+      "title": "Linux 文件权限值：八进制、符号与含义",
+      "alt": "将八进制 0–7 映射到符号权限及含义的表。例如 0 为无权限 (---)，4 为只读 (r--)，5 为读和执行 (r-x)，7 为读写执行 (rwx)。"
+    },
+    "chmod-symbolic-representation": {
+      "title": "理解 Linux 权限字符串",
+      "alt": "图解 Linux 权限字符串结构。先是文件类型标识，然后是所有者、组和公众的权限。示例 “-rwxr-xr-x” 表示所有者可读写执行，组可读执行，其他可读执行。"
+    }
+  }
+}

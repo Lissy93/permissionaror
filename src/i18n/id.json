@@ -1,0 +1,299 @@
+{
+  "title": "Permissionator",
+  "titleLong": "Permissionator | Kalkulator CHMOD",
+  "subtitle": "Kalkulator chmod untuk membuat, mengonversi, dan memverifikasi izin file di Linux",
+  "subheadings": {
+    "permissions": "Izin",
+    "output": "Output",
+    "exampleCommands": "Contoh Perintah",
+    "aboutChmod": "Apa itu chmod?",
+    "commonPresets": "Preset Umum",
+    "specialBits": "Bit Khusus",
+    "customOctal": "Oktal Kustom",
+    "outputFile": "Opsi Output",
+    "explanation": "Artinya",
+    "octalBreakdown": "Cara dihitung",
+    "cheatSheet": "Ringkasan Cepat"
+  },
+  "nav": {
+    "subtitle": "Kalkulator chmod untuk membuat, mengonversi, dan memverifikasi izin file di Linux",
+    "viewOnGitHub": "GitHub",
+    "viewOnGitHubTitle": "Lihat, edit, dan unduh kode sumber Permissionator di GitHub",
+    "viewOnGitHubAria": "Lihat kalkulator chmod di GitHub",
+    "learnChmod": "Belajar chmod",
+    "learnChmodTitle": "Tentang perintah chmod",
+    "learnChmodAria": "Pelajari semua tentang perintah chmod",
+    "chmodCalculator": "Kalkulator chmod",
+    "chmodCalculatorTitle": "Gunakan kalkulator chmod untuk membuat izin file Linux",
+    "chmodCalculatorAria": "Coba kalkulator chmod",
+    "settingsTitle": "Beralih ke mode gelap atau ganti bahasa"
+  },
+  "what": {
+    "aboutChmod": "Izin file di Linux menentukan siapa yang bisa membaca, menulis/mengedit, dan mengeksekusi suatu file. Perintah chmod dipakai untuk mengatur izin ini.",
+    "aboutChmod2": "Izin ini adalah fitur inti Linux dan sistem mirip UNIX. Mereka mencegah akses atau perubahan tanpa izin, melindungi dari perubahan tak sengaja, dan memastikan hanya pengguna yang tepat yang bisa menjalankan program.",
+    "aboutChmod3": "Untuk mengatur atau memperbarui izin, kita pakai perintah `chmod` dengan format `chmod [izin] [file/direktori]`. Izin bisa dinyatakan dalam angka oktal (mis. 755) atau bentuk simbolik (mis. u=rwx,g=rx,o=rx). Urutannya selalu: (1) pengguna, (2) grup, (3) lainnya/publik.",
+    "commonExamples": "Contoh Umum",
+    "commonPresets": [
+      {
+        "number": "chmod 600 ~/.ssh/id_rsa",
+        "description": "Pemilik baca/tulis; file privat seperti kunci SSH"
+      },
+      {
+        "number": "chmod 644 /var/www/html/index.html",
+        "description": "Pemilik baca/tulis; yang lain hanya baca; file teks umum"
+      },
+      {
+        "number": "chmod 700 /home/user/private_script.sh",
+        "description": "Pemilik kontrol penuh; skrip atau direktori privat"
+      },
+      {
+        "number": "chmod 755 /usr/local/bin/my_script.sh",
+        "description": "Pemilik dan pengguna grup punya akses penuh, pengguna lain hanya bisa baca dan eksekusi"
+      },
+      {
+        "number": "chmod 775 /shared/project",
+        "description": "Semua bisa baca dan eksekusi, tapi hanya pemilik yang bisa menulis; cocok untuk direktori bersama"
+      }
+    ],
+    "cards": [
+      {
+        "heading": "Dasar-dasar oktal",
+        "description": "Setiap peran punya satu digit: baca=4, tulis=2, eksekusi=1. Jumlahkan untuk dapat digitnya: contohnya rwx = 7, rw- = 6, r-x = 5, r-- = 4. Mode umum: 644 untuk file, 755 untuk direktori."
+      },
+      {
+        "heading": "Bentuk simbolik",
+        "description": "Gunakan huruf untuk pengguna (u), grup (g), dan lainnya (o) dengan +, -, atau =. Contoh: chmod u=rw,g=r,o= file.txt memberi baca/tulis ke pemilik, baca ke grup, dan tanpa akses untuk lainnya."
+      },
+      {
+        "heading": "Bit khusus",
+        "description": "setuid menjalankan file dengan hak pemilik; setgid dengan hak grup; sticky mencegah pengguna menghapus file orang lain di direktori bersama (mis. /tmp)."
+      }
+    ]
+  },
+  "examples": {
+    "1": {
+      "title": "Contoh #1 - Bentuk Simbolik",
+      "explanation": "Perintah ini memberi pemilik izin baca, tulis, dan eksekusi, serta memberi grup dan pengguna lain baca dan eksekusi (tanpa tulis)."
+    },
+    "2": {
+      "title": "Contoh #2 - Notasi Oktal",
+      "explanation": "Perintah ini memberi pemilik izin baca, tulis, dan eksekusi, serta memberi grup dan pengguna lain baca dan eksekusi (tanpa tulis)."
+    },
+    "3": {
+      "title": "Contoh #3 - Memperbarui satu izin",
+      "explanation": "Perintah ini menghapus izin tulis untuk grup, tetapi membiarkan baca dan eksekusi tetap ada. Pemilik dan lainnya tidak terpengaruh."
+    },
+    "4": {
+      "title": "Contoh #4 - Memperbarui satu izin",
+      "explanation": "Memberi pemilik izin eksekusi sambil mempertahankan baca dan tulis. Grup dan lainnya tidak terpengaruh. Di bawah ini daftar opsi lengkapnya."
+    },
+    "5": {
+      "title": "Contoh #5 - Preset Umum — Referensi Cepat",
+      "explanation": "Ini membuat file bisa dibaca dan ditulis oleh pemilik, serta hanya dibaca oleh grup dan lainnya. Ingat: digit pertama untuk pengguna, kedua untuk grup, ketiga untuk lainnya. Kamu bisa pakai referensi cepat di bawah untuk menyusun izinmu sendiri."
+    }
+  },
+  "singlePermissionTool": {
+    "title": "Generator chmod untuk satu izin",
+    "description1": "Alat ini memungkinkan kamu membuat perintah chmod untuk satu perubahan izin.",
+    "description2": "Artinya izin lain tetap tidak berubah. Jadi kamu bisa dengan mudah mengubah/menambah/menghapus satu izin untuk tipe pengguna tertentu.",
+    "outputLabel": "Perintah yang dihasilkan",
+    "useThis": "Gunakan perintah ini untuk"
+  },
+  "explain": {
+    "roles": {
+      "owner": "Pemilik file",
+      "group": "Pengguna dalam grup",
+      "public": "Semua orang"
+    },
+    "permissions": {
+      "r": "baca",
+      "w": "tulis",
+      "x": "eksekusi"
+    },
+    "explanation": {
+      "can": "bisa",
+      "cannot": "tidak bisa",
+      "and": "dan",
+      "butNot": "tapi tidak",
+      "butNoOneElse": "tapi tidak ada orang lain yang punya akses",
+      "cannotDoAnything": "tidak bisa baca, tulis, atau eksekusi",
+      "noAccessForOthers": "orang lain tidak punya akses"
+    },
+    "everyone": "Semua orang"
+  },
+  "customExplanations": {
+    "777": "Akses penuh baca/tulis/eksekusi untuk semua — bagus untuk pengujian atau direktori publik sementara, tapi sangat tidak aman di produksi karena siapa pun bisa mengubah atau menghapus file.",
+    "755": "Umum untuk direktori dan executable — pemilik bisa mengubah, lainnya bisa baca dan eksekusi. Aman untuk skrip publik atau direktori server web.",
+    "750": "Pemilik kontrol penuh, grup bisa baca dan eksekusi, lainnya tidak punya akses — cocok untuk skrip tim sambil memblokir pihak luar.",
+    "700": "Hanya pemilik yang bisa baca, tulis, dan eksekusi — ideal untuk skrip privat atau direktori konfigurasi seperti ~/.ssh.",
+    "644": "Pemilik bisa baca/tulis, lainnya hanya baca — standar untuk file teks, konfigurasi, dan konten web yang hanya diedit pemilik.",
+    "640": "Pemilik bisa baca/tulis, grup hanya baca, lainnya tidak punya akses — pas untuk dokumen internal tanpa akses publik.",
+    "600": "Hanya pemilik bisa baca dan tulis — lazim untuk file sensitif seperti kunci privat SSH, memastikan grup dan publik tidak punya akses.",
+    "444": "Hanya baca untuk semua — berguna untuk dokumen publik yang tak berubah; perlu chmod lagi untuk mengubahnya.",
+    "400": "Hanya baca untuk pemilik; orang lain tidak bisa mengakses — dipakai untuk file statis sensitif seperti kunci kriptografi.",
+    "000": "Tidak ada izin untuk siapa pun — mengunci semua akses sampai izin dipulihkan; berguna untuk menonaktifkan akses sementara."
+  },
+  "learn": {
+    "title": "Semua tentang izin file Linux dan chmod",
+    "intro": "Izin menunjukkan pengguna mana yang bisa membaca, menulis, atau mengeksekusi file. Beri akses hanya pada yang butuh, supaya sistemmu aman dan berjalan baik.",
+    "whatArePermissions": {
+      "title": "Apa itu izin file?",
+      "content": [
+        "Izin mengontrol siapa yang bisa membaca, menulis, atau mengeksekusi file atau folder di sistem Linux.",
+        "Izin ada untuk menjaga data tetap aman, mencegah perubahan yang tidak diinginkan, dan memastikan program hanya berjalan saat memang dimaksudkan.",
+        "Izin adalah salah satu fondasi keamanan Linux — tanpa izin, siapa pun bisa mengubah file sistem atau membaca data pribadimu.",
+        "Izin diatur dengan perintah chmod, yang akan kita bahas detail di bawah."
+      ]
+    },
+    "userTypes": {
+      "title": "Tipe pengguna",
+      "intro": "Di Linux, izin diterapkan terpisah untuk tiga kategori pengguna:",
+      "points": [
+        {
+          "name": "Pemilik",
+          "description": "Biasanya orang yang membuat atau memiliki file."
+        },
+        {
+          "name": "Grup",
+          "description": "Pengguna lain yang menjadi anggota grup file."
+        },
+        {
+          "name": "Lainnya",
+          "description": "Semua orang di sistem yang bukan pemilik dan bukan anggota grup."
+        }
+      ]
+    },
+    "permissionTypes": {
+      "title": "Jenis izin",
+      "items": [
+        { "name": "Baca (r)", "description": "Melihat isi file atau daftar file dalam folder." },
+        { "name": "Tulis (w)", "description": "Mengubah file atau menambah/menghapus file di folder." },
+        { "name": "Eksekusi (x)", "description": "Menjalankan file sebagai program atau masuk ke folder." }
+      ]
+    },
+    "chmodIntro": {
+      "title": "Perintah chmod",
+      "content": [
+        "chmod singkatan dari 'change mode'. Mengubah izin sebuah file atau folder.",
+        "Bisa dipakai dalam bentuk simbolik (huruf, seperti rwx) atau bentuk numerik (angka oktal, seperti 777).",
+        "Bisa bekerja pada satu file atau seluruh folder."
+      ]
+    },
+    "symbolicRepresentation": {
+      "title": "Representasi simbolik",
+      "content": [
+        "Opsi pertama untuk menetapkan izin adalah mode simbolik, yang memakai huruf untuk tiap tipe pengguna.",
+        "Lebih mudah diingat, dibaca, dan dipahami, meski lebih panjang daripada oktal.",
+        "r berarti baca, w berarti tulis, x berarti eksekusi. Jika salah satunya diganti tanda minus (-), artinya izin itu tidak diberikan."
+      ]
+    },
+    "octalRepresentation": {
+      "title": "Representasi oktal (numerik)",
+      "content": [
+        "Mode oktal memakai angka untuk mewakili izin.",
+        "Dengan nilai: baca = 4, tulis = 2, eksekusi = 1.",
+        "Jumlahkan untuk dapat angkanya; contoh 7 berarti pengguna tersebut bisa membaca, menulis, dan mengeksekusi file.",
+        "Sama seperti sebelumnya, urutannya pemilik, grup, lalu lainnya.",
+        "Jadi 755 berarti pemilik punya rwx (7), grup rx (5), dan lainnya rx (5)."
+      ],
+      "howCalculated": "Kalau angka-angka ini terasa acak, ketahuilah ini dihitung seperti bilangan biner. Jadi 111 (rwx) = 7, 101 (r-x) = 5, dan 100 (r--) = 4."
+    },
+    "updateSinglePermission": {
+      "title": "Memperbarui satu izin",
+      "content": [
+        "Sering kali kamu tidak ingin mengubah semua izin file/folder, melainkan hanya sebagian.",
+        "Misalnya menambah eksekusi untuk pemilik saja, menghapus tulis dari pengguna publik, atau membuat grup hanya-baca.",
+        "Ini bisa dilakukan di mode simbolik dengan operator `+`, `-`, atau `=`, mengikuti format `chmod [siapa][operator][izin] file`.",
+        "`siapa` bisa `u` (pemilik), `g` (grup), `o` (lainnya), atau `a` (semua).",
+        "`operator` bisa `+` (tambah), `-` (hapus), atau `=` (set persis).",
+        "Contoh: `chmod g-w file.txt` menghapus izin tulis dari grup."
+      ]
+    },
+    "recursiveChanges": {
+      "title": "Mengubah izin secara rekursif",
+      "content": [
+        "Gunakan opsi `-R` untuk mengubah izin semua file dan folder di dalam sebuah direktori.",
+        "Contoh: `chmod -R 755 /var/www` akan menerapkan 755 ke setiap file dan folder di bawah /var/www.",
+        "Tapi hati-hati, perubahan rekursif bisa merusak file sistem jika salah pakai."
+      ]
+    },
+    "ownership": {
+      "title": "Kepemilikan dan chmod",
+      "content": [
+        "Izin bekerja bersama kepemilikan. Setiap file punya pemilik dan grup.",
+        "Kalau perlu mengubah siapa pemilik file, gunakan `chown`.",
+        "Contoh: `sudo chown user:group file.txt` mengubah pemilik dan grup sekaligus."
+      ]
+    },
+    "specialBits": {
+      "title": "Bit khusus",
+      "intro": "Selain baca/tulis/eksekusi, Linux punya bit izin khusus:",
+      "items": [
+        { "name": "Setuid (4)", "description": "Menjalankan file dengan izin pemilik, bukan izin pengguna yang mengeksekusi." },
+        { "name": "Setgid (2)", "description": "Menjalankan file dengan izin grup. Pada direktori, file baru mewarisi grup." },
+        { "name": "Sticky (1)", "description": "Pada direktori, mencegah pengguna menghapus file yang tidak mereka miliki. Umum di /tmp." }
+      ]
+    },
+    "commonPresets": {
+      "title": "Preset chmod umum",
+      "intro": "Berikut preset izin yang umum dan kegunaannya:",
+      "table": [
+        { "code": "600", "description": "Pemilik bisa baca/tulis. Tidak ada akses untuk lainnya. Kunci privat SSH." },
+        { "code": "644", "description": "Pemilik bisa baca/tulis. Lainnya bisa baca. Default untuk banyak file." },
+        { "code": "700", "description": "Pemilik kontrol penuh. Lainnya tidak ada akses. Skrip privat." },
+        { "code": "755", "description": "Pemilik bisa baca/tulis/eksekusi. Lainnya bisa baca/eksekusi. Umum untuk skrip." },
+        { "code": "777", "description": "Semua bisa baca/tulis/eksekusi. Hindari kecuali untuk folder bersama sementara." }
+      ]
+    },
+    "debugging": {
+      "title": "Debug izin file",
+      "intro": "Kalau sesuatu tidak jalan, kamu mungkin melihat error ini:",
+      "errors": [
+        { "message": "Permission denied", "fix": "Cek apakah kamu punya izin eksekusi pada file atau baca pada direktori. Tambahkan dengan `chmod +x file` atau `chmod +r folder`." },
+        { "message": "Operation not permitted", "fix": "Kamu mungkin butuh `sudo` untuk mengubah file milik sistem." },
+        { "message": "Read-only file system", "fix": "Filesystem ter-mount hanya-baca. Mount ulang dengan tulis atau hubungi admin." },
+        { "message": "Cannot open file: No such file or directory", "fix": "Path mungkin salah. Periksa dengan `ls`." }
+      ]
+    },
+    "securityTips": {
+      "title": "Tips keamanan",
+      "points": [
+        "Jadikan file executable hanya jika memang perlu dijalankan.",
+        "Pakai 600 untuk file privat dan 644 untuk file yang bisa dibaca publik.",
+        "Hindari 777 kecuali benar-benar perlu.",
+        "Cek izin dengan `ls -l` sebelum mengubahnya.",
+        "Uji perubahan di file non-kritis terlebih dulu."
+      ]
+    },
+    "nextSteps": {
+      "title": "Langkah berikutnya",
+      "content": "Cobalah membuat direktori uji dan bereksperimen dengan chmod dalam bentuk simbolik dan numerik. Setelah mantap, kamu bisa mengatur izin dengan aman untuk file nyata."
+    }
+  },
+  "images": {
+    "chmod-calculating-file-permissions": {
+      "title": "Izin File Linux Dijelaskan: dari rwx ke angka",
+      "alt": "Panduan visual yang menunjukkan bagaimana izin Linux berubah dari bentuk simbolik (rwx, r-x, r-x) ke biner lalu ke bentuk angka (7, 5, 5) untuk pengguna, grup, dan lainnya."
+    },
+    "chmod-modifying-file-permissions-command": {
+      "title": "Memahami Sintaks chmod: Siapa, Operator, dan Izin",
+      "alt": "Diagram yang menjelaskan sintaks chmod dalam tiga bagian: 'Siapa' menampilkan u untuk user, g untuk group, o untuk others, a untuk all; 'Operator' menampilkan + untuk tambah, - untuk hapus, = untuk set persis; dan 'Izin' menampilkan r untuk baca, w untuk tulis, x untuk eksekusi."
+    },
+    "chmod-modifying-file-permissions-reference": {
+      "title": "Contoh Perintah chmod untuk Mengubah Izin File",
+      "alt": "Tabel yang menampilkan contoh perintah chmod untuk mengubah izin, termasuk siapa yang terdampak, operasi yang dilakukan, jenis izin, dan penjelasan. Contoh: u+r untuk menambah baca ke pemilik, g-w untuk menghapus tulis dari grup, a=x untuk hanya eksekusi bagi semua."
+    },
+    "chmod-numeric-representation": {
+      "title": "chmod 755 Dijelaskan: Izin Numerik dan Simbolik",
+      "alt": "Diagram yang menampilkan chmod 755 dalam bentuk numerik dan simbolik. Angka 755 sesuai dengan rwx untuk pemilik, r-x untuk grup, dan r-x untuk lainnya; artinya pemilik bisa membaca, menulis, dan mengeksekusi, sementara grup dan lainnya hanya bisa membaca dan mengeksekusi."
+    },
+    "chmod-reference-table": {
+      "title": "Nilai Izin Linux: Oktal, Simbolik, dan Makna",
+      "alt": "Tabel yang memetakan nilai oktal 0–7 ke izin simbolik dan maknanya. Misalnya, 0 berarti tanpa izin (---), 4 berarti hanya baca (r--), 5 berarti baca dan eksekusi (r-x), dan 7 berarti baca, tulis, dan eksekusi (rwx)."
+    },
+    "chmod-symbolic-representation": {
+      "title": "Memahami String Izin Linux",
+      "alt": "Diagram yang menjelaskan struktur string izin Linux. Menampilkan indikator tipe file diikuti izin untuk pemilik, grup, dan publik. Contoh '-rwxr-xr-x' berarti pemilik dapat baca/tulis/eksekusi, grup bisa baca/eksekusi, dan lainnya bisa baca/eksekusi."
+    }
+  }
+}
