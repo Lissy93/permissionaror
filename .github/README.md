@@ -1,18 +1,18 @@
 
-<h1 align="center">Permissionaror</h1>
+<h1 align="center">permissionator</h1>
 <p align="center">
   🐧 <i>chmod calculator for generating Linux file permissions</i><br>
-  🌐 <b><a href="https://permissionaror.as93.net">permissionaror.as93.net</a></b>
+  🌐 <b><a href="https://permissionator.as93.net">permissionator.as93.net</a></b>
 </p>
 
-<a href="https://permissionaror.as93.net">
+<a href="https://permissionator.as93.net">
 <p align="center">
-  <img width="64" src="https://github.com/Lissy93/permissionaror/blob/main/public/logo.png?raw=true" />
+  <img width="64" src="https://github.com/Lissy93/permissionator/blob/main/public/logo.png?raw=true" />
   </p>
 </a>
 
 <p align="center">
- <img width="800" src="https://github.com/Lissy93/permissionaror/blob/main/public/screenshot.png?raw=true" />
+ <img width="800" src="https://github.com/Lissy93/permissionator/blob/main/public/screenshot.png?raw=true" />
   <br>
   <sup><i>A screenshot of the main calculator</i></sup>
 </p>

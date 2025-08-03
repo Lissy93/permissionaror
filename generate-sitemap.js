@@ -5,7 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 // Configuration
-const SITE_URL = 'https://permissionaror.as93.net';
+const SITE_URL = 'https://permissionator.as93.net';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
