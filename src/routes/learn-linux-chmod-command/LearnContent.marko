@@ -1,4 +1,12 @@
-import { get } from "../i18n";
+import { get, setLanguage } from "../../i18n";
+
+class {
+  onInput(input) {
+    if (input.lang) {
+      setLanguage(input.lang);
+    }
+  }
+}
 
 <div class="p-2 xs:p-4 sm:p-6">
   <Card class="max-w-5xl mx-auto px-4 py-10 mt-4 prose prose-invert prose-lg" title=get("learn.title") main="true">
