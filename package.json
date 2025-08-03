@@ -6,6 +6,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
     "marko": "^5.37.41",
+    "sitemap": "^8.0.0",
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
