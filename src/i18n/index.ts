@@ -61,7 +61,7 @@ let currentLang = detectLang();
  * 3. Default to English if no preference is found
  */
 function detectLang(): string {
-  if (typeof window !== "undefined") {
+  if (typeof window !== "undefined" && window.localStorage) {
     const stored = localStorage.getItem("lang");
     if (stored && translations[stored]) return stored;
     const browserLang = navigator.language?.split("-")[0];

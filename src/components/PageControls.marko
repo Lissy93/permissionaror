@@ -3,7 +3,7 @@ import { languages, setLanguage, getLanguage } from "../i18n";
 class {
   onCreate() {
     // Load theme from localStorage or default to dark
-    const savedTheme = localStorage.getItem("theme") || "dark";
+    const savedTheme = localStorage ? localStorage.getItem("theme") || "dark" : "dark";
     this.state = {
       language: getLanguage(),
       theme: savedTheme,
